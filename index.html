@@ -1,831 +1,1286 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PArdle - Hematology PANCE Review</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <style>
-    [x-cloak] { display: none !important; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PArdle | PA School Board Review Game</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for reactive UI -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body class="h-full flex flex-col font-sans antialiased" x-data="pardleApp()" x-init="initApp()">
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col justify-between selection:bg-slate-800 selection:text-white" x-data="caseleApp()">
 
-  <!-- Header Navigation -->
-  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-4 py-3">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <span class="text-2xl font-black tracking-wider text-rose-500">PArdle</span>
-        <span class="text-xs px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-medium">Hematology</span>
-      </div>
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-900 text-white p-2 rounded-xl shadow-sm text-lg font-bold">
+                    🩺
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">PArdle</h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button @click="openDirectoryModal = true" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center space-x-1.5 border border-slate-300">
+                    <span>📖</span>
+                    <span class="hidden sm:inline">Conditions</span>
+                </button>
+                <button @click="openStatsModal = true" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center space-x-1.5 border border-slate-300">
+                    <span>📊</span>
+                    <span class="hidden sm:inline">Stats</span>
+                </button>
+                <button @click="openInfoModal = true" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center space-x-1.5 border border-slate-300">
+                    <span>ℹ️</span>
+                    <span class="hidden sm:inline">How to Play</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-      <div class="flex items-center space-x-2">
-        <button @click="mode = 'daily'; resetGame()" :class="mode === 'daily' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Daily Case</button>
-        <button @click="mode = 'practice'; resetGame()" :class="mode === 'practice' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Practice Mode</button>
-        <button @click="showStats = !showStats" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition" title="Stats">
-          📊
-        </button>
-      </div>
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            
+            <!-- MAIN GAME AREA -->
+            <div class="lg:col-span-3 space-y-6">
+
+                <template x-if="gameState === 'menu'">
+                    <div class="space-y-6">
+                        <!-- Hero Card -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm text-center relative overflow-hidden">
+                            <span class="inline-block bg-slate-100 text-slate-700 font-semibold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-slate-200">
+                                PANCE Board Review Suite
+                            </span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">Master Clinical Cases Clue by Clue</h2>
+                            <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto mb-6">
+                                Work through progressive single-sentence clinical clues to diagnose high-yield board conditions.
+                            </p>
+
+                            <!-- Game Mode Selection -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
+                                <button @click="startDailyMode()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-6 rounded-xl shadow-sm transition transform active:scale-95 flex items-center justify-center space-x-2">
+                                    <span>📅</span>
+                                    <div class="text-left">
+                                        <div class="text-sm font-bold">Daily Case</div>
+                                        <div class="text-[10px] text-slate-300">Same case for everyone today</div>
+                                    </div>
+                                </button>
+                                <button @click="openPracticeSetup()" class="w-full bg-white hover:bg-slate-50 text-slate-800 font-semibold py-3 px-6 rounded-xl shadow-sm border border-slate-300 transition transform active:scale-95 flex items-center justify-center space-x-2">
+                                    <span>🔄</span>
+                                    <div class="text-left">
+                                        <div class="text-sm font-bold">Continuous Practice</div>
+                                        <div class="text-[10px] text-slate-500">Infinite sequential cases</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Banner -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <div class="text-slate-900 text-lg font-bold" x-text="stats.gamesPlayed">0</div>
+                                <div class="text-xs text-slate-500">Played</div>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <div class="text-emerald-600 text-lg font-bold" x-text="winPercentage() + '%'">0%</div>
+                                <div class="text-xs text-slate-500">Win Rate</div>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <div class="text-amber-600 text-lg font-bold" x-text="stats.currentStreak">0</div>
+                                <div class="text-xs text-slate-500">Streak</div>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm cursor-pointer hover:border-slate-400 transition" @click="openDirectoryModal = true">
+                                <div class="text-slate-900 text-lg font-bold" x-text="conditions.length">30</div>
+                                <div class="text-xs text-slate-500">Conditions 📖</div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="gameState === 'setup'">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Configure Continuous Practice</h3>
+                                <p class="text-xs text-slate-500">Select categories to include in your continuous study session.</p>
+                            </div>
+                            <button @click="gameState = 'menu'" class="text-slate-400 hover:text-slate-600 text-sm">✕ Close</button>
+                        </div>
+
+                        <div class="space-y-3 max-h-64 overflow-y-auto pr-1">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                                <span class="text-sm font-medium text-slate-700">Select All Categories</span>
+                                <input type="checkbox" x-model="selectAllCategories" @change="toggleAllCategories()" class="w-4 h-4 rounded text-slate-900 focus:ring-slate-500 bg-slate-100 border-slate-300">
+                            </div>
+                            <template x-for="(cat, idx) in categories" :key="idx">
+                                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer border border-slate-200">
+                                    <span class="text-sm font-medium text-slate-800" x-text="cat.name"></span>
+                                    <input type="checkbox" x-model="selectedCategories" :value="cat.name" class="w-4 h-4 rounded text-slate-900 focus:ring-slate-500 bg-slate-100 border-slate-300">
+                                </label>
+                            </template>
+                        </div>
+
+                        <div class="flex space-x-3 pt-2">
+                            <button @click="startPracticeMode()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm">
+                                Start Continuous Session
+                            </button>
+                            <button @click="gameState = 'menu'" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 px-4 rounded-xl transition text-sm border border-slate-300">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="gameState === 'playing' || gameState === 'won' || gameState === 'lost'">
+                    <div class="space-y-5">
+                        
+                        <!-- Top Status Bar -->
+                        <div class="flex items-center justify-between bg-white border border-slate-200 px-4 py-3 rounded-xl shadow-sm">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200"
+                                      x-text="isDaily ? '📅 Daily Case' : `🔄 Practice (${sessionScore} Correct)`"></span>
+                                <span class="text-xs text-slate-500 font-medium hidden sm:inline" x-text="`${targetCondition.module} • ${currentCategoryName}`"></span>
+                            </div>
+                            <div class="flex items-center space-x-1.5">
+                                <template x-for="i in 5">
+                                    <div class="w-3.5 h-3.5 rounded-full transition-all duration-300"
+                                         :class="{
+                                             'bg-slate-200 border border-slate-300': i > currentAttempt && gameState === 'playing',
+                                             'bg-emerald-500 shadow-sm': (i < currentAttempt) || (gameState === 'won' && i === currentAttempt),
+                                             'bg-rose-500 shadow-sm': i === currentAttempt && gameState === 'lost',
+                                             'bg-slate-900 animate-pulse': i === currentAttempt && gameState === 'playing'
+                                         }"></div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Vignette Clues Container -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                <h3 class="text-base font-semibold text-slate-900 flex items-center space-x-2">
+                                    <span>🩺</span>
+                                    <span>Clinical Vignette Clues</span>
+                                </h3>
+                                <span class="text-xs text-slate-500 font-medium" 
+                                      x-text="gameState === 'playing' ? `Clue ${currentAttempt} of 5 Unlocked` : 'All Clues Revealed'"></span>
+                            </div>
+
+                            <!-- Progressive Single-Sentence Clues -->
+                            <div class="space-y-3">
+                                <template x-for="(clueText, index) in activeClues" :key="index">
+                                    <div class="p-4 rounded-xl border transition-all duration-300"
+                                         :class="{
+                                             'bg-slate-50 border-slate-200 text-slate-700': gameState !== 'playing' || index < currentAttempt - 1,
+                                             'bg-white border-slate-800 text-slate-900 shadow-md ring-1 ring-slate-800': gameState === 'playing' && index === currentAttempt - 1,
+                                             'opacity-40 border-slate-100 bg-slate-50/50 text-slate-400': gameState === 'playing' && index >= currentAttempt
+                                         }">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500" x-text="getClueTitle(index)"></span>
+                                            <span class="text-[10px] font-medium" 
+                                                  :class="(gameState !== 'playing' || index < currentAttempt) ? 'text-emerald-600' : 'text-slate-400'" 
+                                                  x-text="(gameState !== 'playing' || index < currentAttempt) ? 'Unlocked' : 'Locked'"></span>
+                                        </div>
+                                        <p class="text-sm font-medium leading-relaxed" x-text="(gameState !== 'playing' || index < currentAttempt) ? clueText : '🔒 Submit a guess to reveal the next clue...'"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Guess Input -->
+                        <template x-if="gameState === 'playing'">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative" x-data="autocomplete()">
+                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">What is your diagnosis?</label>
+                                <div class="relative">
+                                    <input type="text" 
+                                           x-model="query" 
+                                           @input="onInput" 
+                                           @keydown.down.prevent="highlightNext"
+                                           @keydown.up.prevent="highlightPrev"
+                                           @keydown.enter.prevent="selectHighlighted"
+                                           placeholder="Type condition name (e.g. Iron Deficiency Anemia)..." 
+                                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 shadow-inner">
+                                    
+                                    <!-- Autocomplete Dropdown -->
+                                    <div x-show="open && filteredConditions.length > 0" 
+                                         @click.outside="open = false"
+                                         class="absolute left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-slate-100">
+                                        <template x-for="(cond, idx) in filteredConditions" :key="cond.name">
+                                            <div @click="selectCondition(cond.name)" 
+                                                 class="px-4 py-3 text-sm cursor-pointer hover:bg-slate-100 flex items-center justify-between transition"
+                                                 :class="{'bg-slate-100 text-slate-900 font-semibold': idx === highlightedIndex}">
+                                                <span class="text-slate-800" x-text="cond.name"></span>
+                                                <span class="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200" x-text="cond.category"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 flex items-center justify-between">
+                                    <span class="text-xs text-slate-500" x-text="`Attempt ${currentAttempt} of 5`"></span>
+                                    <button @click="submitCurrentGuess(query)" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 px-5 rounded-xl text-sm transition shadow-sm">
+                                        Submit Guess
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Game Outcome & PANCE Pearl Box -->
+                        <template x-if="gameState === 'won' || gameState === 'lost'">
+                            <div class="bg-white border-2 rounded-2xl p-6 shadow-md space-y-5"
+                                 :class="gameState === 'won' ? 'border-emerald-500' : 'border-rose-500'">
+                                
+                                <div class="text-center space-y-2">
+                                    <div class="inline-block p-3 rounded-full text-2xl shadow-sm"
+                                         :class="gameState === 'won' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-rose-50 text-rose-600 border border-rose-200'"
+                                         x-text="gameState === 'won' ? '🎉' : '❌'"></div>
+                                    <h3 class="text-xl font-bold text-slate-900" x-text="gameState === 'won' ? `Correct Diagnosis in ${currentAttempt} ${currentAttempt === 1 ? 'Clue' : 'Clues'}!` : 'Case Unsolved'"></h3>
+                                    <p class="text-sm text-slate-600">
+                                        Diagnosis: <strong class="text-slate-900 underline decoration-slate-400 text-base" x-text="targetCondition.name"></strong>
+                                    </p>
+                                </div>
+
+                                <!-- PANCE High Yield Diagnostic Pearl Box -->
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
+                                    <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm border-b border-slate-200 pb-2">
+                                        <span>🎓</span>
+                                        <span>PANCE High-Yield Review</span>
+                                    </div>
+
+                                    <div class="space-y-1">
+                                        <span class="text-xs font-bold text-slate-800 uppercase tracking-wider block">Condition Summary:</span>
+                                        <p class="text-sm text-slate-700 leading-relaxed" x-text="targetCondition.summary"></p>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
+                                        <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                                            <span class="block font-bold text-slate-900 mb-1 flex items-center space-x-1">
+                                                <span>🧪</span>
+                                                <span>Key Lab/Diagnostic Pattern:</span>
+                                            </span>
+                                            <span class="text-slate-700 font-medium" x-text="targetCondition.keyLabs"></span>
+                                        </div>
+                                        <div class="bg-amber-50/60 p-3 rounded-lg border border-amber-200/80 shadow-sm">
+                                            <span class="block font-bold text-amber-900 mb-1 flex items-center space-x-1">
+                                                <span>💡</span>
+                                                <span>High-Yield PANCE Pearl:</span>
+                                            </span>
+                                            <span class="text-amber-950 font-medium" x-text="targetCondition.pearl"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-3 pt-2">
+                                    <template x-if="!isDaily">
+                                        <button @click="startPracticeMode()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-xl shadow-sm transition text-sm flex items-center justify-center space-x-2">
+                                            <span>⏭️</span>
+                                            <span>Next Practice Case</span>
+                                        </button>
+                                    </template>
+                                    <button @click="resetGame()" class="py-3 px-4 rounded-xl shadow-sm transition text-sm flex items-center justify-center space-x-2 border border-slate-300 font-medium"
+                                            :class="isDaily ? 'flex-1 bg-slate-900 hover:bg-slate-800 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-800'">
+                                        <span>🏠</span>
+                                        <span x-text="isDaily ? 'Back to Menu' : 'End Session'"></span>
+                                    </button>
+                                    <button @click="shareResult()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-xl transition text-sm flex items-center space-x-2 border border-slate-300">
+                                        <span>📋</span>
+                                        <span>Share</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="text-center pt-2" x-show="gameState === 'playing'">
+                            <button @click="gameState = 'menu'" class="text-xs text-slate-500 hover:text-slate-800 underline transition">
+                                ← Return to Main Menu
+                            </button>
+                        </div>
+
+                    </div>
+                </template>
+
+            </div>
+
+            <!-- SIDEBAR: DUAL STACKED CARDS (MASTERY TOP, GUESS LOG BOTTOM) -->
+            <aside class="space-y-5 lg:sticky lg:top-20">
+                
+                <!-- TOP CARD: MASTERY & ACCURACY SUMMARY -->
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="flex items-center space-x-1.5">
+                            <span>🏆</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Mastery & Accuracy</h3>
+                        </div>
+                        <span class="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200" 
+                              x-text="`Acc: ${winPercentage()}%`"></span>
+                    </div>
+
+                    <!-- Top 3 Strongest Conditions -->
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider flex items-center space-x-1">
+                            <span>💪</span>
+                            <span>Top 3 Strongest</span>
+                        </span>
+                        
+                        <div class="space-y-1.5">
+                            <template x-if="topStrongestConditions.length === 0">
+                                <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-[11px] text-slate-400 italic text-center">
+                                    Solve cases to build mastery ratings
+                                </div>
+                            </template>
+                            <template x-for="item in topStrongestConditions" :key="item.name">
+                                <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-lg p-2 flex items-center justify-between text-xs">
+                                    <span class="font-medium text-emerald-950 truncate max-w-[70%]" x-text="item.name"></span>
+                                    <span class="font-bold text-emerald-700 text-[10px]" x-text="`${item.accuracy}% (${item.wins}/${item.total})`"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Top 3 Needs Work Conditions -->
+                    <div class="space-y-2 pt-1">
+                        <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider flex items-center space-x-1">
+                            <span>🎯</span>
+                            <span>Top 3 Needs Work</span>
+                        </span>
+                        
+                        <div class="space-y-1.5">
+                            <template x-if="topNeedsWorkConditions.length === 0">
+                                <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-[11px] text-slate-400 italic text-center">
+                                    Missed or struggling topics appear here
+                                </div>
+                            </template>
+                            <template x-for="item in topNeedsWorkConditions" :key="item.name">
+                                <div class="bg-amber-50/50 border border-amber-200/80 rounded-lg p-2 flex items-center justify-between text-xs">
+                                    <span class="font-medium text-amber-950 truncate max-w-[70%]" x-text="item.name"></span>
+                                    <span class="font-bold text-amber-700 text-[10px]" x-text="`${item.accuracy}% (${item.wins}/${item.total})`"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM CARD: SUBMITTED GUESSES LOG -->
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="flex items-center space-x-1.5">
+                            <span>📝</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Current Guesses</h3>
+                        </div>
+                        <span class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md border border-slate-200" 
+                              x-text="`${guessedDiseases.length}/5`"></span>
+                    </div>
+
+                    <div class="space-y-2 max-h-56 overflow-y-auto pr-1">
+                        <template x-if="guessedDiseases.length === 0">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center text-xs text-slate-400 italic">
+                                Differential diagnoses submitted during the active case will appear here!
+                            </div>
+                        </template>
+
+                        <template x-for="(guess, idx) in guessedDiseases" :key="idx">
+                            <div class="bg-slate-50 border rounded-xl p-2.5 flex items-center justify-between text-xs"
+                                 :class="guess.isCorrect ? 'border-emerald-300 bg-emerald-50/50 text-emerald-950' : 'border-slate-200 text-slate-800'">
+                                <div class="space-y-0.5 max-w-[75%]">
+                                    <div class="font-semibold truncate" x-text="`${idx+1}. ${guess.name}`"></div>
+                                    <div class="text-[9px] text-slate-500" x-text="`Submitted on Clue ${idx+1}`"></div>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-[11px]" x-text="guess.isCorrect ? '🎯 Correct' : '❌'"></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10px] text-slate-600 leading-tight">
+                        💡 <strong>PANCE Tip:</strong> Differential elimination builds speed for exam vignette patterns.
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Modal: Conditions Directory -->
+    <div x-show="openDirectoryModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+        <div @click.outside="openDirectoryModal = false" class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 shadow-xl space-y-5 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                        <span>📖</span>
+                        <span>Clinical Curriculum Directory</span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Conditions organized by clinical module</p>
+                </div>
+                <button @click="openDirectoryModal = false" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+
+            <div class="space-y-6 overflow-y-auto pr-2 flex-1">
+                <template x-for="mod in modules" :key="mod">
+                    <div class="space-y-3">
+                        <!-- Module Section Header -->
+                        <div class="flex items-center space-x-2 bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm">
+                            <span>🩸</span>
+                            <span x-text="mod"></span>
+                            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full ml-auto" 
+                                  x-text="conditions.filter(c => c.module === mod).length + ' Conditions'"></span>
+                        </div>
+
+                        <!-- Nested Categories within Module -->
+                        <div class="pl-2 space-y-3">
+                            <template x-for="cat in categories" :key="cat.name">
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+                                    <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+                                        <h4 class="text-xs font-bold text-slate-800" x-text="cat.name"></h4>
+                                        <span class="text-[10px] bg-white text-slate-500 px-2 py-0.5 rounded-full border border-slate-200" 
+                                              x-text="conditions.filter(c => c.module === mod && c.category === cat.name).length + ' conditions'"></span>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        <template x-for="cond in conditions.filter(c => c.module === mod && c.category === cat.name)" :key="cond.name">
+                                            <div class="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 flex items-center space-x-2 shadow-xs">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+                                                <span x-text="cond.name"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex justify-end">
+                <button @click="openDirectoryModal = false" class="bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-5 rounded-xl text-xs transition">
+                    Close Directory
+                </button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <!-- Main Layout -->
-  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-    
-    <!-- Game Play Area (2 Columns on Large Screens) -->
-    <section class="lg:col-span-2 space-y-6">
-      
-      <!-- Category Filter Bar (Practice Mode Only) -->
-      <template x-if="mode === 'practice'">
-        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 space-y-2">
-          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Filter Category</div>
-          <select x-model="selectedCategory" @change="resetGame()" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg p-2 focus:ring-2 focus:ring-rose-500 outline-none">
-            <option value="All">All Hematology Categories</option>
-            <template x-for="cat in categories" :key="cat">
-              <option :value="cat" x-text="cat"></option>
-            </template>
-          </select>
-        </div>
-      </template>
-
-      <!-- Progressive Clues Box -->
-      <div class="bg-slate-950/60 rounded-2xl border border-slate-800 p-5 space-y-4 shadow-xl">
-        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-          <div class="flex items-center space-x-2">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Clinical Clues</span>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono" x-text="`Clue ${currentClueIndex + 1} of 5`"></span>
-          </div>
-          <span class="text-xs font-semibold text-rose-400" x-text="currentCondition ? currentCondition.category : ''"></span>
-        </div>
-
-        <div class="space-y-3">
-          <template x-for="(clue, index) in currentClues" :key="index">
-            <div x-show="index <= currentClueIndex" class="p-3.5 rounded-xl border transition-all duration-300" :class="index === currentClueIndex ? 'bg-slate-800/80 border-rose-500/40 text-slate-100 shadow-md' : 'bg-slate-900/40 border-slate-800 text-slate-400'">
-              <div class="text-xs font-bold text-rose-400/80 mb-1" x-text="`Clue ${index + 1}`"></div>
-              <div class="text-sm leading-relaxed" x-text="clue"></div>
+    <!-- Modal: Stats -->
+    <div x-show="openStatsModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+        <div @click.outside="openStatsModal = false" class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                    <span>📊</span>
+                    <span>Statistics & Streaks</span>
+                </h3>
+                <button @click="openStatsModal = false" class="text-slate-400 hover:text-slate-600">✕</button>
             </div>
-          </template>
-        </div>
-      </div>
 
-      <!-- User Guess Input Area -->
-      <div x-show="!gameStatus" class="space-y-3 relative">
-        <div class="relative">
-          <input 
-            type="text" 
-            x-model="guessInput" 
-            @input="filterOptions()" 
-            @keydown.enter="submitGuess(guessInput)"
-            placeholder="Type condition diagnosis..." 
-            class="w-full bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition"
-          />
-          <button 
-            @click="submitGuess(guessInput)"
-            class="absolute right-2 top-2 bottom-2 px-4 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-lg transition"
-          >
-            Submit
-          </button>
-        </div>
-
-        <!-- Dropdown Autocomplete Options -->
-        <div x-show="filteredOptions.length > 0 && guessInput.trim().length > 0" class="absolute z-20 w-full bg-slate-900 border border-slate-700 rounded-xl max-h-48 overflow-y-auto shadow-2xl space-y-1 p-1">
-          <template x-for="option in filteredOptions" :key="option">
-            <button 
-              @click="submitGuess(option)" 
-              class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-rose-600 hover:text-white rounded-lg transition"
-              x-text="option"
-            ></button>
-          </template>
-        </div>
-      </div>
-
-      <!-- Win / Lose End Game Card -->
-      <div x-show="gameStatus" x-cloak class="p-6 rounded-2xl border space-y-4 text-center transition-all" :class="gameStatus === 'won' ? 'bg-emerald-950/30 border-emerald-500/30' : 'bg-rose-950/30 border-rose-500/30'">
-        <div class="text-2xl font-black" :class="gameStatus === 'won' ? 'text-emerald-400' : 'text-rose-400'" x-text="gameStatus === 'won' ? '🎉 Correct Diagnosis!' : '❌ Case Unsolved'"></div>
-        
-        <div class="text-lg font-bold text-slate-100" x-text="currentCondition ? currentCondition.name : ''"></div>
-
-        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-left space-y-2 text-xs">
-          <div><strong class="text-rose-400">Clinical Pearl:</strong> <span class="text-slate-300" x-text="currentCondition ? currentCondition.pearl : ''"></span></div>
-          <div><strong class="text-emerald-400">Lab Pattern:</strong> <span class="text-slate-300" x-text="currentCondition ? currentCondition.labs : ''"></span></div>
-          <div><strong class="text-sky-400">Summary:</strong> <span class="text-slate-300" x-text="currentCondition ? currentCondition.summary : ''"></span></div>
-        </div>
-
-        <button @click="resetGame()" class="px-6 py-2.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl transition shadow-lg">
-          Next Practice Case
-        </button>
-      </div>
-
-    </section>
-
-    <!-- Side Panel: Stats & Guesses Log -->
-    <aside class="space-y-6">
-      
-      <!-- Current Guesses Log -->
-      <div class="bg-slate-950/60 rounded-2xl border border-slate-800 p-4 space-y-3">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Attempt Log</h3>
-        <div class="space-y-2">
-          <template x-for="(attempt, index) in attempts" :key="index">
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs">
-              <span class="text-slate-300 font-medium" x-text="attempt.name"></span>
-              <span class="text-rose-400 font-bold" x-text="`Clue ${attempt.clueNum}`"></span>
+            <div class="grid grid-cols-4 gap-3 text-center">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="text-xl font-bold text-slate-900" x-text="stats.gamesPlayed">0</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Played</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="text-xl font-bold text-emerald-600" x-text="winPercentage() + '%'">0%</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Win %</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="text-xl font-bold text-amber-600" x-text="stats.currentStreak">0</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Streak</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="text-xl font-bold text-slate-900" x-text="stats.maxStreak">0</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Max</div>
+                </div>
             </div>
-          </template>
-          <template x-if="attempts.length === 0">
-            <div class="text-xs text-slate-600 py-4 text-center">No guesses submitted yet</div>
-          </template>
+
+            <div class="space-y-2 pt-2">
+                <button @click="resetStats()" class="w-full bg-slate-100 hover:bg-slate-200 text-rose-600 font-medium py-2 px-4 rounded-xl text-xs transition border border-slate-300">
+                    Reset Statistics
+                </button>
+                <button @click="openStatsModal = false" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-xl text-xs transition">
+                    Close
+                </button>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Strengths & Weaknesses Panel -->
-      <div class="bg-slate-950/60 rounded-2xl border border-slate-800 p-4 space-y-4">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Performance Insights</h3>
-        
-        <div class="space-y-2">
-          <div class="text-xs font-semibold text-emerald-400">Top 3 Strongest Conditions</div>
-          <div class="space-y-1">
-            <template x-for="item in topStrong" :key="item.name">
-              <div class="flex justify-between text-xs p-1.5 rounded bg-slate-900 text-slate-300">
-                <span x-text="item.name"></span>
-                <span class="text-emerald-400 font-mono" x-text="`${item.score}%`"></span>
-              </div>
-            </template>
-          </div>
+    <!-- Modal: Info -->
+    <div x-show="openInfoModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+        <div @click.outside="openInfoModal = false" class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                    <span>ℹ️</span>
+                    <span>How PArdle Works</span>
+                </h3>
+                <button @click="openInfoModal = false" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
+                    <strong class="text-slate-900 block">🎯 Single-Sentence Clues:</strong>
+                    <p class="text-xs">Each attempt unveils exactly one concise clinical clue sentence (Chief Complaint, Primary Lab, Smear Finding, Pathophysiology, or Gold Standard Diagnostic test).</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
+                    <strong class="text-slate-900 block">📖 Full Post-Game Review:</strong>
+                    <p class="text-xs">Whether you win on Clue 1 or Clue 5, all 5 clue answers and PANCE board pearls unlock at completion so you can review the full clinical picture.</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
+                    <strong class="text-slate-900 block">📊 Real-Time Side Panel:</strong>
+                    <p class="text-xs">View your Top 3 Strongest & Top 3 Needs Work conditions on top, with your active case guess log stacked right beneath it.</p>
+                </div>
+            </div>
+
+            <button @click="openInfoModal = false" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition">
+                Got it, Let's Study!
+            </button>
         </div>
+    </div>
 
-        <div class="space-y-2">
-          <div class="text-xs font-semibold text-rose-400">Top 3 Needs Work</div>
-          <div class="space-y-1">
-            <template x-for="item in topWeak" :key="item.name">
-              <div class="flex justify-between text-xs p-1.5 rounded bg-slate-900 text-slate-300">
-                <span x-text="item.name"></span>
-                <span class="text-rose-400 font-mono" x-text="`${item.score}%`"></span>
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+        <p>PArdle • Interactive Board Exam Clinical Vignette Review Suite</p>
+    </footer>
 
-    </aside>
-  </main>
+    <script>
+        const MODULES = ["Hematology"];
 
-  <script>
-    function pardleApp() {
-      return {
-        mode: 'daily',
-        selectedCategory: 'All',
-        currentCondition: null,
-        currentClues: [],
-        currentClueIndex: 0,
-        guessInput: '',
-        filteredOptions: [],
-        attempts: [],
-        gameStatus: null,
-        showStats: false,
-        
-        stats: {
-          played: 0,
-          won: 0,
-          streak: 0,
-          maxStreak: 0,
-          conditionStats: {}
-        },
-
-        topStrong: [],
-        topWeak: [],
-
-        categories: [
-          "Microcytic Anemias",
-          "Macrocytic / Megaloblastic Anemias",
-          "Hemolytic Anemias & Structural Defects",
-          "Bone Marrow Failure",
-          "Thrombophilic Disorders (Clotting & Emboli)",
-          "Bleeding, Platelet, & Consumption Disorders"
-        ],
-
-        conditions: [
-          // Microcytic Anemias
-          {
-            id: 1,
-            name: "Iron Deficiency Anemia",
-            category: "Microcytic Anemias",
-            clues: [
-              "Patient reports microcytic fatigue, weakness, and unusual cravings to chew ice (pica).",
-              "Physical exam demonstrates spoon-shaped nails (koilonychia) and angular cheilitis.",
-              "Laboratory panel reveals low serum iron, elevated Total Iron-Binding Capacity (TIBC), and decreased serum ferritin.",
-              "Peripheral blood smear demonstrates microcytic, hypochromic red blood cells with marked anisocytosis.",
-              "Most common cause in adults is chronic occult GI bleeding or excessive menstrual blood loss."
-            ],
-            pearl: "Decreased ferritin is the most specific early diagnostic marker.",
-            labs: "Microcytic/Hypochromic, Low Ferritin, High TIBC, Low Iron",
-            summary: "Microcytic anemia caused by inadequate iron stores required for hemoglobin synthesis."
-          },
-          {
-            id: 2,
-            name: "Alpha-Thalassemia Minor",
-            category: "Microcytic Anemias",
-            clues: [
-              "Patient of Southeast Asian or Mediterranean descent presents with asymptomatic mild microcytic anemia.",
-              "Routine CBC reveals microcytosis out of proportion to mild degree of anemia.",
-              "Serum ferritin, serum iron, and TIBC levels are completely normal.",
-              "Hemoglobin electrophoresis shows normal ratios of HbA, HbA2, and HbF.",
-              "Caused by a deletion of two alpha-globin genes (--/aa or -a/-a)."
-            ],
-            pearl: "Normal Hb electrophoresis with microcytosis and normal iron stores points to Alpha-Thal trait.",
-            labs: "Microcytic, Normal Iron/Ferritin, Normal Hb Electrophoresis",
-            summary: "Mild microcytic trait due to loss of 2 alpha-globin genes, requiring reassurance only."
-          },
-          {
-            id: 3,
-            name: "Hemoglobin H Disease",
-            category: "Microcytic Anemias",
-            clues: [
-              "Patient presents with moderate-to-severe microcytic hemolytic anemia, jaundice, and splenomegaly.",
-              "Peripheral blood smear reveals target cells, Heinz bodies, and microcytosis.",
-              "Hemoglobin electrophoresis shows fast-migrating Hemoglobin H (beta-4 tetramers).",
-              "Occurs when three alpha-globin genes are deleted (--/-a).",
-              "May require occasional blood transfusions during infection or oxidative stress."
-            ],
-            pearl: "Tetramers of excess beta chains form Hemoglobin H.",
-            labs: "Microcytic, Heinz Bodies, Target Cells, HbH on Electrophoresis",
-            summary: "Moderate-to-severe alpha-thalassemia variant caused by 3-gene deletion."
-          },
-          {
-            id: 4,
-            name: "Beta-Thalassemia Minor",
-            category: "Microcytic Anemias",
-            clues: [
-              "Asymptomatic patient of Mediterranean descent found to have mild microcytic anemia on screening.",
-              "Mentzer Index (MCV / RBC count) is less than 13.",
-              "Serum ferritin and iron levels are normal.",
-              "Hemoglobin electrophoresis demonstrates elevated Hemoglobin A2 (> 3.5%) and elevated HbF.",
-              "Caused by a heterozygous mutation in the beta-globin gene."
-            ],
-            pearl: "Elevated HbA2 on electrophoresis is pathognomonic.",
-            labs: "Microcytic, Elevated HbA2 (>3.5%), Normal Iron Panel",
-            summary: "Heterozygous beta-globin gene mutation causing mild microcytic anemia."
-          },
-          {
-            id: 5,
-            name: "Beta-Thalassemia Major",
-            category: "Microcytic Anemias",
-            clues: [
-              "Infant presents at 6 months of age with severe anemia, failure to thrive, and jaundice.",
-              "X-ray shows skull expansion with 'hair-on-end' appearance and chipmunk facies due to extramedullary hematopoiesis.",
-              "Hemoglobin electrophoresis reveals complete absence of HbA, with predominant HbF and elevated HbA2.",
-              "Requires lifelong chronic blood transfusions coupled with iron chelation therapy.",
-              "Caused by homozygous null mutations in both beta-globin genes."
-            ],
-            pearl: "Presents after 6 months as fetal HbF transitions to adult HbA.",
-            labs: "Severe Microcytic Anemia, Near 100% HbF, No HbA",
-            summary: "Severe, transfusion-dependent beta-globin deficiency presenting in early infancy."
-          },
-          {
-            id: 6,
-            name: "Sideroblastic Anemia",
-            category: "Microcytic Anemias",
-            clues: [
-              "Patient undergoing isoniazid therapy or presenting with chronic alcohol abuse develops fatigue.",
-              "Serum iron is elevated, serum ferritin is elevated, and transferrin saturation is increased.",
-              "Bone marrow biopsy stained with Prussian blue demonstrates ringed sideroblasts.",
-              "Peripheral smear shows dimorphic RBC population with stippling.",
-              "Defect in heme synthesis leads to iron accumulation within mitochondrial erythroblasts."
-            ],
-            pearl: "Prussian blue stain reveals ringed sideroblasts in bone marrow.",
-            labs: "Elevated Iron/Ferritin, Ringed Sideroblasts in Marrow",
-            summary: "Inability to incorporate iron into protoporphyrin to form heme, often drug- or alcohol-induced."
-          },
-
-          // Macrocytic / Megaloblastic Anemias
-          {
-            id: 7,
-            name: "Vitamin B12 Deficiency",
-            category: "Macrocytic / Megaloblastic Anemias",
-            clues: [
-              "Patient with strict vegan diet or prior gastric bypass presents with fatigue, glossitis, and paresthesias.",
-              "Neurological exam demonstrates loss of vibration sense and proprioception (subacute combined degeneration).",
-              "CBC reveals macrocytic anemia (MCV > 100) with hypersegmented neutrophils.",
-              "Serum methylmalonic acid (MMA) and homocysteine levels are both elevated.",
-              "May be caused by Pernicious Anemia due to anti-intrinsic factor antibodies."
-            ],
-            pearl: "Elevated MMA differentiates B12 deficiency from Folate deficiency.",
-            labs: "MCV > 100, Hypersegmented Neutrophils, High MMA & High Homocysteine",
-            summary: "Megaloblastic anemia featuring neurological symptoms and elevated MMA levels."
-          },
-          {
-            id: 8,
-            name: "Folate Deficiency",
-            category: "Macrocytic / Megaloblastic Anemias",
-            clues: [
-              "Malnourished patient or chronic alcoholic presents with fatigue, weakness, and sore tongue.",
-              "Neurological examination is completely normal with no loss of proprioception.",
-              "CBC demonstrates macrocytic anemia with hypersegmented neutrophils on smear.",
-              "Serum homocysteine is elevated, but methylmalonic acid (MMA) is completely normal.",
-              "Frequently exacerbated by drugs like methotrexate, trimethoprim, or phenytoin."
-            ],
-            pearl: "Normal MMA level with macrocytosis excludes B12 deficiency.",
-            labs: "MCV > 100, Normal MMA, High Homocysteine",
-            summary: "Megaloblastic macrocytic anemia without neurological manifestations."
-          },
-
-          // Hemolytic Anemias & Structural Defects
-          {
-            id: 9,
-            name: "Hereditary Spherocytosis",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Autosomal dominant disorder presenting with splenomegaly, jaundice, and pigmented gallstones.",
-              "Laboratory testing shows elevated MCHC (>36 g/dL) and increased reticulocyte count.",
-              "Peripheral blood smear reveals dense round erythrocytes lacking central pallor.",
-              "Positive Eosin-5-maleimide (EMA) binding test and osmotic fragility test.",
-              "Caused by membrane protein defects in spectrin or ankyrin; curative treatment is splenectomy."
-            ],
-            pearl: "Elevated MCHC and positive EMA binding test are diagnostic.",
-            labs: "High MCHC, Spherocytes on Smear, Positive EMA Binding Test",
-            summary: "Red cell membrane protein defect leading to splenic destruction of round RBCs."
-          },
-          {
-            id: 10,
-            name: "G6PD Deficiency",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Male patient develops sudden jaundice, dark urine, and fatigue after taking nitrofurantoin or eating fava beans.",
-              "X-linked recessive disorder triggering oxidative destruction of red blood cells.",
-              "Peripheral blood smear stained with crystal violet reveals Heinz bodies and bite cells.",
-              "Enzyme assay during acute crisis may show false-normal levels and should be repeated weeks later.",
-              "Key trigger drugs include rasburicase, sulfa drugs, primaquine, and dapsone."
-            ],
-            pearl: "Bite cells and Heinz bodies triggered by oxidative stressors.",
-            labs: "Bite Cells, Heinz Bodies, Low G6PD Enzyme activity outside acute phase",
-            summary: "X-linked enzymatic defect causing episodic intravascular hemolysis under oxidative stress."
-          },
-          {
-            id: 11,
-            name: "Sickle Cell Anemia",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Patient presents with severe bone and joint pain, dactylitis, or acute chest syndrome.",
-              "Autosomal recessive substitution of valine for glutamic acid at position 6 of the beta-globin chain.",
-              "Hemoglobin electrophoresis reveals predominant HbS and absence of HbA.",
-              "Peripheral smear demonstrates sickled erythrocytes and Howell-Jolly bodies secondary to autosplenectomy.",
-              "Hydroxyurea is used chronically to increase production of Hemoglobin F."
-            ],
-            pearl: "Howell-Jolly bodies indicate functional autosplenectomy.",
-            labs: "HbS on Electrophoresis, Sickled Cells, Howell-Jolly Bodies",
-            summary: "Qualitative beta-globin mutation leading to erythrocyte sickling and vaso-occlusive crises."
-          },
-          {
-            id: 12,
-            name: "Warm Autoimmune Hemolytic Anemia",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Patient with lupus or CLL presents with acute fatigue, scleral icterus, and dark urine.",
-              "Direct Antiglobulin Test (Direct Coombs) is strongly positive for IgG and C3d.",
-              "Erythrocytes undergo extravascular hemolysis in the spleen at body temperature (37°C).",
-              "Peripheral smear reveals microspherocytes and marked reticulocytosis.",
-              "First-line treatment consists of high-dose systemic corticosteroids."
-            ],
-            pearl: "Positive Direct Coombs test with IgG autoantibodies active at 37°C.",
-            labs: "Positive Direct Coombs (IgG), Reticulocytosis, Spherocytes",
-            summary: "IgG-mediated autoimmune extravascular destruction of erythrocytes at body temperature."
-          },
-          {
-            id: 13,
-            name: "Cold Agglutinin Disease",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Patient develops painful cyanosis and numbness in fingers and ears upon exposure to cold weather.",
-              "Direct Coombs test is positive for C3 complement only (negative for IgG).",
-              "Associated with Mycoplasma pneumoniae infection or Epstein-Barr virus (Infectious Mononucleosis).",
-              "Mediated by IgM autoantibodies that bind red blood cells at lower peripheral temperatures.",
-              "First-line management includes avoiding cold exposure and rituximab if severe."
-            ],
-            pearl: "IgM-mediated hemolysis triggered by cold; positive Coombs for C3.",
-            labs: "Positive Direct Coombs for C3, High IgM Titers, RBC Agglutination",
-            summary: "IgM autoantibody complement fixation causing intravascular/extravascular hemolysis upon cold exposure."
-          },
-          {
-            id: 14,
-            name: "Paroxysmal Nocturnal Hemoglobinuria",
-            category: "Hemolytic Anemias & Structural Defects",
-            clues: [
-              "Patient presents with dark reddish-brown urine in the morning, abdominal pain, and venous thrombosis.",
-              "Acquired mutation in the PIG-A gene leading to deficiency of GPI-anchored surface proteins CD55 and CD59.",
-              "Uninhibited complement activation results in nocturnal intravascular destruction of red cells.",
-              "Flow cytometry demonstrating loss of CD55 and CD59 on blood cells is diagnostic.",
-              "Targeted complement inhibition therapy with Eculizumab significantly improves survival."
-            ],
-            pearl: "Flow cytometry showing absence of CD55 and CD59 is pathognomonic.",
-            labs: "Loss of CD55/CD59 on Flow Cytometry, Hemoglobinuria, Coombs-Negative Hemolysis",
-            summary: "Acquired stem cell defect causing complement-mediated nocturnal hemolysis and hypercoagulability."
-          },
-
-          // Bone Marrow Failure
-          {
-            id: 15,
-            name: "Aplastic Anemia",
-            category: "Bone Marrow Failure",
-            clues: [
-              "Patient presents with mucosal bleeding, severe fatigue, and recurrent bacterial infections.",
-              "CBC demonstrates pancytopenia (anemia, neutropenia, and thrombocytopenia) with low reticulocyte count.",
-              "Bone marrow biopsy reveals hypocellularity with replacement of marrow elements by fat cells ('dry tap').",
-              "May be triggered by medications (carbamazepine, chloramphenicol), viral hepatitis, or toxins.",
-              "Definitive treatment for young patients is allogeneic hematopoietic stem cell transplantation."
-            ],
-            pearl: "Hypocellular hypocellular bone marrow dry tap with severe pancytopenia.",
-            labs: "Pancytopenia, Low Reticulocytes, Marrow Hypoplasia with Fat Replacement",
-            summary: "Bone marrow failure leading to pancytopenia and severe hypocellular marrow."
-          },
-          {
-            id: 16,
-            name: "Pure Red Cell Aplasia",
-            category: "Bone Marrow Failure",
-            clues: [
-              "Patient presents with profound normocytic anemia with normal white cell and platelet counts.",
-              "Strongly associated with Thymoma, autoimmune disorders, or Parvovirus B19 infection.",
-              "Reticulocyte count is near zero (< 0.5%).",
-              "Bone marrow examination demonstrates selective severe absence of erythroid precursors.",
-              "Chest CT should be performed to screen for underlying thymoma."
-            ],
-            pearl: "Associated with Thymoma and Parvovirus B19; isolated severe anemia.",
-            labs: "Isolated Anemia, Reticulocytes ~0%, Absent Erythroblasts in Marrow",
-            summary: "Isolated erythroblast destruction leading to profound normocytic anemia with normal WBC/platelets."
-          },
-
-          // Thrombophilic Disorders
-          {
-            id: 17,
-            name: "Factor V Leiden Mutation",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Young patient with family history develops an unprovoked Deep Vein Thrombosis (DVT) or Pulmonary Embolism.",
-              "Most common inherited hypercoagulable state in Caucasian populations.",
-              "Point mutation renders Factor V resistant to cleavage and inactivation by Activated Protein C.",
-              "Diagnosed by Activated Protein C Resistance assay followed by DNA genetic testing.",
-              "Management involves anticoagulation during acute thrombotic events."
-            ],
-            pearl: "Resistance of Factor V to cleavage by Activated Protein C.",
-            labs: "Positive APC Resistance Assay, Factor V Gene Mutation Test",
-            summary: "Inherited resistance to Activated Protein C causing hypercoagulability and recurrent venous thromboembolism."
-          },
-          {
-            id: 18,
-            name: "Antiphospholipid Syndrome",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Female patient with systemic lupus erythematosus presents with recurrent fetal loss and arterial thromboses.",
-              "Laboratory reveals paradoxically prolonged Activated Partial Thromboplastin Time (aPTT) in vitro.",
-              "Mixing study fails to correct the prolonged aPTT (indicates presence of an inhibitor).",
-              "Serology shows positive Lupus Anticoagulant, Anti-cardiolipin antibodies, or Anti-beta-2 glycoprotein I.",
-              "Requires long-term anticoagulation with Warfarin rather than direct oral anticoagulants."
-            ],
-            pearl: "Prolonged aPTT that does NOT correct on 1:1 mixing study.",
-            labs: "Prolonged aPTT, Non-correcting Mixing Study, Positive Anti-cardiolipin/Lupus Anticoagulant",
-            summary: "Autoimmune hypercoagulable condition marked by arterial/venous thromboses and recurrent miscarriages."
-          },
-          {
-            id: 19,
-            name: "Heparin-Induced Thrombocytopenia",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Patient receiving unfractionated heparin develops a >50% drop in platelet count 5–10 days after initiation.",
-              "Paradoxically presents with new arterial or venous thrombosis rather than bleeding.",
-              "Mediated by IgG antibodies directed against Heparin-Platelet Factor 4 (PF4) complexes.",
-              "First step in management is immediate discontinuation of ALL heparin products.",
-              "Alternative non-heparin anticoagulant like Argatroban or Fondaparinux must be started immediately."
-            ],
-            pearl: "Drop in platelets >50% following heparin with new onset thrombosis.",
-            labs: "Thrombocytopenia, Positive Anti-PF4/Heparin Antibodies, Positive Serotonin Release Assay",
-            summary: "Immune-mediated reaction causing rapid platelet activation, consumption, and dangerous thrombosis."
-          },
-          {
-            id: 20,
-            name: "Protein C Deficiency",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Patient initiated on Warfarin therapy rapidly develops painful skin necrosis and purple lesions.",
-              "Inherited deficiency in a vitamin K-dependent natural anticoagulant protein.",
-              "Warfarin administration causes rapid depletion of this short half-life protein before procoagulant factors drop.",
-              "Leads to transient hypercoagulable state with microvascular thrombosis.",
-              "Requires co-administration of heparin bridging when initiating warfarin."
-            ],
-            pearl: "Warfarin-induced skin necrosis is the classic high-yield presentation.",
-            labs: "Decreased Functional Protein C Activity Assay",
-            summary: "Deficiency of natural anticoagulant leading to venous thrombosis and risk of Warfarin skin necrosis."
-          },
-          {
-            id: 21,
-            name: "Protein S Deficiency",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Patient with strong family history of early-onset venous thromboembolism develops deep vein thrombosis.",
-              "Deficiency in the essential cofactor required for Activated Protein C function.",
-              "Vitamin K-dependent glycoprotein synthesized in endothelial cells and hepatocytes.",
-              "Functional assay reveals reduced free cofactor activity.",
-              "Managed with standard anticoagulation strategies during acute thrombotic episodes."
-            ],
-            pearl: "Cofactor for Protein C; deficiency causes loss of APC anticoagulant effect.",
-            labs: "Decreased Free Protein S Antigen / Activity Assay",
-            summary: "Inherited thrombophilia resulting from impaired protein C cofactor function."
-          },
-          {
-            id: 22,
-            name: "Antithrombin III Deficiency",
-            category: "Thrombophilic Disorders (Clotting & Emboli)",
-            clues: [
-              "Patient receiving high-dose IV Heparin fails to show expected prolongation of aPTT (Heparin Resistance).",
-              "Inherited or acquired deficiency in the endogenous inhibitor of Thrombin and Factor Xa.",
-              "Can be acquired secondary to Nephrotic Syndrome due to urinary loss of the anticoagulant protein.",
-              "Heparin requires this protein as a cofactor to exert its anticoagulant effect.",
-              "Treatment of acute thrombosis requires antithrombin concentrate infusion alongside anticoagulation."
-            ],
-            pearl: "Heparin resistance (aPTT won't prolong despite heparin administration).",
-            labs: "Decreased Functional Antithrombin Activity level",
-            summary: "Deficiency causing failure of heparin therapy and high risk for recurrent venous thrombosis."
-          },
-
-          // Bleeding, Platelet, & Consumption
-          {
-            id: 23,
-            name: "Immune Thrombocytopenic Purpura",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Child following a viral infection presents with acute petechiae, purpura, and epistaxis.",
-              "Isolated severe thrombocytopenia (platelets < 20,000) with completely normal PT, aPTT, and WBC count.",
-              "Peripheral blood smear confirms isolated decreased platelets with megakaryocytes.",
-              "Mediated by anti-GPIIb/IIIa autoantibodies causing splenic destruction of platelets.",
-              "First-line medical treatment in symptomatic patients includes IVIG or systemic corticosteroids."
-            ],
-            pearl: "Isolated severe thrombocytopenia with normal coagulation studies in a child post-viral illness.",
-            labs: "Isolated Low Platelets, Normal PT/aPTT, Positive Anti-Platelet Antibodies",
-            summary: "Autoimmune platelet destruction causing isolated mucocutaneous bleeding."
-          },
-          {
-            id: 24,
-            name: "Thrombotic Thrombocytopenic Purpura",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Adult patient presents with pentad: Fever, Thrombocytopenia, Microangiopathic Hemolytic Anemia, Renal failure, Neurological deficits.",
-              "Caused by severe deficiency of ADAMTS13 protease enzyme leading to ultra-large von Willebrand factor multimers.",
-              "Peripheral smear demonstrates abundant schistocytes (helmet cells) and elevated LDH.",
-              "Coagulation panel (PT and aPTT) is characteristically NORMAL.",
-              "Emergency medical management requires immediate Plasma Exchange (Plasmapheresis)."
-            ],
-            pearl: "ADAMTS13 deficiency; FAT RN pentad; Normal PT/aPTT.",
-            labs: "Severe ADAMTS13 deficiency (<10%), Schistocytes, High LDH, Normal PT/aPTT",
-            summary: "Microvascular platelet aggregation disorder requiring urgent plasmapheresis."
-          },
-          {
-            id: 25,
-            name: "Hemolytic Uremic Syndrome",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Child presents with bloody diarrhea followed days later by pallor, oliguria, and petechiae.",
-              "Classic triad: Microangiopathic Hemolytic Anemia, Thrombocytopenia, and Acute Kidney Injury.",
-              "Most commonly triggered by Shiga toxin-producing E. coli (STEC O157:H7).",
-              "Peripheral blood smear reveals abundant schistocytes.",
-              "Antibiotic treatment is contraindicated as it increases bacterial toxin release."
-            ],
-            pearl: "Classic triad in child after bloody diarrhea; avoid antibiotics.",
-            labs: "Schistocytes, Elevated Creatinine/BUN, Low Platelets, Normal PT/aPTT",
-            summary: "Toxin-mediated microvascular injury leading to acute renal failure and microangiopathic hemolysis."
-          },
-          {
-            id: 26,
-            name: "Disseminated Intravascular Coagulation",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Critically ill ICU patient with sepsis or trauma bleeds from IV catheter sites and surgical wounds.",
-              "Widespread uncontrolled activation of clotting cascade leading to microvascular thrombosis and severe consumption of clotting factors.",
-              "Laboratory findings show prolonged PT/INR, prolonged aPTT, low fibrinogen, and markedly elevated D-dimer.",
-              "Peripheral blood smear reveals prominent schistocytes.",
-              "Primary treatment is addressing the underlying cause alongside replacement blood products."
-            ],
-            pearl: "Prolonged PT/aPTT, LOW Fibrinogen, and High D-dimer in a septic/septicemic patient.",
-            labs: "Prolonged PT/aPTT, Low Fibrinogen, Elevated D-dimer, Low Platelets, Schistocytes",
-            summary: "Systemic consumptive coagulopathy causing simultaneous thrombosis and catastrophic hemorrhage."
-          },
-          {
-            id: 27,
-            name: "von Willebrand Disease",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Patient reports recurrent epistaxis, easy bruising, and heavy menstrual bleeding (menorrhagia).",
-              "Most common inherited bleeding disorder, autosomal dominant inheritance pattern.",
-              "Bleeding time is prolonged; aPTT may be normal or slightly prolonged due to secondary low Factor VIII.",
-              "Ristocetin cofactor assay reveals impaired platelet agglutination.",
-              "First-line treatment for mild type 1 bleeding is Desmopressin (DDAVP)."
-            ],
-            pearl: "Abnormal Ristocetin cofactor assay; treated with Desmopressin (DDAVP).",
-            labs: "Prolonged Bleeding Time, Low vWF Antigen, Abnormal Ristocetin Cofactor Assay",
-            summary: "Defect in platelet adhesion causing mucosal bleeding and mild prolonged aPTT."
-          },
-          {
-            id: 28,
-            name: "Hemophilia A",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Young male patient presents with spontaneous painful joint hemarthroses and deep tissue hematomas.",
-              "X-linked recessive bleeding disorder resulting in quantitative deficiency of Factor VIII.",
-              "Coagulation panel shows isolated prolonged aPTT with completely normal Prothrombin Time (PT).",
-              "1:1 Mixing study with normal plasma completely corrects the prolonged aPTT.",
-              "Treatment involves recombinant Factor VIII factor replacement therapy."
-            ],
-            pearl: "X-linked recessive Factor VIII deficiency; isolated prolonged aPTT that corrects on mixing study.",
-            labs: "Prolonged aPTT, Normal PT, Low Factor VIII assay, Correcting Mixing Study",
-            summary: "X-linked deficiency of Factor VIII causing severe joint bleeding and isolated prolonged aPTT."
-          },
-          {
-            id: 29,
-            name: "Hemophilia B",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Male child presents with spontaneous hemarthrosis in knees and ankles following mild trauma.",
-              "Also known as Christmas Disease, autosomal recessive X-linked pattern.",
-              "Caused by quantitative deficiency in coagulation Factor IX.",
-              "Laboratory evaluation shows isolated prolonged aPTT with normal PT and normal vWF levels.",
-              "Management requires targeted replacement with recombinant Factor IX."
-            ],
-            pearl: "Factor IX deficiency; identical presentation to Hemophilia A but distinguished by factor assay.",
-            labs: "Prolonged aPTT, Normal PT, Low Factor IX assay",
-            summary: "X-linked coagulation factor IX deficiency leading to hemarthroses and bleeding."
-          },
-          {
-            id: 30,
-            name: "Vitamin K Deficiency",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Malnourished patient or patient on prolonged broad-spectrum antibiotics develops broad bruising and bleeding.",
-              "Inability to gamma-carboxylate factors II, VII, IX, X, and proteins C and S.",
-              "Prothrombin Time (PT/INR) is prolonged first due to short half-life of Factor VII.",
-              "Severe deficiency eventually prolongs Activated Partial Thromboplastin Time (aPTT) as well.",
-              "Rapidly reversed with oral or intravenous Vitamin K1 (phytonadione) administration."
-            ],
-            pearl: "Prolonged PT/INR first due to rapid decay of Factor VII.",
-            labs: "Prolonged PT/INR, Normal or Mildly Prolonged aPTT, Low Factors II, VII, IX, X",
-            summary: "Impaired synthesis of clotting factors II, VII, IX, and X resulting in prolonged PT/INR."
-          },
-          {
-            id: 31,
-            name: "Essential Thrombocythemia",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Asymptomatic patient noted on routine CBC to have sustained platelet count > 450,000 (often > 1 million).",
-              "Myeloproliferative neoplasm associated with JAK2 V617F mutation in ~50% of cases.",
-              "Patient may experience erythromelalgia (burning pain and redness in hands/feet) or thrombotic events.",
-              "Bone marrow biopsy demonstrates marked megakaryocytic hyperplasia.",
-              "Cytoreductive treatment with Hydroxyurea or Anagrelide is used in high-risk patients."
-            ],
-            pearl: "Platelet count > 450k with erythromelalgia and JAK2 mutation.",
-            labs: "Marked Thrombocytosis, JAK2 Mutation (+), Bone Marrow Megakaryocytic Hyperplasia",
-            summary: "Myeloproliferative neoplasm characterized by excessive autonomous platelet production."
-          },
-          {
-            id: 32,
-            name: "Polycythemia Vera",
-            category: "Bleeding, Platelet, & Consumption Disorders",
-            clues: [
-              "Patient presents with severe aquatic pruritus (itching after warm shower), facial plethora, and headache.",
-              "CBC demonstrates elevated hemoglobin (>16.5 g/dL) and hematocrit (>48%) with low serum erythropoietin (EPO).",
-              "Over 95% of cases harbor the JAK2 V617F gene mutation.",
-              "Hyperviscosity increases risk for Budd-Chiari syndrome and arterial/venous thromboses.",
-              "First-line therapy is therapeutic phlebotomy to maintain hematocrit < 45%."
-            ],
-            pearl: "Aquatic pruritus, low EPO level, and positive JAK2 V617F mutation.",
-            labs: "High Hgb/Hct, Low EPO, Positive JAK2 V617F Mutation",
-            summary: "Myeloproliferative disorder marked by autonomous red blood cell overproduction and hyperviscosity."
-          }
-        ],
-
-        initApp() {
-          this.loadStats();
-          this.resetGame();
-        },
-
-        loadStats() {
-          const saved = localStorage.getItem('pardle_stats');
-          if (saved) {
-            try {
-              this.stats = JSON.parse(saved);
-            } catch (e) {
-              console.error("Error loading stats", e);
+        const CONDITIONS_DATABASE = [
+            {
+                name: "Iron Deficiency Anemia",
+                module: "Hematology",
+                category: "Microcytic Anemias",
+                clues: [
+                    "A 45-year-old female presents with fatigue, brittle nails, and craving ice (pica).",
+                    "CBC shows microcytic, hypochromic red cells with a low MCV.",
+                    "Serum ferritin is decreased with an elevated TIBC.",
+                    "Pathophysiology involves inadequate iron for hemoglobin synthesis.",
+                    "Gold standard diagnosis confirms depleted bone marrow iron stores."
+                ],
+                summary: "Most common nutritional deficiency worldwide. Characterized by low MCV, low ferritin, and elevated TIBC.",
+                keyLabs: "↓ Ferritin, ↑ TIBC, ↓ Serum Iron, ↓ MCV (<80 fL)",
+                pearl: "Always investigate the source of chronic blood loss (GI or gynecological) in adult patients."
+            },
+            {
+                name: "Alpha Thalassemia",
+                module: "Hematology",
+                category: "Microcytic Anemias",
+                clues: [
+                    "An asymptomatic adult of Southeast Asian descent has mild microcytosis found on routine screening.",
+                    "CBC shows low MCV with normal or slightly elevated RBC count.",
+                    "Serum iron and serum ferritin levels are completely normal.",
+                    "Gene deletion of one or more alpha-globin alleles on chromosome 16 decreases alpha-chain production.",
+                    "Hemoglobin electrophoresis is normal in trait forms, requiring DNA gene testing for confirmation."
+                ],
+                summary: "Inherited microcytic anemia caused by decreased alpha-globin chain synthesis due to gene deletions on chromosome 16.",
+                keyLabs: "Normal Ferritin, ↓ MCV, Normal Hb Electrophoresis (in trait)",
+                pearl: "Characteristically exhibits a normal or high RBC count relative to the degree of anemia, unlike iron deficiency."
+            },
+            {
+                name: "Beta Thalassemia",
+                module: "Hematology",
+                category: "Microcytic Anemias",
+                clues: [
+                    "A child of Mediterranean descent presents with maxillary hypertrophy and hepatosplenomegaly.",
+                    "CBC demonstrates severe microcytic hypochromic anemia with prominent target cells.",
+                    "Hemoglobin electrophoresis reveals elevated Hemoglobin A2 and Hemoglobin F levels.",
+                    "Point mutations in the beta-globin gene on chromosome 11 impair beta-chain synthesis.",
+                    "Diagnosis is established by elevated Hb A2 (>3.5%) on hemoglobin electrophoresis."
+                ],
+                summary: "Inherited hemoglobinopathy caused by beta-globin gene mutations leading to ineffective erythropoiesis and severe microcytic anemia.",
+                keyLabs: "↑ Hb A2 (>3.5%), ↑ Hb F, Markedly ↓ MCV, Target cells on smear",
+                pearl: "Severe forms result in massive bone marrow expansion causing classic 'chipmunk facies' and skull bone changes."
+            },
+            {
+                name: "Anemia of Chronic Disease",
+                module: "Hematology",
+                category: "Microcytic Anemias",
+                clues: [
+                    "A 62-year-old male with long-standing rheumatoid arthritis presents with persistent fatigue.",
+                    "Labs reveal normocytic or mild microcytic anemia with low serum iron.",
+                    "Serum ferritin is normal or elevated, and Total Iron-Binding Capacity (TIBC) is decreased.",
+                    "Hepcidin elevation triggered by inflammatory cytokines traps iron inside reticuloendothelial macrophages.",
+                    "Bone marrow biopsy demonstrates abundant macrophage iron stores that cannot be mobilized."
+                ],
+                summary: "Anemia of inflammation characterized by hepcidin-mediated iron sequestration, high/normal ferritin, and low TIBC.",
+                keyLabs: "Normal/↑ Ferritin, ↓ TIBC, ↓ Serum Iron, Normal/Mildly ↓ MCV",
+                pearl: "Differentiated from iron deficiency anemia primarily by serum ferritin (normal/high in chronic disease vs low in iron deficiency)."
+            },
+            {
+                name: "Pernicious Anemia",
+                module: "Hematology",
+                category: "Macrocytic / Megaloblastic Anemias",
+                clues: [
+                    "A 65-year-old female presents with progressive fatigue, tingling in her toes, and loss of balance.",
+                    "CBC demonstrates macrocytic anemia with hypersegmented neutrophils on peripheral smear.",
+                    "Serum Vitamin B12 level is severely decreased.",
+                    "Autoimmune destruction of gastric parietal cells causes severe intrinsic factor deficiency.",
+                    "Serologic confirmation shows positive anti-intrinsic factor autoantibodies."
+                ],
+                summary: "Autoimmune gastritis causing intrinsic factor deficiency, leading to Vitamin B12 malabsorption and megaloblastic anemia with neurologic deficits.",
+                keyLabs: "↑ MCV (>100 fL), Hypersegmented neutrophils, ↓ Serum B12, + Anti-intrinsic factor",
+                pearl: "Neurologic complications (dorsal column demyelination) can become irreversible if B12 deficiency is misdiagnosed and treated only with folate."
+            },
+            {
+                name: "Vitamin B12 Deficiency",
+                module: "Hematology",
+                category: "Macrocytic / Megaloblastic Anemias",
+                clues: [
+                    "A strict long-term vegan presents with sore tongue, generalized weakness, and memory impairment.",
+                    "CBC shows macrocytic anemia with elevated MCV (>100 fL).",
+                    "Laboratory panel shows elevated methylmalonic acid (MMA) and elevated homocysteine levels.",
+                    "Lack of cobalamin impairs DNA synthesis and myelin maintenance.",
+                    "Low serum Vitamin B12 levels confirm the metabolic deficiency."
+                ],
+                summary: "Deficiency of cobalamin causing impaired DNA synthesis, megaloblastic macrocytic anemia, elevated MMA, and neurologic symptoms.",
+                keyLabs: "↑ MCV, ↑ Methylmalonic Acid (MMA), ↑ Homocysteine, ↓ Serum B12",
+                pearl: "Elevated methylmalonic acid (MMA) is the key marker distinguishing B12 deficiency from folate deficiency."
+            },
+            {
+                name: "Folate Deficiency",
+                module: "Hematology",
+                category: "Macrocytic / Megaloblastic Anemias",
+                clues: [
+                    "A patient with chronic alcohol use disorder presents with fatigue and glossitis.",
+                    "CBC reveals macrocytic anemia with hypersegmented neutrophils on blood smear.",
+                    "Serum homocysteine is elevated, but methylmalonic acid (MMA) is completely normal.",
+                    "Inadequate dietary intake rapidly depletes small hepatic folate stores over a few months.",
+                    "Serum and red blood cell folate levels are markedly decreased."
+                ],
+                summary: "Megaloblastic macrocytic anemia caused by inadequate folate intake, characterized by elevated homocysteine but NORMAL methylmalonic acid.",
+                keyLabs: "↑ MCV, ↓ Serum/RBC Folate, Normal MMA, ↑ Homocysteine",
+                pearl: "Never administer folate alone without checking B12 status, as folate corrects anemia while permitting B12-related neurologic damage to progress."
+            },
+            {
+                name: "Warm Autoimmune Hemolytic Anemia",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "A 52-year-old female with systemic lupus erythematosus presents with jaundice and dark urine.",
+                    "Labs reveal elevated indirect bilirubin, low haptoglobin, and high LDH.",
+                    "Peripheral blood smear demonstrates prominent spherocytes and polychromasia.",
+                    "IgG autoantibodies bind red cell membrane antigens at 37°C causing splenic extravascular hemolysis.",
+                    "Direct Antiglobulin Test (Direct Coombs) is strongly positive for IgG."
+                ],
+                summary: "Acquired hemolytic anemia mediated by IgG autoantibodies reacting at warm temperatures (37°C) causing splenic extravascular hemolysis.",
+                keyLabs: "+ Direct Coombs (IgG), ↑ LDH, ↓ Haptoglobin, ↑ Indirect Bilirubin",
+                pearl: "Spherocytes form when splenic macrophages partially phagocytose IgG-coated RBC membranes."
+            },
+            {
+                name: "Cold Autoimmune Hemolytic Anemia",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "An older adult experiences painful blue discoloration of his fingers upon cold exposure.",
+                    "Lab analysis shows red blood cell agglutination visible in blood collection tubes at room temperature.",
+                    "Labs confirm intravascular and extravascular hemolysis following winter cold exposure.",
+                    "IgM autoantibodies bind RBC antigens in cold peripheries and fix complement.",
+                    "Direct Antiglobulin Test (Direct Coombs) is positive for complement C3d only."
+                ],
+                summary: "Immune hemolytic anemia caused by cold-reacting IgM autoantibodies causing RBC agglutination, acrocyanosis, and complement activation.",
+                keyLabs: "+ Direct Coombs (C3d only), In vitro RBC agglutination, ↑ LDH, ↓ Haptoglobin",
+                pearl: "Corticosteroids are generally ineffective; primary management centers on cold temperature avoidance."
+            },
+            {
+                name: "Hereditary Spherocytosis",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "A 19-year-old presents with splenomegaly, jaundice, and early-onset gallstones.",
+                    "CBC shows normocytic anemia with elevated MCHC (>36 g/dL).",
+                    "Peripheral blood smear displays numerous small, round spherocytes lacking central pallor.",
+                    "Inherited defects in membrane proteins (ankyrin or spectrin) lead to membrane loss and splenic destruction.",
+                    "Diagnosis is confirmed by a positive eosin-5-maleimide (EMA) binding flow cytometry test."
+                ],
+                summary: "Inherited RBC membrane defect resulting in spherical red blood cells that are prematurely destroyed in the spleen.",
+                keyLabs: "↑ MCHC (>36 g/dL), Spherocytes on smear, + EMA binding test",
+                pearl: "Bilirubin pigment gallstones frequently form early in life due to continuous chronic hemolysis."
+            },
+            {
+                name: "G6PD Deficiency",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "A male patient develops dark urine and sudden jaundice after starting trimethoprim-sulfamethoxazole.",
+                    "Labs reveal acute intravascular hemolysis with marked reticulocytosis.",
+                    "Peripheral blood smear demonstrates 'bite cells' and Heinz bodies.",
+                    "X-linked enzymatic defect impairs NADPH production, making red cells vulnerable to oxidative stress.",
+                    "Quantitative G6PD enzyme assay confirms low activity when measured after the acute episode resolves."
+                ],
+                summary: "X-linked enzymatic defect leading to episodic oxidative hemolytic anemia triggered by infections, fava beans, or oxidant drugs.",
+                keyLabs: "Heinz bodies, Bite cells, Reticulocytosis, ↓ G6PD level (post-crisis)",
+                pearl: "G6PD enzyme assays can be falsely normal during acute hemolysis because older deficient RBCs have already lysed."
+            },
+            {
+                name: "Sickle Cell Trait",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "An athlete is asymptomatic but develops painless gross hematuria after vigorous exercise at high altitude.",
+                    "CBC and baseline peripheral blood smear are completely normal.",
+                    "Renal medullary hypoxia under extreme exertion causes localized microvasculature sickling.",
+                    "Heterozygous state carrying one mutated beta-globin gene allele.",
+                    "Hemoglobin electrophoresis shows approximately 60% HbA and 40% HbS."
+                ],
+                summary: "Heterozygous carrier state for HbS (AS), usually asymptomatic except for potential urinary concentrating defects under extreme hypoxia.",
+                keyLabs: "HbA (~60%) and HbS (~40%) on electrophoresis, Normal MCV",
+                pearl: "Painless hematuria from renal medullary micro-infarctions is the most frequent clinical manifestation of sickle cell trait."
+            },
+            {
+                name: "Sickle Cell Disease",
+                module: "Hematology",
+                category: "Hemolytic Anemias & Structural Defects",
+                clues: [
+                    "A young child presents with excruciating, painful swelling of hands and feet (dactylitis).",
+                    "CBC reveals severe chronic hemolytic anemia with marked reticulocytosis.",
+                    "Peripheral blood smear shows crescent-shaped sickle cells and Howell-Jolly bodies.",
+                    "Valine substitution for glutamic acid on the beta-globin chain causes hemoglobin polymerization under hypoxia.",
+                    "Hemoglobin electrophoresis confirms predominance of HbS with complete absence of normal HbA."
+                ],
+                summary: "Autosomal recessive hemoglobinopathy causing chronic hemolytic anemia, painful vaso-occlusive crises, and functional asplenia.",
+                keyLabs: "HbS predominance on electrophoresis, Howell-Jolly bodies, Sickle cells",
+                pearl: "Recurrent splenic infarctions lead to functional asplenia by early childhood, requiring immunization against encapsulated bacteria."
+            },
+            {
+                name: "Aplastic Anemia",
+                module: "Hematology",
+                category: "Bone Marrow Failure",
+                clues: [
+                    "A 24-year-old presents with profound fatigue, mucosal bleeding, and recurrent fever.",
+                    "CBC shows severe pancytopenia paired with a drastically reduced reticulocyte count.",
+                    "Peripheral blood smear confirms reduced red cells, white cells, and platelets without abnormal blasts.",
+                    "Immune-mediated autoimmune destruction targets hematopoietic stem cells.",
+                    "Bone marrow biopsy confirms severe hypocellularity with over 75% fatty replacement."
+                ],
+                summary: "Pancytopenia with a hypoplastic/fatty bone marrow resulting from immune-mediated stem cell destruction.",
+                keyLabs: "Pancytopenia, Severe Reticulocytopenia, Hypocellular fatty bone marrow",
+                pearl: "Distinguished from other causes of pancytopenia by an empty, fatty bone marrow biopsy."
+            },
+            {
+                name: "Deep Vein Thrombosis (DVT)",
+                module: "Hematology",
+                category: "Thrombophilic Disorders (Clotting & Emboli)",
+                clues: [
+                    "A patient presents with acute unilateral leg pain, calf swelling, and pitting edema following a long flight.",
+                    "Physical exam shows a calf circumference discrepancy greater than 3 cm compared to the other leg.",
+                    "D-Dimer assay is significantly elevated.",
+                    "Thrombus formation in deep limb veins driven by stasis, hypercoagulability, or vascular injury.",
+                    "Venous duplex ultrasonography confirms non-compressibility of the deep calf or femoral vein."
+                ],
+                summary: "Blood clot formation in deep veins, presenting with unilateral extremity swelling and confirmed by venous ultrasound.",
+                keyLabs: "Elevated D-Dimer, Positive non-compressible compression ultrasonography",
+                pearl: "Always evaluate for provoking factors like recent surgery, immobility, active malignancy, or estrogen therapy."
+            },
+            {
+                name: "Pulmonary Embolism",
+                module: "Hematology",
+                category: "Thrombophilic Disorders (Clotting & Emboli)",
+                clues: [
+                    "A postoperative patient experiences sudden dyspnea, pleuritic chest pain, and tachycardia.",
+                    "Arterial blood gas reveals acute hypoxemia with respiratory alkalosis.",
+                    "ECG demonstrates sinus tachycardia and classic S1Q3T3 acute strain pattern.",
+                    "Venous thrombi dislodge from deep leg veins and occlude pulmonary arterial flow.",
+                    "CT Pulmonary Angiography (CTPA) visualizes arterial intraluminal filling defects."
+                ],
+                summary: "Obstruction of pulmonary arterial bed by thrombi dislodged from deep veins, presenting with dyspnea, chest pain, and hypoxemia.",
+                keyLabs: "Elevated D-Dimer, Hypoxemia on ABG, CTPA intraluminal filling defects",
+                pearl: "A large saddle embolus at the pulmonary arterial bifurcation can induce rapid right heart failure and cardiovascular collapse."
+            },
+            {
+                name: "Antiphospholipid Antibody Syndrome",
+                module: "Hematology",
+                category: "Thrombophilic Disorders (Clotting & Emboli)",
+                clues: [
+                    "A 32-year-old female presents with recurrent deep vein thrombosis and three unexplained early pregnancy losses.",
+                    "Baseline PTT is paradoxically prolonged and fails to correct during a 1:1 mixing study.",
+                    "Autoantibodies target phospholipid-binding plasma proteins, driving a hypercoagulable state.",
+                    "Lupus anticoagulant testing demonstrates phospholipid-dependent coagulation inhibition in vitro.",
+                    "Persistently positive anticardiolipin or anti-beta-2-glycoprotein I antibodies confirmed 12 weeks apart."
+                ],
+                summary: "Systemic autoimmune thrombophilia characterized by recurrent arterial/venous thrombosis and pregnancy loss with antiphospholipid antibodies.",
+                keyLabs: "+ Lupus Anticoagulant, + Anti-cardiolipin IgG/IgM, + Anti-beta-2-glycoprotein I",
+                pearl: "Classic presentation combines arterial or venous thrombosis with recurrent early miscarriages."
+            },
+            {
+                name: "Factor V Leiden",
+                module: "Hematology",
+                category: "Thrombophilic Disorders (Clotting & Emboli)",
+                clues: [
+                    "A 26-year-old develops an unprovoked deep vein thrombosis and reports a family history of early blood clots.",
+                    "Coagulation screening indicates resistance to activated protein C.",
+                    "A single point mutation in the Factor V gene alters the protein cleavage site.",
+                    "Mutated Factor V resists inactivation by activated protein C, resulting in excess thrombin generation.",
+                    "Genetic PCR testing confirms the F5 gene mutation."
+                ],
+                summary: "Most common inherited thrombophilia caused by a point mutation in the Factor V gene rendering it resistant to activated protein C.",
+                keyLabs: "Abnormal Activated Protein C Resistance assay, confirmed by F5 gene mutation PCR",
+                pearl: "Heterozygotes carry a 5 to 7-fold increased risk of venous thrombosis."
+            },
+            {
+                name: "Antithrombin III Deficiency",
+                module: "Hematology",
+                category: "Thrombophilic Disorders (Clotting & Emboli)",
+                clues: [
+                    "A patient on unfractionated heparin for a blood clot fails to achieve therapeutic PTT prolongation.",
+                    "Clinical course is marked by recurrent venous thromboses despite standard heparin therapy.",
+                    "Deficiency of the primary physiologic inhibitor of thrombin and Factor Xa.",
+                    "Lack of antithrombin prevents heparin from exerting its normal anticoagulant activity.",
+                    "Functional antithrombin activity level assay is significantly depressed."
+                ],
+                summary: "Deficiency of antithrombin leading to hypercoagulability and clinical resistance to standard heparin therapy.",
+                keyLabs: "↓ Functional Antithrombin Activity Assay, Heparin resistance",
+                pearl: "Suspect when a patient exhibits heparin resistance (failure to elevate PTT despite escalating heparin doses)."
+            },
+            {
+                name: "Vitamin K Deficiency",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A surgical patient on prolonged antibiotics develops easy bruising and surgical site oozing.",
+                    "Coagulation profile shows significant prolongation of PT/INR with normal platelet count.",
+                    "Fibrinogen and platelet counts remain completely normal.",
+                    "Impaired gamma-carboxylation reduces activity of coagulation Factors II, VII, IX, and X.",
+                    "Elevated PT/INR rapidly normalizes within 24 hours of parenteral Vitamin K administration."
+                ],
+                summary: "Acquired coagulopathy due to fat-soluble vitamin malabsorption or antibiotic gut sterilization, resulting in elevated PT/INR.",
+                keyLabs: "Prolonged PT/INR, Normal Platelets, Corrects rapidly with Vitamin K",
+                pearl: "Factor VII has the shortest half-life among Vitamin K-dependent factors, making PT/INR the earliest abnormal lab."
+            },
+            {
+                name: "Hemophilia A",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A 5-year-old boy presents with painful joint swelling (hemarthrosis) after minor play trauma.",
+                    "Coagulation panel reveals an isolated prolonged PTT with normal PT and normal platelets.",
+                    "A 1:1 mixing study completely corrects the prolonged PTT.",
+                    "X-linked recessive deficiency of coagulation Factor VIII.",
+                    "Specific Factor VIII functional assay confirms severely low activity level (<1%)."
+                ],
+                summary: "X-linked recessive bleeding disorder caused by Factor VIII deficiency presenting with joint hemarthroses and isolated prolonged PTT.",
+                keyLabs: "Isolated prolonged PTT, Normal PT/Platelets, ↓ Factor VIII activity",
+                pearl: "Clotting factor deficiencies typically cause deep hemarthroses and muscle hematomas rather than superficial petechiae."
+            },
+            {
+                name: "Hemophilia B",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A young boy exhibits spontaneous deep muscle hematomas and recurrent knee joint bleeding.",
+                    "Coagulation studies demonstrate isolated prolonged PTT with normal PT and normal platelet count.",
+                    "1:1 mixing study corrects the prolonged PTT to normal baseline.",
+                    "X-linked recessive deficiency of coagulation Factor IX.",
+                    "Specific Factor IX functional assay reveals markedly decreased activity."
+                ],
+                summary: "X-linked recessive bleeding disorder caused by Factor IX deficiency ('Christmas disease'), clinically identical to Hemophilia A.",
+                keyLabs: "Isolated prolonged PTT, Normal PT/Platelets, ↓ Factor IX activity",
+                pearl: "Requires specific factor activity assays to differentiate from Hemophilia A."
+            },
+            {
+                name: "Von Willebrand Disease",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A young female reports lifelong heavy menstrual periods, frequent nosebleeds, and bleeding after dental work.",
+                    "Laboratory panel shows a prolonged bleeding time with a normal or slightly prolonged PTT.",
+                    "Platelet count and Prothrombin Time (PT) are normal.",
+                    "Deficiency in vWF impairs platelet adhesion to subendothelium and reduces Factor VIII stability.",
+                    "Ristocetin cofactor activity and vWF antigen levels are significantly decreased."
+                ],
+                summary: "Most common inherited bleeding disorder caused by vWF deficiency, presenting with mucosal bleeding and abnormal platelet adhesion.",
+                keyLabs: "Normal/Prolonged PTT, Normal Platelets, ↓ vWF Antigen, ↓ Ristocetin Cofactor",
+                pearl: "vWF serves two roles: anchoring platelets to injured subendothelium and stabilizing circulating Factor VIII."
+            },
+            {
+                name: "Immune Thrombocytopenic Purpura (ITP)",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A child develops sudden petechiae and nosebleeds two weeks after recovering from a viral infection.",
+                    "CBC shows isolated severe thrombocytopenia (<20,000/mcL) with normal Hb and WBC.",
+                    "Peripheral blood smear displays large platelets (megathrombocytes) without schistocytes.",
+                    "Anti-platelet autoantibodies (IgG) target GPIIb/IIIa receptors, causing splenic platelet clearance.",
+                    "Diagnosis of exclusion made by confirming isolated thrombocytopenia without bone marrow suppression."
+                ],
+                summary: "Acquired autoimmune destruction of platelets following viral infections, presenting with isolated severe thrombocytopenia.",
+                keyLabs: "Isolated Thrombocytopenia (<100k), Normal PT/PTT, Megathrombocytes on smear",
+                pearl: "Must rule out microangiopathic processes by verifying the absence of schistocytes on blood smear."
+            },
+            {
+                name: "Heparin-Induced Thrombocytopenia (HIT)",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A hospitalized patient on heparin develops a 50% drop in platelet count on Day 7 of therapy.",
+                    "Despite thrombocytopenia, the patient develops a new deep vein blood clot.",
+                    "IgG autoantibodies bind complexes of heparin and Platelet Factor 4 (PF4).",
+                    "Antibody-mediated platelet activation promotes widespread microvascular thrombosis and consumption.",
+                    "Serotonin Release Assay (SRA) or anti-PF4 ELISA confirms antibody positivity."
+                ],
+                summary: "Immune-mediated adverse drug reaction to heparin characterized by severe thrombocytopenia and paradoxical thrombosis.",
+                keyLabs: "Platelet count drop >50%, + Anti-PF4/heparin ELISA, + Serotonin Release Assay",
+                pearl: "Patients clot rather than bleed; immediately discontinue all heparin products and start non-heparin anticoagulation."
+            },
+            {
+                name: "Thrombotic Thrombocytopenic Purpura (TTP)",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A 35-year-old female presents with fever, confusion, petechiae, and dark urine.",
+                    "Labs reveal microangiopathic hemolytic anemia and severe thrombocytopenia with normal PT and PTT.",
+                    "Peripheral blood smear shows abundant schistocytes (fragmented red cells).",
+                    "Severe deficiency of ADAMTS13 protease allows ultra-large vWF multimers to form microvascular thrombi.",
+                    "ADAMTS13 activity level assay is critically low (<10%)."
+                ],
+                summary: "Microangiopathic hemolytic anemia and thrombocytopenia caused by ADAMTS13 deficiency with classic pentad of signs.",
+                keyLabs: "Schistocytes on smear, Normal PT/PTT, Severely low ADAMTS13 activity (<10%)",
+                pearl: "Normal coagulation studies (PT/PTT) distinguish TTP from Disseminated Intravascular Coagulation (DIC)."
+            },
+            {
+                name: "Hemolytic Uremic Syndrome (HUS)",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A 4-year-old child develops acute oliguria, pallor, and bruising following a bloody diarrheal illness.",
+                    "Labs show microangiopathic hemolytic anemia, severe thrombocytopenia, and elevated creatinine.",
+                    "Coagulation parameters (PT and PTT) are completely normal.",
+                    "Shiga toxin injures renal endothelial cells, triggering localized microvascular glomerular thrombosis.",
+                    "Stool testing confirms Shiga toxin-producing E. coli (O157:H7)."
+                ],
+                summary: "Classic triad of microangiopathic hemolytic anemia, thrombocytopenia, and acute renal failure following Shiga toxin E. coli infection.",
+                keyLabs: "Schistocytes, Normal PT/PTT, Acute renal failure (elevated Cr), Stool Shiga toxin +",
+                pearl: "Mainly affects pediatric renal microvasculature following bloody diarrhea; avoid antibiotics due to toxin release risk."
+            },
+            {
+                name: "Coagulation of Liver Disease",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A patient with severe cirrhosis presents with jaundice, ascites, and persistent mucosal bleeding.",
+                    "Coagulation profile shows prolongation of both PT/INR and PTT.",
+                    "Administration of parenteral Vitamin K fails to correct the prolonged PT/INR.",
+                    "Hepatic synthetic failure impairs production of nearly all clotting factors except vWF.",
+                    "Clinical picture confirms combined synthetic failure and portal hypertension-induced hypersplenism."
+                ],
+                summary: "Multifactorial coagulopathy caused by hepatic synthetic failure, impaired clearance of activators, and hypersplenism.",
+                keyLabs: "Prolonged PT/INR, Prolonged PTT, Thrombocytopenia, Uncorrected by Vitamin K",
+                pearl: "Cirrhotic patients experience a rebalanced hemostatic state due to simultaneous loss of clotting factors and natural anticoagulants."
+            },
+            {
+                name: "Disseminated Intravascular Coagulation (DIC)",
+                module: "Hematology",
+                category: "Bleeding, Platelet, & Consumption Disorders",
+                clues: [
+                    "A patient in septic shock develops oozing from surgical sites and petechiae across her body.",
+                    "Coagulation panel reveals prolonged PT and PTT along with severe thrombocytopenia.",
+                    "Fibrinogen level is critically low and D-Dimer is markedly elevated.",
+                    "Widespread systemic microvascular thrombosis consumes clotting factors and platelets.",
+                    "Peripheral blood smear demonstrates abundant schistocytes caused by microvascular fibrin strands."
+                ],
+                summary: "Acquired consumptive coagulopathy characterized by systemic microvascular thrombosis and simultaneous severe bleeding.",
+                keyLabs: "Prolonged PT/PTT, ↓ Fibrinogen, ↑ D-Dimer, Schistocytes, ↓ Platelets",
+                pearl: "Key hallmark is simultaneous elevation of PT/PTT paired with low fibrinogen and high D-Dimer."
             }
-          }
-          this.updateInsights();
-        },
+        ];
 
-        saveStats() {
-          localStorage.setItem('pardle_stats', JSON.stringify(this.stats));
-          this.updateInsights();
-        },
+        const CATEGORIES = [
+            { name: "Microcytic Anemias" },
+            { name: "Macrocytic / Megaloblastic Anemias" },
+            { name: "Hemolytic Anemias & Structural Defects" },
+            { name: "Bone Marrow Failure" },
+            { name: "Thrombophilic Disorders (Clotting & Emboli)" },
+            { name: "Bleeding, Platelet, & Consumption Disorders" }
+        ];
 
-        updateInsights() {
-          const list = [];
-          for (const cond of this.conditions) {
-            const st = this.stats.conditionStats[cond.name];
-            if (st && st.total > 0) {
-              const pct = Math.round((st.wins / st.total) * 100);
-              list.push({ name: cond.name, score: pct, total: st.total });
+        function caseleApp() {
+            return {
+                modules: MODULES,
+                conditions: CONDITIONS_DATABASE,
+                categories: CATEGORIES,
+                gameState: 'menu',
+                isDaily: false,
+                targetCondition: null,
+                activeClues: [],
+                currentAttempt: 1,
+                sessionScore: 0,
+                guessedDiseases: [],
+                selectedCategories: CATEGORIES.map(c => c.name),
+                selectAllCategories: true,
+                openStatsModal: false,
+                openInfoModal: false,
+                openDirectoryModal: false,
+                
+                stats: JSON.parse(localStorage.getItem('pardle_stats')) || {
+                    gamesPlayed: 0,
+                    gamesWon: 0,
+                    currentStreak: 0,
+                    maxStreak: 0
+                },
+
+                conditionStats: JSON.parse(localStorage.getItem('pardle_condition_stats')) || {},
+                recentPracticePool: JSON.parse(localStorage.getItem('pardle_recent')) || [],
+
+                init() {},
+
+                // COMPUTED TOP 3 STRONGEST CONDITIONS
+                get topStrongestConditions() {
+                    const list = [];
+                    for (const [name, stat] of Object.entries(this.conditionStats)) {
+                        if (stat.total > 0) {
+                            const acc = Math.round((stat.wins / stat.total) * 100);
+                            list.push({ name, accuracy: acc, wins: stat.wins, total: stat.total });
+                        }
+                    }
+                    return list.sort((a, b) => b.accuracy - a.accuracy || b.total - a.total).slice(0, 3);
+                },
+
+                // COMPUTED TOP 3 NEEDS WORK CONDITIONS
+                get topNeedsWorkConditions() {
+                    const list = [];
+                    for (const [name, stat] of Object.entries(this.conditionStats)) {
+                        if (stat.total > 0) {
+                            const acc = Math.round((stat.wins / stat.total) * 100);
+                            list.push({ name, accuracy: acc, wins: stat.wins, total: stat.total });
+                        }
+                    }
+                    return list.sort((a, b) => a.accuracy - b.accuracy || b.total - a.total).slice(0, 3);
+                },
+
+                toggleAllCategories() {
+                    if (this.selectAllCategories) {
+                        this.selectedCategories = this.categories.map(c => c.name);
+                    } else {
+                        this.selectedCategories = [];
+                    }
+                },
+
+                openPracticeSetup() {
+                    this.gameState = 'setup';
+                },
+
+                startDailyMode() {
+                    this.isDaily = true;
+                    this.sessionScore = 0;
+                    const todayStr = new Date().toISOString().slice(0, 10);
+                    let hash = 0;
+                    for (let i = 0; i < todayStr.length; i++) {
+                        hash = (hash << 5) - hash + todayStr.charCodeAt(i);
+                        hash |= 0;
+                    }
+                    const index = Math.abs(hash) % this.conditions.length;
+                    this.targetCondition = this.conditions[index];
+                    this.setupGameSession();
+                },
+
+                startPracticeMode() {
+                    this.isDaily = false;
+                    let pool = this.conditions.filter(c => this.selectedCategories.includes(c.category));
+                    if (pool.length === 0) pool = this.conditions;
+
+                    let available = pool.filter(c => !this.recentPracticePool.includes(c.name));
+                    if (available.length === 0) {
+                        this.recentPracticePool = [];
+                        available = pool;
+                    }
+
+                    const randomIndex = Math.floor(Math.random() * available.length);
+                    this.targetCondition = available[randomIndex];
+
+                    this.recentPracticePool.push(this.targetCondition.name);
+                    if (this.recentPracticePool.length > Math.floor(this.conditions.length / 2)) {
+                        this.recentPracticePool.shift();
+                    }
+                    localStorage.setItem('pardle_recent', JSON.stringify(this.recentPracticePool));
+
+                    this.setupGameSession();
+                },
+
+                setupGameSession() {
+                    this.currentAttempt = 1;
+                    this.activeClues = this.targetCondition.clues;
+                    this.guessedDiseases = [];
+                    this.gameState = 'playing';
+                },
+
+                get currentCategoryName() {
+                    return this.targetCondition ? this.targetCondition.category : '';
+                },
+
+                getClueTitle(index) {
+                    const titles = [
+                        "Clue 1: Chief Complaint / Presentation",
+                        "Clue 2: Primary Lab / CBC Finding",
+                        "Clue 3: Smear / Specialized Diagnostic",
+                        "Clue 4: Pathophysiology / Mechanism",
+                        "Clue 5: Gold Standard Confirmation"
+                    ];
+                    return titles[index] || `Clue ${index + 1}`;
+                },
+
+                submitGuess(guessedName) {
+                    if (!guessedName) return;
+                    
+                    const normalize = str => str.trim().toLowerCase();
+                    const matchedCondition = this.conditions.find(c => normalize(c.name) === normalize(guessedName));
+                    const displayName = matchedCondition ? matchedCondition.name : guessedName.trim();
+                    const isCorrect = normalize(displayName) === normalize(this.targetCondition.name);
+
+                    this.guessedDiseases.push({
+                        name: displayName,
+                        isCorrect: isCorrect
+                    });
+
+                    if (isCorrect) {
+                        this.gameState = 'won';
+                        this.sessionScore++;
+                        this.recordConditionAttempt(true, this.currentAttempt);
+                        this.recordWin();
+                    } else {
+                        if (this.currentAttempt < 5) {
+                            this.currentAttempt++;
+                        } else {
+                            this.gameState = 'lost';
+                            this.recordConditionAttempt(false, 6);
+                            this.recordLoss();
+                        }
+                    }
+                },
+
+                recordConditionAttempt(won, attemptsUsed) {
+                    const condName = this.targetCondition.name;
+                    if (!this.conditionStats[condName]) {
+                        this.conditionStats[condName] = { total: 0, wins: 0, totalGuesses: 0 };
+                    }
+                    this.conditionStats[condName].total += 1;
+                    if (won) {
+                        this.conditionStats[condName].wins += 1;
+                        this.conditionStats[condName].totalGuesses += attemptsUsed;
+                    } else {
+                        this.conditionStats[condName].totalGuesses += 6;
+                    }
+                    localStorage.setItem('pardle_condition_stats', JSON.stringify(this.conditionStats));
+                },
+
+                recordWin() {
+                    this.stats.gamesPlayed++;
+                    this.stats.gamesWon++;
+                    this.stats.currentStreak++;
+                    if (this.stats.currentStreak > this.stats.maxStreak) {
+                        this.stats.maxStreak = this.stats.currentStreak;
+                    }
+                    this.saveStats();
+                },
+
+                recordLoss() {
+                    this.stats.gamesPlayed++;
+                    this.stats.currentStreak = 0;
+                    this.saveStats();
+                },
+
+                saveStats() {
+                    localStorage.setItem('pardle_stats', JSON.stringify(this.stats));
+                },
+
+                winPercentage() {
+                    if (this.stats.gamesPlayed === 0) return 0;
+                    return Math.round((this.stats.gamesWon / this.stats.gamesPlayed) * 100);
+                },
+
+                resetStats() {
+                    this.stats = { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0 };
+                    this.conditionStats = {};
+                    localStorage.removeItem('pardle_condition_stats');
+                    this.saveStats();
+                },
+
+                resetGame() {
+                    this.gameState = 'menu';
+                },
+
+                shareResult() {
+                    const resultText = `🩸 PArdle (${this.isDaily ? 'Daily' : 'Practice Streak: ' + this.sessionScore}) - ${this.gameState === 'won' ? `Won in ${this.currentAttempt}/5 attempts!` : 'Unsolved'}\nStudy clinical cases for PA school!`;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(resultText).then(() => {
+                            alert('Result copied to clipboard!');
+                        });
+                    } else {
+                        document.execCommand('copy');
+                    }
+                }
             }
-          }
-
-          list.sort((a, b) => b.score - a.score || b.total - a.total);
-          this.topStrong = list.slice(0, 3);
-          
-          const sortedWeak = [...list].sort((a, b) => a.score - b.score || b.total - a.total);
-          this.topWeak = sortedWeak.slice(0, 3);
-        },
-
-        resetGame() {
-          this.attempts = [];
-          this.currentClueIndex = 0;
-          this.gameStatus = null;
-          this.guessInput = '';
-          this.filteredOptions = [];
-
-          let pool = this.conditions;
-          if (this.mode === 'practice' && this.selectedCategory !== 'All') {
-            pool = this.conditions.filter(c => c.category === this.selectedCategory);
-          }
-
-          if (pool.length === 0) pool = this.conditions;
-
-          if (this.mode === 'daily') {
-            const todayStr = new Date().toISOString().slice(0, 10);
-            let hash = 0;
-            for (let i = 0; i < todayStr.length; i++) {
-              hash = todayStr.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const index = Math.abs(hash) % pool.length;
-            this.currentCondition = pool[index];
-          } else {
-            const randomIndex = Math.floor(Math.random() * pool.length);
-            this.currentCondition = pool[randomIndex];
-          }
-
-          this.currentClues = this.currentCondition.clues;
-        },
-
-        filterOptions() {
-          const q = this.guessInput.trim().toLowerCase();
-          if (!q) {
-            this.filteredOptions = [];
-            return;
-          }
-          this.filteredOptions = this.conditions
-            .map(c => c.name)
-            .filter(name => name.toLowerCase().includes(q));
-        },
-
-        submitGuess(guess) {
-          if (!guess || this.gameStatus) return;
-
-          const matched = this.conditions.find(c => c.name.toLowerCase() === guess.trim().toLowerCase());
-          if (!matched) return;
-
-          const guessName = matched.name;
-          const currentClueNum = this.currentClueIndex + 1;
-
-          this.attempts.push({
-            name: guessName,
-            clueNum: currentClueNum
-          });
-
-          this.guessInput = '';
-          this.filteredOptions = [];
-
-          const targetName = this.currentCondition.name;
-
-          if (!this.stats.conditionStats[targetName]) {
-            this.stats.conditionStats[targetName] = { wins: 0, total: 0 };
-          }
-
-          if (guessName === targetName) {
-            this.gameStatus = 'won';
-            this.stats.played++;
-            this.stats.won++;
-            this.stats.streak++;
-            if (this.stats.streak > this.stats.maxStreak) {
-              this.stats.maxStreak = this.stats.streak;
-            }
-            this.stats.conditionStats[targetName].wins++;
-            this.stats.conditionStats[targetName].total++;
-            this.saveStats();
-          } else {
-            if (this.currentClueIndex < 4) {
-              this.currentClueIndex++;
-            } else {
-              this.gameStatus = 'lost';
-              this.stats.played++;
-              this.stats.streak = 0;
-              this.stats.conditionStats[targetName].total++;
-              this.saveStats();
-            }
-          }
         }
-      }
-    }
-  </script>
+
+        function autocomplete() {
+            return {
+                query: '',
+                open: false,
+                highlightedIndex: 0,
+                
+                get filteredConditions() {
+                    const mainComponent = Alpine.$data(this.$root);
+                    const guessedNames = mainComponent.guessedDiseases.map(g => g.name.toLowerCase());
+                    
+                    if (!this.query) {
+                        return CONDITIONS_DATABASE.filter(c => !guessedNames.includes(c.name.toLowerCase())).slice(0, 8);
+                    }
+                    const q = this.query.toLowerCase();
+                    return CONDITIONS_DATABASE.filter(c => 
+                        c.name.toLowerCase().includes(q) && !guessedNames.includes(c.name.toLowerCase())
+                    ).slice(0, 8);
+                },
+
+                onInput() {
+                    this.open = true;
+                    this.highlightedIndex = 0;
+                },
+
+                highlightNext() {
+                    if (!this.open) return;
+                    if (this.highlightedIndex < this.filteredConditions.length - 1) {
+                        this.highlightedIndex++;
+                    }
+                },
+
+                highlightPrev() {
+                    if (!this.open) return;
+                    if (this.highlightedIndex > 0) {
+                        this.highlightedIndex--;
+                    }
+                },
+
+                selectHighlighted() {
+                    if (this.open && this.filteredConditions[this.highlightedIndex]) {
+                        this.selectCondition(this.filteredConditions[this.highlightedIndex].name);
+                    } else {
+                        const mainComponent = Alpine.$data(this.$root);
+                        if (mainComponent && mainComponent.submitGuess) {
+                            mainComponent.submitGuess(this.query);
+                        }
+                    }
+                },
+
+                submitCurrentGuess(val) {
+                    const mainComponent = Alpine.$data(this.$root);
+                    if (mainComponent && mainComponent.submitGuess) {
+                        mainComponent.submitGuess(val);
+                    }
+                    this.query = '';
+                    this.open = false;
+                },
+
+                selectCondition(name) {
+                    this.query = name;
+                    this.open = false;
+                    const mainComponent = Alpine.$data(this.$root);
+                    if (mainComponent && mainComponent.submitGuess) {
+                        mainComponent.submitGuess(name);
+                    }
+                    this.query = '';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
