@@ -60,7 +60,7 @@
                             </span>
                             <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-1.5">Master Clinical Cases Clue by Clue</h2>
                             <p class="text-slate-600 text-xs sm:text-sm max-w-xl mx-auto mb-4">
-                                Work through progressive single-sentence clinical clues to diagnose high-yield board conditions.
+                                Work through progressive funneling clinical clues—starting broad and narrowing down to high-yield board conditions.
                             </p>
 
                             <!-- Game Mode Selection -->
@@ -76,7 +76,7 @@
                                     <span>🔄</span>
                                     <div class="text-left">
                                         <div class="text-xs font-bold">Continuous Practice</div>
-                                        <div class="text-[9px] text-slate-500">Infinite sequential cases</div>
+                                        <div class="text-[9px] text-slate-500">Infinite randomized cases</div>
                                     </div>
                                 </button>
                             </div>
@@ -166,7 +166,7 @@
                             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
                                 <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center space-x-1.5">
                                     <span>🩺</span>
-                                    <span>Clinical Vignette Clues</span>
+                                    <span>Funneling Clinical Clues</span>
                                 </h3>
                                 <span class="text-[11px] text-slate-500 font-medium" 
                                       x-text="gameState === 'playing' ? `Clue ${currentAttempt} of 5 Unlocked` : 'All Clues Revealed'"></span>
@@ -519,8 +519,8 @@
 
             <div class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-0.5">
-                    <strong class="text-slate-900 block font-semibold">🎯 Single-Sentence Clues:</strong>
-                    <p class="text-[11px]">Each attempt unveils exactly one concise clinical clue sentence (Chief Complaint, Primary Lab, Smear Finding, Pathophysiology, or Gold Standard Diagnostic test).</p>
+                    <strong class="text-slate-900 block font-semibold">🎯 Funneling Clinical Clues:</strong>
+                    <p class="text-[11px]">Clues progress from very broad (epidemiology/general signs) to specific (gold standard diagnostic markers) over 5 attempts, making each successive clue more helpful.</p>
                 </div>
 
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-0.5">
@@ -552,12 +552,21 @@
                 name: "Iron Deficiency Anemia",
                 module: "Hematology",
                 category: "Microcytic Anemias",
-                clues: [
-                    "A 45-year-old female presents with fatigue, brittle nails, and craving ice (pica).",
-                    "CBC shows microcytic, hypochromic red cells with a low MCV.",
-                    "Serum ferritin is decreased with an elevated TIBC.",
-                    "Pathophysiology involves inadequate iron for hemoglobin synthesis.",
-                    "Gold standard diagnosis confirms depleted bone marrow iron stores."
+                cases: [
+                    [
+                        "A patient presents complaining of chronic, generalized fatigue and low energy levels.",
+                        "Further history reveals brittle nails and an unusual craving to chew ice.",
+                        "Complete blood count demonstrates microcytic red blood cells with a low MCV.",
+                        "Iron panel reveals decreased serum ferritin coupled with an elevated total iron-binding capacity (TIBC).",
+                        "The classic pathophysiological defect is insufficient iron available for proper hemoglobin synthesis."
+                    ],
+                    [
+                        "An adult patient is evaluated for worsening lethargy and poor exercise tolerance over several months.",
+                        "Physical review notes unusual sensations in the lower extremities prompting restless legs symptoms at night.",
+                        "Laboratory findings confirm a microcytic hypochromic red cell profile.",
+                        "Advanced testing demonstrates depleted body iron stores with very low serum ferritin.",
+                        "The definitive confirmation is established by identifying chronic blood loss or malabsorption driving total body iron depletion."
+                    ]
                 ],
                 summary: "Most common nutritional deficiency worldwide. Characterized by low MCV, low ferritin, and elevated TIBC.",
                 keyLabs: "↓ Ferritin, ↑ TIBC, ↓ Serum Iron, ↓ MCV (<80 fL)",
@@ -567,12 +576,21 @@
                 name: "Alpha Thalassemia",
                 module: "Hematology",
                 category: "Microcytic Anemias",
-                clues: [
-                    "An asymptomatic adult of Southeast Asian descent has mild microcytosis found on routine screening.",
-                    "CBC shows low MCV with normal or slightly elevated RBC count.",
-                    "Serum iron and serum ferritin levels are completely normal.",
-                    "Gene deletion of one or more alpha-globin alleles on chromosome 16 decreases alpha-chain production.",
-                    "Hemoglobin electrophoresis is normal in trait forms, requiring DNA gene testing for confirmation."
+                cases: [
+                    [
+                        "An otherwise healthy individual undergoes routine outpatient wellness blood work.",
+                        "Screening indices reveal mild microcytosis without overt symptoms of anemia.",
+                        "Further laboratory evaluation confirms normal iron levels and normal serum ferritin.",
+                        "Hemoglobin electrophoresis tests return completely normal results.",
+                        "The underlying molecular defect involves gene deletions affecting chromosome 16 alpha-globin chains."
+                    ],
+                    [
+                        "A patient of Southeast Asian descent is found to have persistent microcytic red blood cells on routine panels.",
+                        "Physical exam is completely unremarkable with no hepatosplenomegaly.",
+                        "Iron studies, TIBC, and ferritin values are entirely within normal limits.",
+                        "Peripheral blood smear displays slight red cell variation but normal iron stores.",
+                        "Confirmation requires genetic DNA testing to evaluate the precise number of deleted alpha-globin alleles."
+                    ]
                 ],
                 summary: "Inherited microcytic anemia caused by decreased alpha-globin chain synthesis due to gene deletions on chromosome 16.",
                 keyLabs: "Normal Ferritin, ↓ MCV, Normal Hb Electrophoresis (in trait)",
@@ -582,12 +600,21 @@
                 name: "Beta Thalassemia",
                 module: "Hematology",
                 category: "Microcytic Anemias",
-                clues: [
-                    "A child of Mediterranean descent presents with maxillary hypertrophy and hepatosplenomegaly.",
-                    "CBC demonstrates severe microcytic hypochromic anemia with prominent target cells.",
-                    "Hemoglobin electrophoresis reveals elevated Hemoglobin A2 and Hemoglobin F levels.",
-                    "Point mutations in the beta-globin gene on chromosome 11 impair beta-chain synthesis.",
-                    "Diagnosis is established by elevated Hb A2 (>3.5%) on hemoglobin electrophoresis."
+                cases: [
+                    [
+                        "A pediatric patient presents with early-onset chronic fatigue and mild growth delay.",
+                        "Physical examination reveals subtle frontal bossing and mild hepatosplenomegaly.",
+                        "Initial CBC demonstrates marked microcytic hypochromic anemia with prominent target cells.",
+                        "Genetic background traces back to Mediterranean ancestry.",
+                        "Definitive diagnosis is established by quantitative hemoglobin electrophoresis showing elevated Hemoglobin A2 (>3.5%)."
+                    ],
+                    [
+                        "An adolescent is evaluated for chronic mild jaundice and exercise intolerance.",
+                        "Laboratory workup shows severe microcytosis paired with an unusually high erythrocyte count.",
+                        "Peripheral blood smear displays striking basophilic stippling and target cells.",
+                        "Pathophysiology involves point mutations on chromosome 11 impairing beta-chain synthesis.",
+                        "Electrophoresis confirms elevated HbA2 and variable increases in fetal hemoglobin."
+                    ]
                 ],
                 summary: "Inherited hemoglobinopathy caused by beta-globin gene mutations leading to ineffective erythropoiesis and severe microcytic anemia.",
                 keyLabs: "↑ Hb A2 (>3.5%), ↑ Hb F, Markedly ↓ MCV, Target cells on smear",
@@ -597,12 +624,21 @@
                 name: "Anemia of Chronic Disease",
                 module: "Hematology",
                 category: "Microcytic Anemias",
-                clues: [
-                    "A 62-year-old male with long-standing rheumatoid arthritis presents with persistent fatigue.",
-                    "Labs reveal normocytic or mild microcytic anemia with low serum iron.",
-                    "Serum ferritin is normal or elevated, and Total Iron-Binding Capacity (TIBC) is decreased.",
-                    "Hepcidin elevation triggered by inflammatory cytokines traps iron inside reticuloendothelial macrophages.",
-                    "Bone marrow biopsy demonstrates abundant macrophage iron stores that cannot be mobilized."
+                cases: [
+                    [
+                        "A patient with a long-standing inflammatory disorder presents with persistent, low-grade fatigue.",
+                        "Baseline laboratory testing reveals a mild normocytic or early microcytic anemia.",
+                        "Serum iron is decreased, but ferritin levels are normal or paradoxically elevated.",
+                        "Total iron-binding capacity (TIBC) is decreased reflecting acute-phase reactant physiology.",
+                        "Elevated levels of the peptide hormone hepcidin trap iron inside reticuloendothelial macrophages."
+                    ],
+                    [
+                        "An individual being managed for a chronic infectious abscess reports progressive tiredness.",
+                        "Blood counts show a mild decrease in hemoglobin with a preserved or slightly low MCV.",
+                        "Serum iron is low, while storage ferritin is robustly elevated.",
+                        "Inflammatory cytokines upregulate hepatic hepcidin release, restricting iron mobilization.",
+                        "Resolving the primary underlying inflammatory process corrects the hematologic findings."
+                    ]
                 ],
                 summary: "Anemia of inflammation characterized by hepcidin-mediated iron sequestration, high/normal ferritin, and low TIBC.",
                 keyLabs: "Normal/↑ Ferritin, ↓ TIBC, ↓ Serum Iron, Normal/Mildly ↓ MCV",
@@ -612,12 +648,21 @@
                 name: "Hemochromatosis",
                 module: "Hematology",
                 category: "Microcytic Anemias",
-                clues: [
-                    "A 50-year-old male presents with fatigue, arthralgias of the second and third MCP joints, and skin bronzing.",
-                    "Routine metabolic screening reveals concurrent new-onset diabetes mellitus and elevated liver enzymes.",
-                    "Fasting transferrin saturation exceeds 45% alongside markedly elevated serum ferritin levels.",
-                    "Autosomal recessive HFE gene mutations (C282Y) lead to excessive intestinal iron absorption.",
-                    "Genetic testing confirms homozygous HFE mutations, establishing the definitive diagnosis."
+                cases: [
+                    [
+                        "A middle-aged adult presents with vague, progressive joint pain and chronic fatigue.",
+                        "Physical examination reveals a subtle grayish-bronze hyperpigmentation of the skin.",
+                        "Routine blood panels unearth concurrent new-onset hyperglycemia and elevated liver transaminases.",
+                        "Fasting transferrin saturation is markedly elevated above 45%.",
+                        "Genetic testing confirms homozygous mutations (C282Y) in the HFE gene."
+                    ],
+                    [
+                        "An older patient is evaluated for chronic lethargy, arthralgias, and early-onset erectile dysfunction.",
+                        "Joint examination shows characteristic swelling of the second and third metacarpophalangeal (MCP) joints.",
+                        "Serum chemistry demonstrates elevated liver enzymes and profoundly high ferritin levels.",
+                        "Pathophysiology involves excessive dietary iron absorption driven by defective signaling.",
+                        "Definitive confirmation is achieved via genetic testing or hepatic tissue iron quantification."
+                    ]
                 ],
                 summary: "Autosomal recessive iron overload disorder causing progressive multi-organ tissue deposition ('bronze diabetes'), arthritis, and cirrhosis.",
                 keyLabs: "↑ Transferrin Saturation (>45%), ↑ Serum Ferritin, + HFE Gene Mutation",
@@ -627,12 +672,21 @@
                 name: "Anemia of Chronic Kidney Disease",
                 module: "Hematology",
                 category: "Normocytic Anemias",
-                clues: [
-                    "A patient with stage 4 chronic kidney disease presents with progressive fatigue and pallor.",
-                    "CBC demonstrates a normocytic, normochromic anemia with a normal reticulocyte count.",
-                    "Serum iron, TIBC, and ferritin levels are normal, but erythropoietin levels are inappropriately low.",
-                    "Declining renal peritubular interstitial cells fail to synthesize adequate erythropoietin.",
-                    "Diagnosis is established by ruling out other causes in the setting of chronic renal failure."
+                cases: [
+                    [
+                        "A patient with longstanding systemic disease complains of generalized lack of stamina and pallor.",
+                        "Routine renal function panels indicate advanced progressive organ decline.",
+                        "Complete blood count demonstrates a normocytic, normochromic anemia with normal reticulocyte count.",
+                        "Iron studies and ferritin levels are completely within normal limits.",
+                        "Endocrine evaluation reveals inappropriately low circulating levels of erythropoietin (EPO)."
+                    ],
+                    [
+                        "An individual with diabetic nephropathy notes worsening shortness of breath on exertion.",
+                        "Blood work confirms normocytic red cell morphology with adequate iron reserves.",
+                        "Bone marrow proliferation is impaired due to failing renal peritubular interstitial cells.",
+                        "Assays confirm hormone deficiency preventing adequate red blood cell production.",
+                        "Parenteral administration of erythropoiesis-stimulating agents successfully improves hemoglobin."
+                    ]
                 ],
                 summary: "Normocytic anemia caused primarily by failing renal endocrine function leading to deficient erythropoietin (EPO) production.",
                 keyLabs: "Normocytic Normochromic, Inappropriately Low EPO, Normal Iron/Ferritin",
@@ -642,12 +696,21 @@
                 name: "Pernicious Anemia",
                 module: "Hematology",
                 category: "Macrocytic / Megaloblastic Anemias",
-                clues: [
-                    "A 65-year-old female presents with progressive fatigue, tingling in her toes, and loss of balance.",
-                    "CBC demonstrates macrocytic anemia with hypersegmented neutrophils on peripheral smear.",
-                    "Serum Vitamin B12 level is severely decreased.",
-                    "Autoimmune destruction of gastric parietal cells causes severe intrinsic factor deficiency.",
-                    "Serologic confirmation shows positive anti-intrinsic factor autoantibodies."
+                cases: [
+                    [
+                        "An elderly patient presents with insidious fatigue and subtle cognitive slowing.",
+                        "Physical exam reveals bilateral symmetrical tingling in the lower extremities and slight gait instability.",
+                        "Laboratory screening demonstrates a prominent macrocytic anemia.",
+                        "Pathophysiology involves an autoimmune attack targeting gastric mucosa and parietal cells.",
+                        "Serologic confirmation shows positive anti-intrinsic factor autoantibodies."
+                    ],
+                    [
+                        "A patient is evaluated for progressive lethargy, sore tongue, and loss of proprioception.",
+                        "CBC reveals an elevated MCV above 100 fL with hypersegmented neutrophils on smear.",
+                        "Biochemical testing indicates severe malabsorption of cobalamin due to lack of gastric secretions.",
+                        "Autoimmune destruction leads to total intrinsic factor deficiency.",
+                        "Parenteral vitamin B12 replacement halts spinal cord dorsal column demyelination."
+                    ]
                 ],
                 summary: "Autoimmune gastritis causing intrinsic factor deficiency, leading to Vitamin B12 malabsorption and megaloblastic anemia with neurologic deficits.",
                 keyLabs: "↑ MCV (>100 fL), Hypersegmented neutrophils, ↓ Serum B12, + Anti-intrinsic factor",
@@ -657,12 +720,21 @@
                 name: "Vitamin B12 Deficiency",
                 module: "Hematology",
                 category: "Macrocytic / Megaloblastic Anemias",
-                clues: [
-                    "A strict long-term vegan presents with sore tongue, generalized weakness, and memory impairment.",
-                    "CBC shows macrocytic anemia with elevated MCV (>100 fL).",
-                    "Laboratory panel shows elevated methylmalonic acid (MMA) and elevated homocysteine levels.",
-                    "Lack of cobalamin impairs DNA synthesis and myelin maintenance.",
-                    "Low serum Vitamin B12 levels confirm the metabolic deficiency."
+                cases: [
+                    [
+                        "A patient with a strict dietary history presents with generalized weakness and a smooth, sore tongue.",
+                        "Neurological review notes mild memory lapses and vibratory sensation loss in the feet.",
+                        "Complete blood count confirms macrocytic anemia with elevated MCV.",
+                        "Metabolic screening shows elevated serum homocysteine.",
+                        "Specific biochemical assays reveal elevated methylmalonic acid (MMA) alongside low serum cobalamin."
+                    ],
+                    [
+                        "An individual with a history of bariatric surgery reports progressive fatigue and balance difficulties.",
+                        "Blood tests indicate macrocytic red cells with hypersegmented neutrophils.",
+                        "Terminal ileum malabsorption prevents proper micronutrient assimilation.",
+                        "Cellular deficiency impairs DNA synthesis and myelin maintenance.",
+                        "Subcutaneous cobalamin supplementation normalizes all clinical and laboratory parameters."
+                    ]
                 ],
                 summary: "Deficiency of cobalamin causing impaired DNA synthesis, megaloblastic macrocytic anemia, elevated MMA, and neurologic symptoms.",
                 keyLabs: "↑ MCV, ↑ Methylmalonic Acid (MMA), ↑ Homocysteine, ↓ Serum B12",
@@ -672,12 +744,21 @@
                 name: "Folate Deficiency",
                 module: "Hematology",
                 category: "Macrocytic / Megaloblastic Anemias",
-                clues: [
-                    "A patient with chronic alcohol use disorder presents with fatigue and glossitis.",
-                    "CBC reveals macrocytic anemia with hypersegmented neutrophils on blood smear.",
-                    "Serum homocysteine is elevated, but methylmalonic acid (MMA) is completely normal.",
-                    "Inadequate dietary intake rapidly depletes small hepatic folate stores over a few months.",
-                    "Serum and red blood cell folate levels are markedly decreased."
+                cases: [
+                    [
+                        "A patient with a history of chronic alcohol abuse presents with generalized fatigue and glossitis.",
+                        "Physical exam is negative for focal neurological deficits or proprioceptive loss.",
+                        "CBC reveals macrocytic anemia with hypersegmented neutrophils on blood smear.",
+                        "Biochemical evaluation reveals elevated serum homocysteine with a completely NORMAL methylmalonic acid (MMA) level.",
+                        "Serum and red blood cell folate assays confirm depleted tissue stores."
+                    ],
+                    [
+                        "A malnourished resident reports weakness, lethargy, and a sore red tongue.",
+                        "Laboratory testing demonstrates macrocytic red blood cells with normal renal function.",
+                        "Impaired nucleotide synthesis results from inadequate dietary intake of green leafy vegetables.",
+                        "Vitamin B12 and methylmalonic acid levels are entirely within normal limits.",
+                        "Oral folic acid supplementation rapidly resolves the megaloblastic changes."
+                    ]
                 ],
                 summary: "Megaloblastic macrocytic anemia caused by inadequate folate intake, characterized by elevated homocysteine but NORMAL methylmalonic acid.",
                 keyLabs: "↑ MCV, ↓ Serum/RBC Folate, Normal MMA, ↑ Homocysteine",
@@ -687,12 +768,21 @@
                 name: "Warm Autoimmune Hemolytic Anemia",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "A 52-year-old female with systemic lupus erythematosus presents with jaundice and dark urine.",
-                    "Labs reveal elevated indirect bilirubin, low haptoglobin, and high LDH.",
-                    "Peripheral blood smear demonstrates prominent spherocytes and polychromasia.",
-                    "IgG autoantibodies bind red cell membrane antigens at 37°C causing splenic extravascular hemolysis.",
-                    "Direct Antiglobulin Test (Direct Coombs) is strongly positive for IgG."
+                cases: [
+                    [
+                        "A patient with an underlying connective tissue disorder presents with new-onset fatigue and mild jaundice.",
+                        "Laboratory testing reveals elevated indirect bilirubin, reduced haptoglobin, and high LDH.",
+                        "Peripheral blood smear demonstrates prominent red cell spherocytes.",
+                        "Pathophysiology involves IgG autoantibodies binding erythrocyte membrane antigens at core body temperature.",
+                        "Definitive diagnosis is established by a strongly positive Direct Antiglobulin Test (Direct Coombs) for IgG."
+                    ],
+                    [
+                        "An adult is evaluated for acute lethargy, scleral icterus, and mild splenomegaly.",
+                        "Blood panels indicate active hemolysis with elevated lactate dehydrogenase.",
+                        "Microscopic examination shows red blood cells modified by splenic macrophage phagocytosis.",
+                        "Coated erythrocytes are prematurely sequestered in the reticuloendothelial system.",
+                        "Direct Coombs test confirms antibody binding at 37°C."
+                    ]
                 ],
                 summary: "Acquired hemolytic anemia mediated by IgG autoantibodies reacting at warm temperatures (37°C) causing splenic extravascular hemolysis.",
                 keyLabs: "+ Direct Coombs (IgG), ↑ LDH, ↓ Haptoglobin, ↑ Indirect Bilirubin",
@@ -702,12 +792,21 @@
                 name: "Cold Autoimmune Hemolytic Anemia",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "An older adult experiences painful blue discoloration of his fingers upon cold exposure.",
-                    "Lab analysis shows red blood cell agglutination visible in blood collection tubes at room temperature.",
-                    "Labs confirm intravascular and extravascular hemolysis following winter cold exposure.",
-                    "IgM autoantibodies bind RBC antigens in cold peripheries and fix complement.",
-                    "Direct Antiglobulin Test (Direct Coombs) is positive for complement C3d only."
+                cases: [
+                    [
+                        "An older adult experiences painful blue discoloration of the fingers and toes upon cold exposure.",
+                        "Laboratory evaluation confirms hemolytic anemia following winter weather exposure.",
+                        "Blood collection samples show visible red blood cell clumping in the phlebotomy tube at room temperature.",
+                        "Pathophysiology involves IgM autoantibodies binding red cells in cold extremities and fixing complement.",
+                        "Definitive confirmation is secured via a Direct Antiglobulin Test (Direct Coombs) positive for complement C3d only."
+                    ],
+                    [
+                        "During chilly weather, a patient notices mottled extremity discoloration accompanied by dark urine.",
+                        "Assays confirm cold-triggered intravascular and extravascular hemolysis.",
+                        "Clonal B-cell activity produces cold agglutinins.",
+                        "In vitro testing demonstrates spontaneous red cell agglutination upon cooling.",
+                        "Coombs testing demonstrates positivity exclusively for complement proteins."
+                    ]
                 ],
                 summary: "Immune hemolytic anemia caused by cold-reacting IgM autoantibodies causing RBC agglutination, acrocyanosis, and complement activation.",
                 keyLabs: "+ Direct Coombs (C3d only), In vitro RBC agglutination, ↑ LDH, ↓ Haptoglobin",
@@ -717,12 +816,21 @@
                 name: "Hereditary Spherocytosis",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "A 19-year-old presents with splenomegaly, jaundice, and early-onset gallstones.",
-                    "CBC shows normocytic anemia with elevated MCHC (>36 g/dL).",
-                    "Peripheral blood smear displays numerous small, round spherocytes lacking central pallor.",
-                    "Inherited defects in membrane proteins (ankyrin or spectrin) lead to membrane loss and splenic destruction.",
-                    "Diagnosis is confirmed by a positive eosin-5-maleimide (EMA) binding flow cytometry test."
+                cases: [
+                    [
+                        "A young adult presents with mild jaundice, scleral icterus, and a family history of early gallbladder removal.",
+                        "Physical examination reveals palpable splenomegaly.",
+                        "CBC shows normocytic anemia with an elevated mean corpuscular hemoglobin concentration (MCHC >36 g/dL).",
+                        "Peripheral blood smear displays numerous dense, round spherocytes lacking central pallor.",
+                        "Diagnosis is confirmed by an abnormal eosin-5-maleimide (EMA) binding flow cytometry test."
+                    ],
+                    [
+                        "An adolescent is evaluated for fatigue and recurrent pigment gallstones.",
+                        "Red blood cell indices show high MCHC with normal or low MCV.",
+                        "Inherited cytoskeletal protein defects (ankyrin or spectrin) reduce red cell membrane surface area.",
+                        "Deformed cells are prematurely trapped and destroyed in the splenic cords.",
+                        "EMA binding flow cytometry verifies the structural membrane defect."
+                    ]
                 ],
                 summary: "Inherited RBC membrane defect resulting in spherical red blood cells that are prematurely destroyed in the spleen.",
                 keyLabs: "↑ MCHC (>36 g/dL), Spherocytes on smear, + EMA binding test",
@@ -732,12 +840,21 @@
                 name: "G6PD Deficiency",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "A male patient develops dark urine and sudden jaundice after starting trimethoprim-sulfamethoxazole.",
-                    "Labs reveal acute intravascular hemolysis with marked reticulocytosis.",
-                    "Peripheral blood smear demonstrates 'bite cells' and Heinz bodies.",
-                    "X-linked enzymatic defect impairs NADPH production, making red cells vulnerable to oxidative stress.",
-                    "Quantitative G6PD enzyme assay confirms low activity when measured after the acute episode resolves."
+                cases: [
+                    [
+                        "A male patient develops sudden dark urine and fatigue following a recent mild infection or medication start.",
+                        "Laboratory tests reveal acute hemolytic anemia with marked reticulocytosis.",
+                        "Peripheral blood smear demonstrates distinctive 'bite cells' and Heinz bodies.",
+                        "X-linked metabolic defect impairs cellular NADPH production, reducing antioxidant defense against oxidative stress.",
+                        "Quantitative enzyme testing confirms low G6PD activity when measured after the acute crisis resolves."
+                    ],
+                    [
+                        "Following dietary ingestion of fava beans, an individual experiences abrupt back pain, jaundice, and dark urine.",
+                        "Blood studies show an acute drop in hemoglobin with elevated indirect bilirubin.",
+                        "Supravital staining reveals denatured hemoglobin precipitates inside red blood cells.",
+                        "Glutathione recycling fails during oxidative challenges, causing acute cellular lysis.",
+                        "Enzymatic assays verify deficient hexose monophosphate shunt function."
+                    ]
                 ],
                 summary: "X-linked enzymatic defect leading to episodic oxidative hemolytic anemia triggered by infections, fava beans, or oxidant drugs.",
                 keyLabs: "Heinz bodies, Bite cells, Reticulocytosis, ↓ G6PD level (post-crisis)",
@@ -747,12 +864,21 @@
                 name: "Sickle Cell Trait",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "An athlete is asymptomatic but develops painless gross hematuria after vigorous exercise at high altitude.",
-                    "CBC and baseline peripheral blood smear are completely normal.",
-                    "Renal medullary hypoxia under extreme exertion causes localized microvasculature sickling.",
-                    "Heterozygous state carrying one mutated beta-globin gene allele.",
-                    "Hemoglobin electrophoresis shows approximately 60% HbA and 40% HbS."
+                cases: [
+                    [
+                        "An otherwise healthy athlete develops sudden, painless gross hematuria after vigorous exertion at high altitude.",
+                        "Baseline complete blood count and peripheral blood smear are entirely normal.",
+                        "Renal medullary hypoxia under extreme exertion causes localized microvascular sickling.",
+                        "Genetic profile indicates a heterozygous state carrying one mutated beta-globin gene allele.",
+                        "Definitive confirmation is established via hemoglobin electrophoresis showing roughly 60% HbA and 40% HbS."
+                    ],
+                    [
+                        "A military recruit experiences transient painless blood in the urine during basic training.",
+                        "Hematologic profile is completely normal without baseline anemia or sickled erythrocytes.",
+                        "Extreme renal medullary hypertonicity provokes localized micro-infarctions.",
+                        "Presence of one normal and one abnormal beta-globin gene characterizes the carrier state.",
+                        "Electrophoresis confirms the carrier ratio of adult hemoglobin to sickle hemoglobin."
+                    ]
                 ],
                 summary: "Heterozygous carrier state for HbS (AS), usually asymptomatic except for potential urinary concentrating defects under extreme hypoxia.",
                 keyLabs: "HbA (~60%) and HbS (~40%) on electrophoresis, Normal MCV",
@@ -762,12 +888,21 @@
                 name: "Sickle Cell Disease",
                 module: "Hematology",
                 category: "Hemolytic Anemias & Structural Defects",
-                clues: [
-                    "A young child presents with excruciating, painful swelling of hands and feet (dactylitis).",
-                    "CBC reveals severe chronic hemolytic anemia with marked reticulocytosis.",
-                    "Peripheral blood smear shows crescent-shaped sickle cells and Howell-Jolly bodies.",
-                    "Valine substitution for glutamic acid on the beta-globin chain causes hemoglobin polymerization under hypoxia.",
-                    "Hemoglobin electrophoresis confirms predominance of HbS with complete absence of normal HbA."
+                cases: [
+                    [
+                        "A pediatric patient presents with painful swelling of the hands and feet (dactylitis).",
+                        "History reveals recurrent episodes of severe bone and chest pain.",
+                        "CBC reveals chronic hemolytic anemia with marked reticulocytosis.",
+                        "Peripheral blood smear shows crescent-shaped sickle cells and Howell-Jolly bodies.",
+                        "Hemoglobin electrophoresis confirms predominance of HbS with complete absence of normal HbA."
+                    ],
+                    [
+                        "A young child is evaluated for acute chest pain, fever, and new pulmonary infiltrates.",
+                        "Laboratory results display prominent hemolytic anemia and functional asplenia.",
+                        "Smear analysis reveals Howell-Jolly bodies reflecting autosplenectomy alongside sickled erythrocytes.",
+                        "A point mutation substituting valine for glutamic acid causes hemoglobin polymerization under hypoxia.",
+                        "Electrophoretic testing verifies homozygous HbS disease."
+                    ]
                 ],
                 summary: "Autosomal recessive hemoglobinopathy causing chronic hemolytic anemia, painful vaso-occlusive crises, and functional asplenia.",
                 keyLabs: "HbS predominance on electrophoresis, Howell-Jolly bodies, Sickle cells",
@@ -777,12 +912,21 @@
                 name: "Aplastic Anemia",
                 module: "Hematology",
                 category: "Bone Marrow Failure",
-                clues: [
-                    "A 24-year-old presents with profound fatigue, mucosal bleeding, and recurrent fever.",
-                    "CBC shows severe pancytopenia paired with a drastically reduced reticulocyte count.",
-                    "Peripheral blood smear confirms reduced red cells, white cells, and platelets without abnormal blasts.",
-                    "Immune-mediated autoimmune destruction targets hematopoietic stem cells.",
-                    "Bone marrow biopsy confirms severe hypocellularity with over 75% fatty replacement."
+                cases: [
+                    [
+                        "A young adult presents with profound generalized fatigue, mucosal bleeding, and recurrent infections.",
+                        "Physical exam reveals generalized pallor and petechiae without hepatosplenomegaly or lymphadenopathy.",
+                        "CBC shows simultaneous pancytopenia paired with a drastically reduced reticulocyte count.",
+                        "Pathophysiology involves immune-mediated T-cell destruction of hematopoietic stem cells.",
+                        "Definitive diagnosis is established by a bone marrow biopsy confirming severe hypocellularity with fatty replacement (>75%)."
+                    ],
+                    [
+                        "Following exposure to environmental toxins, a patient develops generalized weakness and easy bruising.",
+                        "Complete blood count reveals a simultaneous drop across all three major blood cell lineages.",
+                        "Reticulocyte production index is exceptionally low.",
+                        "Peripheral blood smear confirms pancytopenia without abnormal blast cells.",
+                        "Trephine core biopsy demonstrates an empty, fatty marrow space."
+                    ]
                 ],
                 summary: "Pancytopenia with a hypoplastic/fatty bone marrow resulting from immune-mediated stem cell destruction.",
                 keyLabs: "Pancytopenia, Severe Reticulocytopenia, Hypocellular fatty bone marrow",
@@ -792,12 +936,21 @@
                 name: "Deep Vein Thrombosis (DVT)",
                 module: "Hematology",
                 category: "Thrombophilic Disorders (Clotting & Emboli)",
-                clues: [
-                    "A patient presents with acute unilateral leg pain, calf swelling, and pitting edema following a long flight.",
-                    "Physical exam shows a calf circumference discrepancy greater than 3 cm compared to the other leg.",
-                    "D-Dimer assay is significantly elevated.",
-                    "Thrombus formation in deep limb veins driven by stasis, hypercoagulability, or vascular injury.",
-                    "Venous duplex ultrasonography confirms non-compressibility of the deep calf or femoral vein."
+                cases: [
+                    [
+                        "A patient presents with acute unilateral leg pain and swelling following a long international flight.",
+                        "Physical examination reveals a calf circumference discrepancy greater than 3 cm compared to the unaffected leg.",
+                        "Plasma D-Dimer screening assay is significantly elevated.",
+                        "Thrombus formation in deep limb veins is driven by stasis, hypercoagulability, or vascular injury.",
+                        "Definitive diagnosis is confirmed by venous duplex ultrasonography demonstrating vein non-compressibility."
+                    ],
+                    [
+                        "An immobilized postoperative patient notes sudden aching and swelling in the left lower extremity.",
+                        "Bedside clinical evaluation reveals prominent superficial collateral veins and deep calf tenderness.",
+                        "Laboratory screening demonstrates high plasma D-Dimer levels.",
+                        "Virchow triad components of venous stasis initiate intraluminal clotting.",
+                        "Compression ultrasound imaging visualizes a fixed thrombus within the femoral vein."
+                    ]
                 ],
                 summary: "Blood clot formation in deep veins, presenting with unilateral extremity swelling and confirmed by venous ultrasound.",
                 keyLabs: "Elevated D-Dimer, Positive non-compressible compression ultrasonography",
@@ -807,12 +960,21 @@
                 name: "Pulmonary Embolism",
                 module: "Hematology",
                 category: "Thrombophilic Disorders (Clotting & Emboli)",
-                clues: [
-                    "A postoperative patient experiences sudden dyspnea, pleuritic chest pain, and tachycardia.",
-                    "Arterial blood gas reveals acute hypoxemia with respiratory alkalosis.",
-                    "ECG demonstrates sinus tachycardia and classic S1Q3T3 acute strain pattern.",
-                    "Venous thrombi dislodge from deep leg veins and occlude pulmonary arterial flow.",
-                    "CT Pulmonary Angiography (CTPA) visualizes arterial intraluminal filling defects."
+                cases: [
+                    [
+                        "A postoperative patient experiences sudden onset shortness of breath and pleuritic chest pain.",
+                        "Vitals demonstrate tachycardia and mild tachypnea.",
+                        "Arterial blood gas reveals acute hypoxemia with respiratory alkalosis.",
+                        "Electrocardiogram demonstrates sinus tachycardia and classic S1Q3T3 strain patterns.",
+                        "Definitive diagnosis is established by CT Pulmonary Angiography (CTPA) visualizing arterial filling defects."
+                    ],
+                    [
+                        "A long-distance traveler complains of acute dyspnea and sharp discomfort worsened by deep inspiration.",
+                        "Physical exam shows tachypnea and mild oxygen desaturation on room air.",
+                        "Venous thromboemboli dislodge and travel into the pulmonary arterial tree.",
+                        "ECG exhibits right axis deviation and T-wave inversions in anterior leads.",
+                        "Angiographic imaging confirms intraluminal obstruction within the main pulmonary arteries."
+                    ]
                 ],
                 summary: "Obstruction of pulmonary arterial bed by thrombi dislodged from deep veins, presenting with dyspnea, chest pain, and hypoxemia.",
                 keyLabs: "Elevated D-Dimer, Hypoxemia on ABG, CTPA intraluminal filling defects",
@@ -822,12 +984,21 @@
                 name: "Antiphospholipid Antibody Syndrome",
                 module: "Hematology",
                 category: "Thrombophilic Disorders (Clotting & Emboli)",
-                clues: [
-                    "A 32-year-old female presents with recurrent deep vein thrombosis and three unexplained early pregnancy losses.",
-                    "Baseline PTT is paradoxically prolonged and fails to correct during a 1:1 mixing study.",
-                    "Autoantibodies target phospholipid-binding plasma proteins, driving a hypercoagulable state.",
-                    "Lupus anticoagulant testing demonstrates phospholipid-dependent coagulation inhibition in vitro.",
-                    "Persistently positive anticardiolipin or anti-beta-2-glycoprotein I antibodies confirmed 12 weeks apart."
+                cases: [
+                    [
+                        "A young adult female presents with unprovoked venous thrombosis and a history of recurrent early miscarriages.",
+                        "Baseline coagulation testing reveals a paradoxically prolonged aPTT.",
+                        "Mixing studies confirm that the prolonged aPTT fails to correct during a 1:1 plasma mixture.",
+                        "Autoantibodies target phospholipid-binding plasma proteins, driving a systemic hypercoagulable state.",
+                        "Definitive diagnosis requires persistently positive anticardiolipin or lupus anticoagulant titers confirmed 12 weeks apart."
+                    ],
+                    [
+                        "A patient is evaluated for an unexplained arterial stroke and repeated fetal resorptions.",
+                        "Coagulation panels uncovers a lupus anticoagulant inhibitor profile.",
+                        "Acquired autoantibodies directed against cell membrane proteins provoke widespread clotting.",
+                        "Laboratory panels confirm elevated titers of anti-beta-2-glycoprotein I antibodies.",
+                        "Clinical and serologic criteria establish the autoimmune thrombophilia."
+                    ]
                 ],
                 summary: "Systemic autoimmune thrombophilia characterized by recurrent arterial/venous thrombosis and pregnancy loss with antiphospholipid antibodies.",
                 keyLabs: "+ Lupus Anticoagulant, + Anti-cardiolipin IgG/IgM, + Anti-beta-2-glycoprotein I",
@@ -837,12 +1008,21 @@
                 name: "Factor V Leiden",
                 module: "Hematology",
                 category: "Thrombophilic Disorders (Clotting & Emboli)",
-                clues: [
-                    "A 26-year-old develops an unprovoked deep vein thrombosis and reports a family history of early blood clots.",
-                    "Coagulation screening indicates resistance to activated protein C.",
-                    "A single point mutation in the Factor V gene alters the protein cleavage site.",
-                    "Mutated Factor V resists inactivation by activated protein C, resulting in excess thrombin generation.",
-                    "Genetic PCR testing confirms the F5 gene mutation."
+                cases: [
+                    [
+                        "A young adult develops an unprovoked deep vein thrombosis and reports a strong family history of early blood clots.",
+                        "Coagulation screening indicates resistance to activated protein C.",
+                        "A single point mutation alters the Factor V protein cleavage site.",
+                        "Mutated Factor V resists inactivation, resulting in unchecked excess thrombin generation.",
+                        "Definitive diagnosis is established by genetic PCR testing confirming the F5 gene mutation."
+                    ],
+                    [
+                        "A healthy relative of a known thrombosis patient suffers a mesenteric vein clot after minor surgery.",
+                        "Functional clotting assays demonstrate failure of activated protein C to prolong clotting times.",
+                        "A missense mutation replaces arginine with glutamine at position 506.",
+                        "Unchecked prothrombinase activity promotes hypercoagulable thrombosis.",
+                        "DNA sequence analysis verifies the inherited genetic defect."
+                    ]
                 ],
                 summary: "Most common inherited thrombophilia caused by a point mutation in the Factor V gene rendering it resistant to activated protein C.",
                 keyLabs: "Abnormal Activated Protein C Resistance assay, confirmed by F5 gene mutation PCR",
@@ -852,12 +1032,21 @@
                 name: "Antithrombin III Deficiency",
                 module: "Hematology",
                 category: "Thrombophilic Disorders (Clotting & Emboli)",
-                clues: [
-                    "A patient on unfractionated heparin for a blood clot fails to achieve therapeutic PTT prolongation.",
-                    "Clinical course is marked by recurrent venous thromboses despite standard heparin therapy.",
-                    "Deficiency of the primary physiologic inhibitor of thrombin and Factor Xa.",
-                    "Lack of antithrombin prevents heparin from exerting its normal anticoagulant activity.",
-                    "Functional antithrombin activity level assay is significantly depressed."
+                cases: [
+                    [
+                        "A patient being treated with unfractionated heparin for a blood clot fails to achieve therapeutic aPTT prolongation.",
+                        "Clinical course is marked by recurrent venous thromboses despite standard heparin therapy.",
+                        "Pathophysiology involves deficiency of the primary physiologic inhibitor of thrombin and Factor Xa.",
+                        "Lack of antithrombin prevents heparin from exerting its normal anticoagulant activity.",
+                        "Definitive diagnosis is established by a depressed functional antithrombin activity assay."
+                    ],
+                    [
+                        "An adult with recurrent refractory thrombosis exhibits complete resistance to standard heparin protocols.",
+                        "Assays reveal diminished plasma inhibitory activity against coagulation serine proteases.",
+                        "Endogenous anticoagulant reserve is depleted due to an inherited defect.",
+                        "Failure of heparin cofactor function abolishes the expected aPTT response.",
+                        "Functional activity assays establish antithrombin depletion."
+                    ]
                 ],
                 summary: "Deficiency of antithrombin leading to hypercoagulability and clinical resistance to standard heparin therapy.",
                 keyLabs: "↓ Functional Antithrombin Activity Assay, Heparin resistance",
@@ -867,12 +1056,21 @@
                 name: "Vitamin K Deficiency",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A surgical patient on prolonged antibiotics develops easy bruising and surgical site oozing.",
-                    "Coagulation profile shows significant prolongation of PT/INR with normal platelet count.",
-                    "Fibrinogen and platelet counts remain completely normal.",
-                    "Impaired gamma-carboxylation reduces activity of coagulation Factors II, VII, IX, and X.",
-                    "Elevated PT/INR rapidly normalizes within 24 hours of parenteral Vitamin K administration."
+                cases: [
+                    [
+                        "A surgical patient on prolonged broad-spectrum antibiotics develops easy bruising and mild mucosal oozing.",
+                        "Coagulation profile shows significant prolongation of PT/INR with a normal aPTT.",
+                        "Platelet count and fibrinogen levels remain completely normal.",
+                        "Impaired gamma-carboxylation reduces activity of hepatic coagulation Factors II, VII, IX, and X.",
+                        "Definitive confirmation is established when elevated PT/INR rapidly normalizes within 24 hours of parenteral Vitamin K administration."
+                    ],
+                    [
+                        "An individual with severe fat malabsorption presents with ecchymoses and bleeding tendencies.",
+                        "Laboratory evaluation displays isolated elevation of prothrombin time with normal platelet counts.",
+                        "Depletion of fat-soluble cofactors impairs hepatic synthesis of clotting zymogens.",
+                        "Gamma-glutamyl carboxylation reactions stall without adequate cofactor availability.",
+                        "Administration of phytomenadione rapidly restores normal coagulation parameters."
+                    ]
                 ],
                 summary: "Acquired coagulopathy due to fat-soluble vitamin malabsorption or antibiotic gut sterilization, resulting in elevated PT/INR.",
                 keyLabs: "Prolonged PT/INR, Normal Platelets, Corrects rapidly with Vitamin K",
@@ -882,12 +1080,21 @@
                 name: "Hemophilia A",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A 5-year-old boy presents with painful joint swelling (hemarthrosis) after minor play trauma.",
-                    "Coagulation panel reveals an isolated prolonged PTT with normal PT and normal platelets.",
-                    "A 1:1 mixing study completely corrects the prolonged PTT.",
-                    "X-linked recessive deficiency of coagulation Factor VIII.",
-                    "Specific Factor VIII functional assay confirms severely low activity level (<1%)."
+                cases: [
+                    [
+                        "A pediatric male presents with painful joint swelling (hemarthrosis) following minor play trauma.",
+                        "Family history reveals a maternal uncle with a known bleeding diathesis.",
+                        "Coagulation panel reveals an isolated prolonged aPTT with normal PT and normal platelets.",
+                        "Mixing studies completely correct the prolonged aPTT, pointing to a true factor deficiency.",
+                        "Definitive diagnosis is established by a specific Factor VIII functional assay demonstrating severely low activity (<1%)."
+                    ],
+                    [
+                        "A young male patient experiences spontaneous deep tissue hematomas after trivial bumps.",
+                        "Blood testing demonstrates an isolated delay in intrinsic pathway clotting times.",
+                        "X-linked recessive inheritance impairs the essential cofactor required for Factor X activation.",
+                        "Factor assays demonstrate profound depression of Factor VIII levels.",
+                        "Replacement therapy with recombinant factor successfully halts bleeding."
+                    ]
                 ],
                 summary: "X-linked recessive bleeding disorder caused by Factor VIII deficiency presenting with joint hemarthroses and isolated prolonged PTT.",
                 keyLabs: "Isolated prolonged PTT, Normal PT/Platelets, ↓ Factor VIII activity",
@@ -897,12 +1104,21 @@
                 name: "Hemophilia B",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A young boy exhibits spontaneous deep muscle hematomas and recurrent knee joint bleeding.",
-                    "Coagulation studies demonstrate isolated prolonged PTT with normal PT and normal platelet count.",
-                    "1:1 mixing study corrects the prolonged PTT to normal baseline.",
-                    "X-linked recessive deficiency of coagulation Factor IX.",
-                    "Specific Factor IX functional assay reveals markedly decreased activity."
+                cases: [
+                    [
+                        "A young boy exhibits spontaneous deep muscle hematomas and recurrent knee joint hemarthrosis.",
+                        "Coagulation studies demonstrate isolated prolonged aPTT with normal PT and normal platelet count.",
+                        "1:1 plasma mixing studies correct the prolonged aPTT to normal baseline.",
+                        "X-linked recessive inheritance pattern reduces functional hepatic zymogen synthesis.",
+                        "Definitive diagnosis is established by a specific Factor IX functional assay revealing markedly decreased activity."
+                    ],
+                    [
+                        "A pediatric patient is evaluated for recurrent bleeding into joint spaces following minor physical activity.",
+                        "Coagulation panels reveal an elevated aPTT with normal prothrombin time and platelet count.",
+                        "Deficiency impairs the intrinsic tenase complex formation.",
+                        "Christmas factor deficiency is suspected based on clinical phenotype.",
+                        "Specific factor testing confirms deficient Factor IX activity."
+                    ]
                 ],
                 summary: "X-linked recessive bleeding disorder caused by Factor IX deficiency ('Christmas disease'), clinically identical to Hemophilia A.",
                 keyLabs: "Isolated prolonged PTT, Normal PT/Platelets, ↓ Factor IX activity",
@@ -912,12 +1128,21 @@
                 name: "Von Willebrand Disease",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A young female reports lifelong heavy menstrual periods, frequent nosebleeds, and bleeding after dental work.",
-                    "Laboratory panel shows a prolonged bleeding time with a normal or slightly prolonged PTT.",
-                    "Platelet count and Prothrombin Time (PT) are normal.",
-                    "Deficiency in vWF impairs platelet adhesion to subendothelium and reduces Factor VIII stability.",
-                    "Ristocetin cofactor activity and vWF antigen levels are significantly decreased."
+                cases: [
+                    [
+                        "An adolescent female reports lifelong heavy menstrual periods, frequent nosebleeds, and prolonged bleeding after dental extractions.",
+                        "Laboratory panel shows a prolonged bleeding time with a normal or slightly prolonged aPTT.",
+                        "Platelet count and Prothrombin Time (PT) are completely normal.",
+                        "Pathophysiology involves deficiency of an adhesive glycoprotein required for platelet plug formation and Factor VIII stabilization.",
+                        "Definitive diagnosis is established by reduced ristocetin cofactor activity and low vWF antigen levels."
+                    ],
+                    [
+                        "A patient is evaluated for chronic mucocutaneous bleeding symptoms and easy bruising.",
+                        "Laboratory assessment shows normal platelet counts with impaired primary hemostasis.",
+                        "Plasma assays indicate reduced carrier protein levels supporting Factor VIII survival.",
+                        "Defective adhesive protein anomalies impair platelet subendothelium binding.",
+                        "Reduced ristocetin cofactor activity confirms von Willebrand disease."
+                    ]
                 ],
                 summary: "Most common inherited bleeding disorder caused by vWF deficiency, presenting with mucosal bleeding and abnormal platelet adhesion.",
                 keyLabs: "Normal/Prolonged PTT, Normal Platelets, ↓ vWF Antigen, ↓ Ristocetin Cofactor",
@@ -927,12 +1152,21 @@
                 name: "Immune Thrombocytopenic Purpura (ITP)",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A child develops sudden petechiae and nosebleeds two weeks after recovering from a viral infection.",
-                    "CBC shows isolated severe thrombocytopenia (<20,000/mcL) with normal Hb and WBC.",
-                    "Peripheral blood smear displays large platelets (megathrombocytes) without schistocytes.",
-                    "Anti-platelet autoantibodies (IgG) target GPIIb/IIIa receptors, causing splenic platelet clearance.",
-                    "Diagnosis of exclusion made by confirming isolated thrombocytopenia without bone marrow suppression."
+                cases: [
+                    [
+                        "A pediatric patient develops sudden petechiae and epistaxis two weeks following a mild viral upper respiratory infection.",
+                        "CBC shows isolated severe thrombocytopenia with normal hemoglobin and white blood cell counts.",
+                        "Peripheral blood smear displays large reactive platelets (megathrombocytes) without schistocytes.",
+                        "Pathophysiology involves anti-platelet autoantibodies (IgG) targeting GPIIb/IIIa receptors, causing splenic platelet clearance.",
+                        "Definitive diagnosis is established as a diagnosis of exclusion by confirming isolated thrombocytopenia without marrow abnormalities."
+                    ],
+                    [
+                        "An otherwise healthy adult notes unexpected purpura and oral mucosal bleeding.",
+                        "Blood tests confirm isolated low platelet count with completely normal red and white cell lineages.",
+                        "Autoimmune mechanisms coat circulating platelets with antibodies leading to reticuloendothelial destruction.",
+                        "Absence of splenomegaly and normal peripheral smear morphology support primary immune destruction.",
+                        "Responsive treatment to corticosteroids or IVIG confirms the etiology."
+                    ]
                 ],
                 summary: "Acquired autoimmune destruction of platelets following viral infections, presenting with isolated severe thrombocytopenia.",
                 keyLabs: "Isolated Thrombocytopenia (<100k), Normal PT/PTT, Megathrombocytes on smear",
@@ -942,12 +1176,21 @@
                 name: "Heparin-Induced Thrombocytopenia (HIT)",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A hospitalized patient on heparin develops a 50% drop in platelet count on Day 7 of therapy.",
-                    "Despite thrombocytopenia, the patient develops a new deep vein blood clot.",
-                    "IgG autoantibodies bind complexes of heparin and Platelet Factor 4 (PF4).",
-                    "Antibody-mediated platelet activation promotes widespread microvascular thrombosis and consumption.",
-                    "Serotonin Release Assay (SRA) or anti-PF4 ELISA confirms antibody positivity."
+                cases: [
+                    [
+                        "A hospitalized patient receiving therapeutic anticoagulation develops a 50% drop in platelet count on Day 7 of therapy.",
+                        "Despite the drop in platelets, the patient paradoxically develops a new deep vein thrombosis.",
+                        "Pathophysiology involves IgG autoantibodies binding complexes of heparin and Platelet Factor 4 (PF4).",
+                        "Antibody-mediated platelet activation promotes widespread microvascular thrombosis and consumption.",
+                        "Definitive diagnosis is confirmed via serotonin release assay (SRA) or anti-PF4 ELISA."
+                    ],
+                    [
+                        "During therapeutic anticoagulation, a patient's platelet count plummets concurrently with a new arterial clot.",
+                        "Laboratory screening indicates severe acquired platelet consumption.",
+                        "Immune complexes form between pharmacological polysaccharides and released carrier proteins.",
+                        "Activated platelets release prothrombotic microparticles driving hypercoagulability.",
+                        "Anti-PF4 antibody enzyme immunoassay confirms the diagnosis."
+                    ]
                 ],
                 summary: "Immune-mediated adverse drug reaction to heparin characterized by severe thrombocytopenia and paradoxical thrombosis.",
                 keyLabs: "Platelet count drop >50%, + Anti-PF4/heparin ELISA, + Serotonin Release Assay",
@@ -957,12 +1200,21 @@
                 name: "Thrombotic Thrombocytopenic Purpura (TTP)",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A 35-year-old female presents with fever, confusion, petechiae, and dark urine.",
-                    "Labs reveal microangiopathic hemolytic anemia and severe thrombocytopenia with normal PT and PTT.",
-                    "Peripheral blood smear shows abundant schistocytes (fragmented red cells).",
-                    "Severe deficiency of ADAMTS13 protease allows ultra-large vWF multimers to form microvascular thrombi.",
-                    "ADAMTS13 activity level assay is critically low (<10%)."
+                cases: [
+                    [
+                        "An adult patient presents with fluctuating neurologic symptoms, fever, petechiae, and dark urine.",
+                        "Labs reveal microangiopathic hemolytic anemia and severe thrombocytopenia with normal PT and aPTT.",
+                        "Peripheral blood smear shows abundant fragmented red cells (schistocytes).",
+                        "Pathophysiology involves severe deficiency of ADAMTS13 protease allowing ultra-large vWF multimers to form microvascular thrombi.",
+                        "Definitive diagnosis is established by an ADAMTS13 activity level assay critically below 10%."
+                    ],
+                    [
+                        "A patient exhibits waxing and waning confusion, fever, renal impairment, and purpura.",
+                        "Laboratory evaluation displays profound thrombocytopenia and hemolytic anemia with normal coagulation times.",
+                        "Proteolytic enzyme failure permits accumulation of hyper-adhesive von Willebrand multimers.",
+                        "Microscopic blood review shows numerous erythrocyte schistocytes.",
+                        "Assay confirmation shows absent or severely depressed ADAMTS13 activity."
+                    ]
                 ],
                 summary: "Microangiopathic hemolytic anemia and thrombocytopenia caused by ADAMTS13 deficiency with classic pentad of signs.",
                 keyLabs: "Schistocytes on smear, Normal PT/PTT, Severely low ADAMTS13 activity (<10%)",
@@ -972,12 +1224,21 @@
                 name: "Hemolytic Uremic Syndrome (HUS)",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A 4-year-old child develops acute oliguria, pallor, and bruising following a bloody diarrheal illness.",
-                    "Labs show microangiopathic hemolytic anemia, severe thrombocytopenia, and elevated creatinine.",
-                    "Coagulation parameters (PT and PTT) are completely normal.",
-                    "Shiga toxin injures renal endothelial cells, triggering localized microvascular glomerular thrombosis.",
-                    "Stool testing confirms Shiga toxin-producing E. coli (O157:H7)."
+                cases: [
+                    [
+                        "A pediatric patient develops acute oliguria, pallor, and bruising following a bloody diarrheal prodrome.",
+                        "Labs show microangiopathic hemolytic anemia, severe thrombocytopenia, and elevated serum creatinine.",
+                        "Coagulation parameters (PT and aPTT) are completely normal.",
+                        "Pathophysiology involves Shiga toxin injuring renal endothelial cells, triggering localized microvascular glomerular thrombosis.",
+                        "Definitive diagnosis is established by stool testing confirming Shiga toxin-producing E. coli (O157:H7)."
+                    ],
+                    [
+                        "Following a prodrome of gastroenteritis, a toddler presents with lethargy, petechiae, and decreased urine output.",
+                        "Blood tests indicate elevated blood urea nitrogen, creatinine, and schistocytes with normal clotting times.",
+                        "Endothelial cell damage is localized primarily to the renal microvasculature.",
+                        "Bacterial enterotoxin absorption triggers the microangiopathic cascade.",
+                        "Stool PCR identifies shiga-toxigenic bacterial pathogens."
+                    ]
                 ],
                 summary: "Classic triad of microangiopathic hemolytic anemia, thrombocytopenia, and acute renal failure following Shiga toxin E. coli infection.",
                 keyLabs: "Schistocytes, Normal PT/PTT, Acute renal failure (elevated Cr), Stool Shiga toxin +",
@@ -987,12 +1248,21 @@
                 name: "Coagulation of Liver Disease",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A patient with severe cirrhosis presents with jaundice, ascites, and persistent mucosal bleeding.",
-                    "Coagulation profile shows prolongation of both PT/INR and PTT.",
-                    "Administration of parenteral Vitamin K fails to correct the prolonged PT/INR.",
-                    "Hepatic synthetic failure impairs production of nearly all clotting factors except vWF.",
-                    "Clinical picture confirms combined synthetic failure and portal hypertension-induced hypersplenism."
+                cases: [
+                    [
+                        "A patient with chronic cirrhosis presents with jaundice, ascites, and persistent mucosal bleeding.",
+                        "Coagulation profile shows prolongation of both PT/INR and aPTT.",
+                        "Administration of parenteral Vitamin K fails to correct the prolonged PT/INR.",
+                        "Pathophysiology involves hepatic synthetic failure impairing production of nearly all clotting factors except vWF.",
+                        "Clinical picture confirms combined synthetic failure and portal hypertension-induced hypersplenism."
+                    ],
+                    [
+                        "An individual with end-stage alcoholic liver disease demonstrates spider angiomata, splenomegaly, and easy bruising.",
+                        "Coagulation panels show elevated prothrombin times and aPTT values.",
+                        "Parenteral vitamin K challenge produces no improvement in coagulation parameters.",
+                        "Decreased hepatocellular protein synthesis reduces circulating coagulation factor levels.",
+                        "Associated hypersplenism simultaneously sequesters platelets."
+                    ]
                 ],
                 summary: "Multifactorial coagulopathy caused by hepatic synthetic failure, impaired clearance of activators, and hypersplenism.",
                 keyLabs: "Prolonged PT/INR, Prolonged PTT, Thrombocytopenia, Uncorrected by Vitamin K",
@@ -1002,12 +1272,21 @@
                 name: "Disseminated Intravascular Coagulation (DIC)",
                 module: "Hematology",
                 category: "Bleeding, Platelet, & Consumption Disorders",
-                clues: [
-                    "A patient in septic shock develops oozing from surgical sites and petechiae across her body.",
-                    "Coagulation panel reveals prolonged PT and PTT along with severe thrombocytopenia.",
-                    "Fibrinogen level is critically low and D-Dimer is markedly elevated.",
-                    "Widespread systemic microvascular thrombosis consumes clotting factors and platelets.",
-                    "Peripheral blood smear demonstrates abundant schistocytes caused by microvascular fibrin strands."
+                cases: [
+                    [
+                        "A patient in septic shock develops diffuse oozing from surgical sites and petechiae across her body.",
+                        "Coagulation panel reveals prolonged PT and aPTT along with severe thrombocytopenia.",
+                        "Fibrinogen level is critically low and D-Dimer is markedly elevated.",
+                        "Pathophysiology involves widespread systemic microvascular thrombosis consuming clotting factors and platelets.",
+                        "Peripheral blood smear demonstrates abundant schistocytes caused by microvascular fibrin strands."
+                    ],
+                    [
+                        "An obstetric patient suffering from placental abruption presents with diffuse bleeding from intravenous sites.",
+                        "Laboratory testing demonstrates prolonged PT and aPTT alongside profound hypofibrinogenemia.",
+                        "D-Dimer levels are markedly elevated due to systemic secondary fibrinolysis.",
+                        "Uncontrolled activation of the coagulation cascade consumes available platelets and clotting factors.",
+                        "Blood smear reveals microangiopathic red cell fragmentation."
+                    ]
                 ],
                 summary: "Acquired consumptive coagulopathy characterized by systemic microvascular thrombosis and simultaneous severe bleeding.",
                 keyLabs: "Prolonged PT/PTT, ↓ Fibrinogen, ↑ D-Dimer, Schistocytes, ↓ Platelets",
@@ -1100,7 +1379,12 @@
                     }
                     const index = Math.abs(hash) % this.conditions.length;
                     this.targetCondition = this.conditions[index];
-                    this.setupGameSession();
+                    
+                    // Pick a case variant deterministically based on date hash
+                    const casesList = this.targetCondition.cases || [this.targetCondition.clues];
+                    const caseIndex = Math.abs(hash >> 3) % casesList.length;
+                    
+                    this.setupGameSession(casesList[caseIndex]);
                 },
 
                 startPracticeMode() {
@@ -1123,12 +1407,16 @@
                     }
                     localStorage.setItem('pardle_recent', JSON.stringify(this.recentPracticePool));
 
-                    this.setupGameSession();
+                    // Randomly select one of the distinct clinical cases for this condition
+                    const casesList = this.targetCondition.cases || [this.targetCondition.clues];
+                    const randomCaseIndex = Math.floor(Math.random() * casesList.length);
+
+                    this.setupGameSession(casesList[randomCaseIndex]);
                 },
 
-                setupGameSession() {
+                setupGameSession(selectedClues) {
                     this.currentAttempt = 1;
-                    this.activeClues = this.targetCondition.clues;
+                    this.activeClues = selectedClues;
                     this.guessedDiseases = [];
                     this.gameState = 'playing';
                 },
@@ -1139,11 +1427,11 @@
 
                 getClueTitle(index) {
                     const titles = [
-                        "Clue 1: Chief Complaint / Presentation",
-                        "Clue 2: Primary Lab / CBC Finding",
-                        "Clue 3: Smear / Specialized Diagnostic",
+                        "Clue 1: Broad Presentation (Epidemiology / General Sign)",
+                        "Clue 2: Clinical Progression (Specific Symptom / CBC Trend)",
+                        "Clue 3: Diagnostic / Smear Evaluation",
                         "Clue 4: Pathophysiology / Mechanism",
-                        "Clue 5: Gold Standard Confirmation"
+                        "Clue 5: High-Yield Definitive Hallmark"
                     ];
                     return titles[index] || `Clue ${index + 1}`;
                 },
