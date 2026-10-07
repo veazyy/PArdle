@@ -97,7 +97,7 @@
                                 <div class="text-[11px] text-slate-500">Streak</div>
                             </div>
                             <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-sm cursor-pointer hover:border-slate-400 transition" @click="openDirectoryModal = true">
-                                <div class="text-slate-900 text-base font-bold" x-text="conditions.length">32</div>
+                                <div class="text-slate-900 text-base font-bold" x-text="conditions.length">44</div>
                                 <div class="text-[11px] text-slate-500">Conditions 📖</div>
                             </div>
                         </div>
@@ -114,16 +114,41 @@
                             <button @click="gameState = 'menu'" class="text-slate-400 hover:text-slate-600 text-xs">✕ Close</button>
                         </div>
 
-                        <div class="space-y-2 max-h-56 overflow-y-auto pr-1">
+                        <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
                             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
                                 <span class="text-xs font-medium text-slate-700">Select All Categories</span>
                                 <input type="checkbox" x-model="selectAllCategories" @change="toggleAllCategories()" class="w-4 h-4 rounded text-slate-900 focus:ring-slate-500 bg-slate-100 border-slate-300">
                             </div>
-                            <template x-for="(cat, idx) in categories" :key="idx">
-                                <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer border border-slate-200">
-                                    <span class="text-xs font-medium text-slate-800" x-text="cat.name"></span>
-                                    <input type="checkbox" x-model="selectedCategories" :value="cat.name" class="w-4 h-4 rounded text-slate-900 focus:ring-slate-500 bg-slate-100 border-slate-300">
-                                </label>
+
+                            <!-- Modules with Dropdown Accordions -->
+                            <template x-for="mod in modules" :key="mod">
+                                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
+                                    <!-- Module Accordion Header -->
+                                    <div @click="toggleModuleSetup(mod)" class="flex items-center justify-between px-3.5 py-2.5 bg-slate-900 text-white cursor-pointer select-none">
+                                        <div class="flex items-center space-x-2">
+                                            <span>🩸</span>
+                                            <span class="text-xs font-bold uppercase tracking-wider" x-text="mod"></span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full" x-text="categoriesByModule(mod).filter(c => selectedCategories.includes(c.name)).length + '/' + categoriesByModule(mod).length + ' selected'"></span>
+                                            <span class="text-xs transition-transform duration-200" :class="openSetupModules[mod] ? 'rotate-180' : ''">▼</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Module Accordion Body / Category List -->
+                                    <div x-show="openSetupModules[mod]" x-cloak class="p-2.5 space-y-2 bg-white border-t border-slate-200">
+                                        <div class="flex justify-between items-center px-1 pb-1 text-[11px] text-slate-500">
+                                            <span>Subcategories</span>
+                                            <button @click.stop="toggleModuleAll(mod)" class="text-slate-700 underline font-medium hover:text-slate-900">Toggle Module</button>
+                                        </div>
+                                        <template x-for="cat in categoriesByModule(mod)" :key="cat.name">
+                                            <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer border border-slate-200">
+                                                <span class="text-xs font-medium text-slate-800" x-text="cat.name"></span>
+                                                <input type="checkbox" x-model="selectedCategories" :value="cat.name" @change="updateSelectAllState()" class="w-4 h-4 rounded text-slate-900 focus:ring-slate-500 bg-slate-100 border-slate-300">
+                                            </label>
+                                        </template>
+                                    </div>
+                                </div>
                             </template>
                         </div>
 
@@ -422,29 +447,34 @@
                 <button @click="openDirectoryModal = false" class="text-slate-400 hover:text-slate-600 text-sm">✕</button>
             </div>
 
-            <div class="space-y-4 overflow-y-auto pr-1 flex-1">
+            <div class="space-y-3 overflow-y-auto pr-1 flex-1">
                 <template x-for="mod in modules" :key="mod">
-                    <div class="space-y-2.5">
-                        <!-- Module Section Header -->
-                        <div class="flex items-center space-x-2 bg-slate-900 text-white px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm">
-                            <span>🩸</span>
-                            <span x-text="mod"></span>
-                            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full ml-auto" 
-                                  x-text="conditions.filter(c => c.module === mod).length + ' Conditions'"></span>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
+                        <!-- Module Dropdown Accordion Header -->
+                        <div @click="toggleModuleDirectory(mod)" class="flex items-center justify-between bg-slate-900 text-white px-3.5 py-2.5 cursor-pointer select-none">
+                            <div class="flex items-center space-x-2">
+                                <span>🩸</span>
+                                <span class="text-xs font-bold uppercase tracking-wider" x-text="mod"></span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full" 
+                                      x-text="conditions.filter(c => c.module === mod).length + ' Conditions'"></span>
+                                <span class="text-xs transition-transform duration-200" :class="openDirectoryModules[mod] ? 'rotate-180' : ''">▼</span>
+                            </div>
                         </div>
 
-                        <!-- Nested Categories within Module -->
-                        <div class="pl-1.5 space-y-2.5">
-                            <template x-for="cat in categories" :key="cat.name">
-                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                        <!-- Nested Categories within Module (Collapsible Dropdown Content) -->
+                        <div x-show="openDirectoryModules[mod]" x-cloak class="p-3 space-y-3 bg-slate-50 border-t border-slate-200">
+                            <template x-for="cat in categoriesByModule(mod)" :key="cat.name">
+                                <div class="bg-white border border-slate-200 rounded-xl p-3 space-y-2 shadow-2xs">
                                     <div class="flex items-center justify-between border-b border-slate-200 pb-1">
                                         <h4 class="text-xs font-bold text-slate-800" x-text="cat.name"></h4>
-                                        <span class="text-[10px] bg-white text-slate-500 px-2 py-0.5 rounded-full border border-slate-200" 
+                                        <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full border border-slate-200" 
                                               x-text="conditions.filter(c => c.module === mod && c.category === cat.name).length + ' conditions'"></span>
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                                         <template x-for="cond in conditions.filter(c => c.module === mod && c.category === cat.name)" :key="cond.name">
-                                            <div class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-medium text-slate-700 flex items-center space-x-1.5 shadow-xs">
+                                            <div class="bg-slate-50/50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-medium text-slate-700 flex items-center space-x-1.5">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
                                                 <span x-text="cond.name"></span>
                                             </div>
@@ -545,9 +575,26 @@
     </footer>
 
     <script>
-        const MODULES = ["Hematology"];
+        const MODULES = ["Hematology", "Oncology"];
+
+        const CATEGORIES = [
+            // Hematology Categories
+            { name: "Microcytic Anemias", module: "Hematology" },
+            { name: "Normocytic Anemias", module: "Hematology" },
+            { name: "Macrocytic / Megaloblastic Anemias", module: "Hematology" },
+            { name: "Hemolytic Anemias & Structural Defects", module: "Hematology" },
+            { name: "Bone Marrow Failure", module: "Hematology" },
+            { name: "Thrombophilic Disorders (Clotting & Emboli)", module: "Hematology" },
+            { name: "Bleeding, Platelet, & Consumption Disorders", module: "Hematology" },
+            // Oncology Categories
+            { name: "MPNs (Myeloproliferative Neoplasms)", module: "Oncology" },
+            { name: "Myeloid Malignancies", module: "Oncology" },
+            { name: "Lymphoid Leukemias (Acute)", module: "Oncology" },
+            { name: "Mature Lymphoid Neoplasms", module: "Oncology" }
+        ];
 
         const CONDITIONS_DATABASE = [
+            // --- HEMATOLOGY MODULE ---
             {
                 name: "Iron Deficiency Anemia",
                 module: "Hematology",
@@ -1291,17 +1338,370 @@
                 summary: "Acquired consumptive coagulopathy characterized by systemic microvascular thrombosis and simultaneous severe bleeding.",
                 keyLabs: "Prolonged PT/PTT, ↓ Fibrinogen, ↑ D-Dimer, Schistocytes, ↓ Platelets",
                 pearl: "Key hallmark is simultaneous elevation of PT/PTT paired with low fibrinogen and high D-Dimer."
-            }
-        ];
+            },
 
-        const CATEGORIES = [
-            { name: "Microcytic Anemias" },
-            { name: "Normocytic Anemias" },
-            { name: "Macrocytic / Megaloblastic Anemias" },
-            { name: "Hemolytic Anemias & Structural Defects" },
-            { name: "Bone Marrow Failure" },
-            { name: "Thrombophilic Disorders (Clotting & Emboli)" },
-            { name: "Bleeding, Platelet, & Consumption Disorders" }
+            // --- ONCOLOGY MODULE ---
+            {
+                name: "Hodgkin Lymphoma",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "A young adult presents with painless cervical lymphadenopathy that has persisted for several months.",
+                        "Further history uncovers drenching night sweats, unexplained fevers, and unintentional weight loss.",
+                        "Excisional biopsy of the affected lymph node reveals characteristic large, multinucleated cells.",
+                        "Pathology confirms Reed-Sternberg cells with prominent nucleoli ('owl-eye' appearance).",
+                        "Staging evaluation utilizes the Ann Arbor classification system for contiguous nodal progression."
+                    ],
+                    [
+                        "An individual is evaluated for superior vena cava compression symptoms caused by an anterior mediastinal mass.",
+                        "Review of systems highlights recurrent low-grade fevers and pruritus.",
+                        "Histological review shows neoplastic B cells surrounded by an inflammatory background of lymphocytes and eosinophils.",
+                        "Immunohistochemistry demonstrates positive staining for CD15 and CD30.",
+                        "Epidemiological associations tie a subset of cases to past Epstein-Barr virus infection."
+                    ]
+                ],
+                summary: "Malignant lymphoma characterized by Reed-Sternberg cells, contiguous nodal spread, and constitutional 'B symptoms'.",
+                keyLabs: "Reed-Sternberg cells (CD15+, CD30+), Normocytic anemia, Elevated ESR",
+                pearl: "Lymph nodes can become characteristically painful shortly after alcohol ingestion."
+            },
+            {
+                name: "Non-Hodgkin Lymphoma (NHL)",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "An older adult presents with generalized painless peripheral lymphadenopathy and extranodal masses in the gastrointestinal tract.",
+                        "Biopsy reveals a diffuse proliferation of large, aggressive malignant B lymphocytes.",
+                        "Clinical course is rapid, requiring urgent chemoimmunotherapy with R-CHOP.",
+                        "Pathology is classified as Diffuse Large B-Cell Lymphoma (DLBCL), the most common subtype.",
+                        "Unlike Hodgkin disease, dissemination occurs via non-contiguous lymphatic and hematogenous routes."
+                    ],
+                    [
+                        "A young patient presents with a rapidly growing facial/jaw mass and night sweats.",
+                        "Biopsy demonstrates a 'starry sky' microscopic appearance with high mitotic activity.",
+                        "Cytogenetic evaluation reveals characteristic c-myc oncogene translocation t(8;14).",
+                        "Diagnosis points to Burkitt lymphoma, strongly linked to Epstein-Barr virus.",
+                        "Tumor lysis syndrome must be aggressively monitored during initiation of intense chemotherapy."
+                    ]
+                ],
+                summary: "Diverse group of B-cell and T-cell neoplasms characterized by non-contiguous dissemination and variable clinical aggressiveness.",
+                keyLabs: "Monoclonal lymphoproliferation on flow cytometry, Biopsy confirmation",
+                pearl: "Burkitt lymphoma features the classic 'starry sky' histology and t(8;14) c-myc translocation."
+            },
+            // --- NEWLY ADDED NON-HODGKIN'S LYMPHOMA SUBTYPES ---
+            {
+                name: "Diffuse Large B-Cell Lymphoma",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "An older adult presents with a rapidly growing, painless mass in the neck and drenching night sweats.",
+                        "Excisional lymph node biopsy demonstrates sheets of large, atypical lymphoid cells with prominent nucleoli.",
+                        "Immunohistochemistry confirms a mature B-cell lineage positive for CD20.",
+                        "PET-CT staging reveals aggressive localized nodal and extranodal disease involvement.",
+                        "Standard first-line management consists of R-CHOP chemoimmunotherapy."
+                    ],
+                    [
+                        "A patient is evaluated for unexplained abdominal pain, weight loss, and a palpable gastrointestinal mass.",
+                        "Pathology review confirms a fast-growing, aggressive non-Hodgkin lymphoma subtype.",
+                        "Microscopic inspection shows large, transformed B-cells disrupting normal architecture.",
+                        "Genetic testing checks for BCL2 and BCL6 rearrangements.",
+                        "Early diagnosis and aggressive combination therapy yield high cure rates."
+                    ]
+                ],
+                summary: "Most common aggressive subtype of non-Hodgkin lymphoma, presenting with rapidly enlarging masses and B-symptoms.",
+                keyLabs: "CD20+ large atypical B-cells on biopsy, Elevated LDH",
+                pearl: "Aggressive yet potentially curable with chemoimmunotherapy (R-CHOP) even in advanced stages."
+            },
+            {
+                name: "Follicular Lymphoma",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "An older adult is evaluated for persistent, painless generalized lymphadenopathy over several years.",
+                        "Laboratory studies show normal complete blood counts with no acute constitutional symptoms.",
+                        "Excisional biopsy reveals a nodular/follicular growth pattern composed of centrocytes and centroblasts.",
+                        "Cytogenetic analysis demonstrates the hallmark t(14;18) translocation leading to BCL2 overexpression.",
+                        "The clinical course is characteristically indolent and slow-growing."
+                    ],
+                    [
+                        "A patient has incidental cervical and axillary lymph node enlargement discovered during routine checkups.",
+                        "Histology confirms a low-grade mature B-cell non-Hodgkin lymphoma.",
+                        "Malignant cells form neoplastic follicles recapitulating normal germinal centers.",
+                        "Treatment for early stages may involve observation or radiation, while advanced disease is managed with immunotherapy.",
+                        "There is a known risk of transformation into aggressive diffuse large B-cell lymphoma."
+                    ]
+                ],
+                summary: "Most common indolent non-Hodgkin lymphoma characterized by a follicular growth pattern and t(14;18) BCL2 translocation.",
+                keyLabs: "t(14;18) translocation, BCL2 overexpression, Follicular architecture on biopsy",
+                pearl: "Typically an indolent, incurable chronic condition managed with watch-and-wait or chemoimmunotherapy."
+            },
+            {
+                name: "Burkitt Lymphoma",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "A pediatric patient presents with a rapidly expanding abdominal mass and signs of acute tumor lysis syndrome.",
+                        "Laboratory workup reveals extraordinarily high serum uric acid, LDH, and potassium levels.",
+                        "Biopsy of the tumor demonstrates a classic 'starry sky' appearance created by interspersed benign macrophages.",
+                        "Cytogenetic testing reveals the characteristic t(8;14) translocation placing the c-myc oncogene next to immunoglobulin heavy chain genes.",
+                        "Strongly associated with Epstein-Barr virus infection in endemic African variants."
+                    ],
+                    [
+                        "An adult patient presents with a fast-growing facial or jaw lesion and intense night sweats.",
+                        "Histopathological examination reveals uniform, medium-sized B-cells with high mitotic rates and abundant apoptotic debris.",
+                        "Rapid tumor doubling time necessitates immediate intensive short-course chemotherapy.",
+                        "Prophylaxis against tumor lysis syndrome is critical during initial treatment.",
+                        "Diagnosis confirms Burkitt lymphoma."
+                    ]
+                ],
+                summary: "Extremely fast-growing aggressive B-cell non-Hodgkin lymphoma characterized by t(8;14) c-myc translocation and 'starry sky' histology.",
+                keyLabs: "t(8;14) translocation, c-myc overexpression, 'Starry sky' histology, Very high LDH",
+                pearl: "One of the fastest-growing human tumors; highly sensitive to chemotherapy but carries severe risk of tumor lysis syndrome."
+            },
+            {
+                name: "Multiple Myeloma",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "An older adult presents with persistent lower back pain, unexplained fatigue, and recurrent bacterial pneumonias.",
+                        "Laboratory workup demonstrates normocytic anemia, hypercalcemia, and elevated serum creatinine.",
+                        "Serum protein electrophoresis (SPEP) reveals a prominent monoclonal spike (M-spike).",
+                        "Urine protein electrophoresis detects abnormal free monoclonal light chains (Bence Jones proteins).",
+                        "Skeletal survey displays classic lytic 'punched-out' bone lesions."
+                    ],
+                    [
+                        "A patient is evaluated for progressive lethargy and acute renal impairment.",
+                        "Peripheral blood smear displays marked red blood cell aggregation resembling stacked coins (Rouleaux formation).",
+                        "Bone marrow aspiration confirms greater than 10% clonal plasma cells.",
+                        "Pathophysiology involves malignant plasma cell accumulation destroying bone and suppressing normal hematopoiesis.",
+                        "Diagnosis fulfills criteria based on CRAB findings: Calcium elevation, Renal failure, Anemia, and Bone lesions."
+                    ]
+                ],
+                summary: "Malignant plasma cell neoplasm causing bone destruction, renal failure, anemia, and monoclonal protein overproduction.",
+                keyLabs: "Serum M-spike, Bence Jones proteinuria, Rouleaux formation, >10% plasma cells in marrow",
+                pearl: "Remember the CRAB mnemonic: Calcium elevation, Renal insufficiency, Anemia, and Bone lytic lesions."
+            },
+            {
+                name: "Acute Myeloid Leukemia (AML)",
+                module: "Oncology",
+                category: "Myeloid Malignancies",
+                cases: [
+                    [
+                        "An adult patient presents with acute onset fatigue, pallor, easy bruising, and recurrent infections.",
+                        "Complete blood count demonstrates simultaneous pancytopenia alongside circulating immature blast cells.",
+                        "Peripheral blood smear reveals characteristic needle-like cytoplasmic inclusions within myeloblasts.",
+                        "Microscopic review confirms the presence of Auer rods.",
+                        "Bone marrow biopsy establishes the diagnosis by demonstrating greater than 20% myeloid blasts."
+                    ],
+                    [
+                        "A middle-aged individual is evaluated for rapid physical decline and gingival bleeding.",
+                        "Laboratory testing reveals severe anemia, thrombocytopenia, and leukocytosis with circulating blasts.",
+                        "Flow cytometry confirms malignant clonal proliferation of myeloid precursor cells.",
+                        "Cytogenetic abnormalities guide prognosis and intensive induction chemotherapy regimens.",
+                        "Pathology confirms acute myeloid leukemia."
+                    ]
+                ],
+                summary: "Rapidly progressive clonal malignancy of myeloid precursors leading to marrow failure and elevated blasts (>20%).",
+                keyLabs: ">20% blasts in bone marrow, Auer rods on blood smear, Pancytopenia",
+                pearl: "Auer rods are pathognomonic crystalline cytoplasmic inclusions found in myeloid blasts."
+            },
+            {
+                name: "Acute Promyelocytic Leukemia (APL)",
+                module: "Oncology",
+                category: "Myeloid Malignancies",
+                cases: [
+                    [
+                        "A patient presents with sudden bleeding manifestations, petechiae, and bruising due to severe coagulopathy.",
+                        "Laboratory findings show profound consumptive coagulopathy with elevated D-Dimer, low fibrinogen, and prolonged PT/PTT (DIC).",
+                        "Bone marrow biopsy reveals abnormal promyelocytes with multiple Auer rods ('fagot cells').",
+                        "Cytogenetic evaluation demonstrates the classic balanced translocation t(15;17) involving the retinoic acid receptor alpha gene.",
+                        "Immediate initiation of all-trans retinoic acid (ATRA) prevents catastrophic hemorrhagic mortality."
+                    ],
+                    [
+                        "An adult is rushed to the hospital with spontaneous mucosal hemorrhage and abnormal clotting profiles.",
+                        "Blood smear review shows heavily granulated abnormal promyelocytes.",
+                        "Molecular testing identifies the PML-RARA fusion gene resulting from chromosome 15 and 17 translocation.",
+                        "Targeted therapy successfully induces terminal differentiation of malignant promyelocytes.",
+                        "Diagnosis confirms acute promyelocytic leukemia (AML subtype M3)."
+                    ]
+                ],
+                summary: "Distinct subtype of AML (M3) characterized by t(15;17) translocation, high risk of DIC, and responsiveness to ATRA.",
+                keyLabs: "t(15;17) translocation, Prominent Auer rods, Disseminated Intravascular Coagulation (DIC)",
+                pearl: "Medical emergency due to catastrophic DIC; treatment with ATRA must start immediately upon clinical suspicion."
+            },
+            {
+                name: "Chronic Myeloid Leukemia (CML)",
+                module: "Oncology",
+                category: "MPNs (Myeloproliferative Neoplasms)",
+                cases: [
+                    [
+                        "A patient is evaluated for fatigue, left upper quadrant fullness, and massive splenomegaly.",
+                        "Complete blood count reveals marked leukocytosis with all stages of myeloid maturation represented ('leukoerythroblastic' picture).",
+                        "Leukocyte alkaline phosphatase (LAP) score is characteristically very low or absent.",
+                        "Cytogenetic testing reveals the diagnostic Philadelphia chromosome resulting from a t(9;22) translocation (BCR-ABL1).",
+                        "Highly responsive to targeted oral tyrosine kinase inhibitors such as imatinib."
+                    ],
+                    [
+                        "Routine blood work in an asymptomatic adult uncovers an extremely elevated white blood cell count exceeding 100,000/uL.",
+                        "Differential count shows a complete spectrum of granulocyte precursors from myeloblasts to mature neutrophils.",
+                        "Molecular assays confirm the presence of the BCR-ABL1 fusion oncogene.",
+                        "Chronic myeloproliferative disorder driving uncontrolled myeloid proliferation.",
+                        "Therapy with tyrosine kinase inhibitors induces complete cytogenetic remission."
+                    ]
+                ],
+                summary: "Myeloproliferative neoplasm driven by the BCR-ABL1 fusion gene (Philadelphia chromosome), characterized by granulocytosis and splenomegaly.",
+                keyLabs: "Philadelphia chromosome t(9;22), BCR-ABL1 positive, Low LAP score, Marked leukocytosis",
+                pearl: "Progresses through chronic, accelerated, and blast phases if untreated, but TKI therapy has transformed prognosis."
+            },
+            {
+                name: "Acute Lymphoblastic Leukemia (ALL)",
+                module: "Oncology",
+                category: "Lymphoid Leukemias (Acute)",
+                cases: [
+                    [
+                        "A pediatric patient presents with fever, bone pain, fatigue, and generalized lymphadenopathy.",
+                        "Complete blood count reveals pancytopenia alongside circulating immature lymphoid blast cells.",
+                        "Bone marrow aspiration confirms greater than 20% lymphoblasts replacing normal hematopoietic elements.",
+                        "Flow cytometry confirms precursor B-cell immunophenotype (most common pediatric form).",
+                        "Highly responsive to multi-agent chemotherapy with excellent long-term survival rates in children."
+                    ],
+                    [
+                        "An adolescent is evaluated for bruising, sternal tenderness, and mediastinal adenopathy.",
+                        "Blood tests indicate severe anemia and thrombocytopenia with abnormal white blood cells.",
+                        "Marrow biopsy shows sheets of immature lymphoblasts testing positive for terminal deoxynucleotidyl transferase (TdT).",
+                        "Acute leukemia of lymphoid lineage is established.",
+                        "Prophylactic intrathecal chemotherapy is administered to prevent central nervous system relapse."
+                    ]
+                ],
+                summary: "Acute leukemia of immature lymphoid cells (lymphoblasts), most common in children, presenting with bone pain and cytopenias.",
+                keyLabs: ">20% lymphoblasts in bone marrow, TdT positive, Pancytopenia",
+                pearl: "Central nervous system sanctuary site involvement requires prophylactic intrathecal chemotherapy."
+            },
+            {
+                name: "Chronic Lymphocytic Leukemia (CLL)",
+                module: "Oncology",
+                category: "Mature Lymphoid Neoplasms",
+                cases: [
+                    [
+                        "An asymptomatic older adult is found to have persistent absolute lymphocytosis on routine outpatient blood testing.",
+                        "Physical examination reveals painless generalized lymphadenopathy and mild splenomegaly.",
+                        "Peripheral blood smear demonstrates characteristic 'smudge cells' representing fragile lymphocytes crushed during slide preparation.",
+                        "Flow cytometry confirms clonal mature B-cell markers including CD5, CD19, and CD23.",
+                        "Clinical course is typically indolent, though advanced disease can transform into aggressive lymphoma."
+                    ],
+                    [
+                        "An elderly patient is evaluated for fatigue and recurrent sinus infections.",
+                        "Complete blood count shows a sustained white blood cell count with predominant mature-appearing lymphocytes.",
+                        "Smear review displays numerous broken nuclear remnants (smudge cells).",
+                        "Immunophenotyping establishes a monoclonal B-cell population.",
+                        "Diagnosis confirms chronic lymphocytic leukemia, the most common adult leukemia in Western countries."
+                    ]
+                ],
+                summary: "Clonal malignancy of mature B lymphocytes characterized by isolated absolute lymphocytosis, smudge cells, and older age of onset.",
+                keyLabs: "Absolute lymphocytosis (>5,000/uL), Smudge cells on smear, CD5+/CD19+ flow cytometry",
+                pearl: "Smudge cells are artificial artifacts created when fragile leukemic lymphocytes are smeared onto glass slides."
+            },
+            {
+                name: "Polycythemia Vera (PV)",
+                module: "Oncology",
+                category: "MPNs (Myeloproliferative Neoplasms)",
+                cases: [
+                    [
+                        "A middle-aged patient presents with intense pruritus after taking warm showers (aquagenic pruritus) and ruddy facial plethora.",
+                        "Laboratory testing reveals significantly elevated hemoglobin and hematocrit representing absolute erythrocytosis.",
+                        "Serum erythropoietin (EPO) level is characteristically suppressed or subnormal.",
+                        "Patient is at high risk for major thrombotic events such as deep vein thrombosis and Budd-Chiari syndrome.",
+                        "Diagnostic confirmation is secured by identifying the V617F point mutation in the JAK2 gene."
+                    ],
+                    [
+                        "An adult is evaluated for headaches, dizziness, and visual disturbances alongside a ruddy complexion.",
+                        "CBC confirms high red blood cell mass with normal arterial oxygen saturation.",
+                        "Autonomous bone marrow red cell production proceeds independently of renal hormone regulation.",
+                        "Genetic testing confirms a somatic mutation in Janus kinase 2.",
+                        "Primary management centers on therapeutic phlebotomy to maintain hematocrit below 45%."
+                    ]
+                ],
+                summary: "Myeloproliferative neoplasm characterized by autonomous overproduction of red blood cells, low EPO, and JAK2 mutation.",
+                keyLabs: "Elevated Hgb/Hct, Low serum EPO, + JAK2 V617F mutation",
+                pearl: "Managed primarily with therapeutic phlebotomy and low-dose aspirin to prevent thrombotic complications."
+            },
+            {
+                name: "Essential Thrombocytosis (ET)",
+                module: "Oncology",
+                category: "MPNs (Myeloproliferative Neoplasms)",
+                cases: [
+                    [
+                        "An adult is incidentally found to have a markedly elevated platelet count exceeding 450,000/uL on routine CBC.",
+                        "Clinical symptoms include microvascular disturbances such as painful burning sensations in the hands and feet (erythromelalgia).",
+                        "Bone marrow biopsy reveals clusters of large, mature, hyperplastic megakaryocytes.",
+                        "Secondary reactive causes of thrombocytosis (such as iron deficiency or acute inflammation) are systematically ruled out.",
+                        "Genetic testing identifies associated mutations in JAK2, CALR, or MPL genes."
+                    ],
+                    [
+                        "A patient with a history of recurrent mild thrombotic events is evaluated for unexplained platelet elevation.",
+                        "Peripheral blood smear shows abundant giant platelets without significant anemia or leukocytosis.",
+                        "Clonal proliferation is restricted primarily to the megakaryocytic lineage.",
+                        "Diagnosis confirms essential thrombocytosis.",
+                        "Paradoxical bleeding can occasionally occur due to acquired von Willebrand factor deficiency from high platelet mass."
+                    ]
+                ],
+                summary: "Myeloproliferative neoplasm characterized by sustained megakaryocyte proliferation and marked thrombocytosis.",
+                keyLabs: "Platelet count >450,000/uL, Normal Hb, + JAK2 / CALR / MPL mutations",
+                pearl: "Paradoxically, extreme thrombocytosis can lead to bleeding complications due to acquired von Willebrand syndrome."
+            },
+            {
+                name: "Myelofibrosis",
+                module: "Oncology",
+                category: "MPNs (Myeloproliferative Neoplasms)",
+                cases: [
+                    [
+                        "An older patient presents with progressive fatigue, drenching night sweats, weight loss, and massive hepatosplenomegaly.",
+                        "Complete blood count reveals a leukoerythroblastic anemia with distinctive tear-drop shaped red blood cells (dacrocytes).",
+                        "Attempts at bone marrow aspiration consistently yield a 'dry tap' due to extensive collagen and reticulin fibrosis.",
+                        "Cytogenetic screening frequently detects JAK2, CALR, or MPL mutations.",
+                        "Splenomegaly results from extensive extramedullary hematopoiesis as secondary organs take over blood production."
+                    ],
+                    [
+                        "An individual is evaluated for severe constitutional symptoms and abdominal fullness from massive splenic enlargement.",
+                        "Peripheral blood smear displays nucleated red blood cells and teardrop poikilocytes.",
+                        "Trephine bone marrow biopsy confirms dense fibrotic replacement of marrow spaces.",
+                        "Primary myelofibrosis diagnosis is established.",
+                        "Progressive bone marrow failure leads to severe transfusion dependency over time."
+                    ]
+                ],
+                summary: "Philadelphia-negative myeloproliferative neoplasm characterized by bone marrow fibrosis, extramedullary hematopoiesis, and teardrop cells.",
+                keyLabs: "Dacrocytes (teardrop cells) on smear, Dry tap on bone marrow biopsy, Reticulin fibrosis",
+                pearl: "Massive splenomegaly is driven by extramedullary hematopoiesis as the spleen attempts to compensate for fibrotic marrow."
+            },
+            {
+                name: "Myelodysplastic Syndrome (MDS)",
+                module: "Oncology",
+                category: "Myeloid Malignancies",
+                cases: [
+                    [
+                        "An older adult presents with unexplained progressive fatigue and macrocytic anemia refractory to vitamin B12 and folate.",
+                        "Peripheral blood smear displays dysplastic changes such as Pelger-Huët anomaly (hyposegmented neutrophils) and ringed sideroblasts.",
+                        "Bone marrow biopsy reveals a hypercellular marrow with ineffective hematopoiesis and fewer than 20% blast cells.",
+                        "Clonal stem cell disorder carries a significant risk of progression into acute myeloid leukemia (AML).",
+                        "Management ranges from supportive transfusions to hypomethylating agents or stem cell transplantation."
+                    ],
+                    [
+                        "An elderly patient is found to have persistent unexplained cytopenias involving multiple cell lineages.",
+                        "Bone marrow evaluation confirms morphological dysplasia across erythroid and myeloid cells.",
+                        "Blast percentage remains below the 20% threshold required to diagnose acute leukemia.",
+                        "Diagnosis confirms myelodysplastic syndrome.",
+                        "Ineffective hematopoiesis results in peripheral cytopenias despite a cellular marrow space."
+                    ]
+                ],
+                summary: "Clonal hematopoietic stem cell disorder characterized by ineffective hematopoiesis, cytopenias, dysplasia, and risk of AML transformation.",
+                keyLabs: "Dysplastic blood cells, Pelger-Huët anomaly, <20% blasts in marrow, Macrocytic anemia",
+                pearl: "Distinguished from acute myeloid leukemia (AML) by having fewer than 20% blasts in the bone marrow."
+            }
         ];
 
         function caseleApp() {
@@ -1322,6 +1722,10 @@
                 openInfoModal: false,
                 openDirectoryModal: false,
                 
+                // Dropdown states for collapsible major folders
+                openDirectoryModules: { "Hematology": true, "Oncology": true },
+                openSetupModules: { "Hematology": true, "Oncology": true },
+
                 stats: JSON.parse(localStorage.getItem('pardle_stats')) || {
                     gamesPlayed: 0,
                     gamesWon: 0,
@@ -1333,6 +1737,37 @@
                 recentPracticePool: JSON.parse(localStorage.getItem('pardle_recent')) || [],
 
                 init() {},
+
+                categoriesByModule(mod) {
+                    return this.categories.filter(c => c.module === mod);
+                },
+
+                toggleModuleDirectory(mod) {
+                    this.openDirectoryModules[mod] = !this.openDirectoryModules[mod];
+                },
+
+                toggleModuleSetup(mod) {
+                    this.openSetupModules[mod] = !this.openSetupModules[mod];
+                },
+
+                toggleModuleAll(mod) {
+                    const modCats = this.categoriesByModule(mod).map(c => c.name);
+                    const allSelected = modCats.every(c => this.selectedCategories.includes(c));
+                    if (allSelected) {
+                        this.selectedCategories = this.selectedCategories.filter(c => !modCats.includes(c));
+                    } else {
+                        for (const c of modCats) {
+                            if (!this.selectedCategories.includes(c)) {
+                                this.selectedCategories.push(c);
+                            }
+                        }
+                    }
+                    this.updateSelectAllState();
+                },
+
+                updateSelectAllState() {
+                    this.selectAllCategories = this.categories.every(c => this.selectedCategories.includes(c.name));
+                },
 
                 get topStrongestConditions() {
                     const list = [];
@@ -1380,7 +1815,6 @@
                     const index = Math.abs(hash) % this.conditions.length;
                     this.targetCondition = this.conditions[index];
                     
-                    // Pick a case variant deterministically based on date hash
                     const casesList = this.targetCondition.cases || [this.targetCondition.clues];
                     const caseIndex = Math.abs(hash >> 3) % casesList.length;
                     
@@ -1407,7 +1841,6 @@
                     }
                     localStorage.setItem('pardle_recent', JSON.stringify(this.recentPracticePool));
 
-                    // Randomly select one of the distinct clinical cases for this condition
                     const casesList = this.targetCondition.cases || [this.targetCondition.clues];
                     const randomCaseIndex = Math.floor(Math.random() * casesList.length);
 
@@ -1575,16 +2008,9 @@
                         if (mainComponent && mainComponent.submitGuess) {
                             mainComponent.submitGuess(this.query);
                         }
+                        this.open = false;
+                        this.query = '';
                     }
-                },
-
-                submitCurrentGuess(val) {
-                    const mainComponent = Alpine.$data(this.$root);
-                    if (mainComponent && mainComponent.submitGuess) {
-                        mainComponent.submitGuess(val);
-                    }
-                    this.query = '';
-                    this.open = false;
                 },
 
                 selectCondition(name) {
@@ -1594,6 +2020,15 @@
                     if (mainComponent && mainComponent.submitGuess) {
                         mainComponent.submitGuess(name);
                     }
+                    this.query = '';
+                },
+
+                submitCurrentGuess(q) {
+                    const mainComponent = Alpine.$data(this.$root);
+                    if (mainComponent && mainComponent.submitGuess) {
+                        mainComponent.submitGuess(q);
+                    }
+                    this.open = false;
                     this.query = '';
                 }
             }
