@@ -97,7 +97,7 @@
                                 <div class="text-[11px] text-slate-500">Streak</div>
                             </div>
                             <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-sm cursor-pointer hover:border-slate-400 transition" @click="openDirectoryModal = true">
-                                <div class="text-slate-900 text-base font-bold" x-text="conditions.length">44</div>
+                                <div class="text-slate-900 text-base font-bold" x-text="conditions.length"></div>
                                 <div class="text-[11px] text-slate-500">Conditions 📖</div>
                             </div>
                         </div>
@@ -613,6 +613,13 @@
                         "Laboratory findings confirm a microcytic hypochromic red cell profile.",
                         "Advanced testing demonstrates depleted body iron stores with very low serum ferritin.",
                         "The definitive confirmation is established by identifying chronic blood loss or malabsorption driving total body iron depletion."
+                    ],
+                    [
+                        "A premenopausal woman presents with heavy menses and complaints of chronic brain fog and hair shedding.",
+                        "Initial blood work shows a hemoglobin of 10.2 g/dL with prominent microcytosis.",
+                        "Stool occult blood testing is negative, but serum iron is profoundly low.",
+                        "Iron studies indicate ferritin values falling below 12 ng/mL.",
+                        "Replenishing stores via oral iron supplementation successfully reverses the hematologic defects."
                     ]
                 ],
                 summary: "Most common nutritional deficiency worldwide. Characterized by low MCV, low ferritin, and elevated TIBC.",
@@ -637,6 +644,13 @@
                         "Iron studies, TIBC, and ferritin values are entirely within normal limits.",
                         "Peripheral blood smear displays slight red cell variation but normal iron stores.",
                         "Confirmation requires genetic DNA testing to evaluate the precise number of deleted alpha-globin alleles."
+                    ],
+                    [
+                        "A routine family screening identifies a patient with unexplained low MCV but completely normal iron parameters.",
+                        "Blood counts demonstrate a preserved or slightly elevated red blood cell (RBC) count despite lower hemoglobin.",
+                        "Electrophoresis fails to show abnormal hemoglobin variants in adult life.",
+                        "Clinical context points toward silent or trait carrier states common in Mediterranean and Asian populations.",
+                        "Family pedigree analysis confirms hereditary inheritance of alpha-globin locus deletions."
                     ]
                 ],
                 summary: "Inherited microcytic anemia caused by decreased alpha-globin chain synthesis due to gene deletions on chromosome 16.",
@@ -661,6 +675,13 @@
                         "Peripheral blood smear displays striking basophilic stippling and target cells.",
                         "Pathophysiology involves point mutations on chromosome 11 impairing beta-chain synthesis.",
                         "Electrophoresis confirms elevated HbA2 and variable increases in fetal hemoglobin."
+                    ],
+                    [
+                        "A young adult presents with chronic fatigue and is found to have disproportionately low MCV relative to mild anemia.",
+                        "Iron studies rule out deficiency, and ferritin is robustly normal or high.",
+                        "Microscopic examination highlights hypochromia, anisopoikilocytosis, and nucleated red cells.",
+                        "Quantitative chromatographic testing shows an increased percentage of HbA2.",
+                        "Genetic counseling identifies a heterozygous beta-thalassemia minor trait."
                     ]
                 ],
                 summary: "Inherited hemoglobinopathy caused by beta-globin gene mutations leading to ineffective erythropoiesis and severe microcytic anemia.",
@@ -685,6 +706,13 @@
                         "Serum iron is low, while storage ferritin is robustly elevated.",
                         "Inflammatory cytokines upregulate hepatic hepcidin release, restricting iron mobilization.",
                         "Resolving the primary underlying inflammatory process corrects the hematologic findings."
+                    ],
+                    [
+                        "A patient with active rheumatoid arthritis is evaluated for subacute onset anemia.",
+                        "Laboratory screening demonstrates normal or slightly reduced MCV alongside depressed serum iron levels.",
+                        "Evaluation of storage parameters shows normal or elevated serum ferritin.",
+                        "Total iron-binding capacity is low, distinguishing this from iron deficiency.",
+                        "Pathophysiology is driven by cytokine-mediated iron sequestration mediated by hepcidin."
                     ]
                 ],
                 summary: "Anemia of inflammation characterized by hepcidin-mediated iron sequestration, high/normal ferritin, and low TIBC.",
@@ -709,6 +737,13 @@
                         "Serum chemistry demonstrates elevated liver enzymes and profoundly high ferritin levels.",
                         "Pathophysiology involves excessive dietary iron absorption driven by defective signaling.",
                         "Definitive confirmation is achieved via genetic testing or hepatic tissue iron quantification."
+                    ],
+                    [
+                        "A male patient in his 50s is found to have progressive cardiomyopathy and unexplained liver cirrhosis.",
+                        "Further history reveals he has taken multivitamin iron supplements for years believing they gave him energy.",
+                        "Transferrin saturation tests return values exceeding 80%.",
+                        "Liver biopsy confirms massive parenchymal iron overload.",
+                        "Therapeutic phlebotomy program is initiated to safely mobilize and deplete excess body iron."
                     ]
                 ],
                 summary: "Autosomal recessive iron overload disorder causing progressive multi-organ tissue deposition ('bronze diabetes'), arthritis, and cirrhosis.",
@@ -729,10 +764,17 @@
                     ],
                     [
                         "An individual with diabetic nephropathy notes worsening shortness of breath on exertion.",
-                        "Blood work confirms normocytic red cell morphology with adequate iron reserves.",
+                        "Blood counts confirm normocytic red cell morphology with adequate iron reserves.",
                         "Bone marrow proliferation is impaired due to failing renal peritubular interstitial cells.",
                         "Assays confirm hormone deficiency preventing adequate red blood cell production.",
                         "Parenteral administration of erythropoiesis-stimulating agents successfully improves hemoglobin."
+                    ],
+                    [
+                        "A patient undergoing regular nephrology follow-up for stage 4 chronic kidney disease displays progressive pallor.",
+                        "Hemoglobin has steadily declined to 9.5 g/dL with normal MCV and normal iron stores.",
+                        "Endogenous erythropoietin production fails to match the degree of anemia.",
+                        "Pathophysiology stems from loss of specialized peritubular interstitial cells in the renal cortex.",
+                        "Initiation of recombinant erythropoietin therapy corrects the red cell deficit."
                     ]
                 ],
                 summary: "Normocytic anemia caused primarily by failing renal endocrine function leading to deficient erythropoietin (EPO) production.",
@@ -757,6 +799,13 @@
                         "Biochemical testing indicates severe malabsorption of cobalamin due to lack of gastric secretions.",
                         "Autoimmune destruction leads to total intrinsic factor deficiency.",
                         "Parenteral vitamin B12 replacement halts spinal cord dorsal column demyelination."
+                    ],
+                    [
+                        "An individual presents with chronic fatigue, atrophic glossitis (smooth red tongue), and numbness in the hands.",
+                        "Hematology profiles indicate marked macrocytosis with ovalocytes on peripheral smear.",
+                        "Endoscopy reveals atrophic gastritis with achlorhydria.",
+                        "Laboratory testing demonstrates undetectable serum vitamin B12 levels.",
+                        "Assays confirm the presence of blocking autoantibodies against gastric intrinsic factor."
                     ]
                 ],
                 summary: "Autoimmune gastritis causing intrinsic factor deficiency, leading to Vitamin B12 malabsorption and megaloblastic anemia with neurologic deficits.",
@@ -781,6 +830,13 @@
                         "Terminal ileum malabsorption prevents proper micronutrient assimilation.",
                         "Cellular deficiency impairs DNA synthesis and myelin maintenance.",
                         "Subcutaneous cobalamin supplementation normalizes all clinical and laboratory parameters."
+                    ],
+                    [
+                        "A strict vegan patient presents with subacute combined degeneration of the spinal cord and megaloblastic anemia.",
+                        "Serum cobalamin levels are severely depressed.",
+                        "Urine and serum metabolite testing reveals accumulation of both homocysteine and methylmalonic acid.",
+                        "Oral or parenteral supplementation corrects metabolic pathways and restores neurological function.",
+                        "Diagnosis confirms primary dietary cobalamin deficiency."
                     ]
                 ],
                 summary: "Deficiency of cobalamin causing impaired DNA synthesis, megaloblastic macrocytic anemia, elevated MMA, and neurologic symptoms.",
@@ -800,11 +856,18 @@
                         "Serum and red blood cell folate assays confirm depleted tissue stores."
                     ],
                     [
-                        "A malnourished resident reports weakness, lethargy, and a sore red tongue.",
+                        "An undernourished resident reports weakness, lethargy, and a sore red tongue.",
                         "Laboratory testing demonstrates macrocytic red blood cells with normal renal function.",
                         "Impaired nucleotide synthesis results from inadequate dietary intake of green leafy vegetables.",
                         "Vitamin B12 and methylmalonic acid levels are entirely within normal limits.",
                         "Oral folic acid supplementation rapidly resolves the megaloblastic changes."
+                    ],
+                    [
+                        "A pregnant patient is evaluated for fatigue during routine prenatal care.",
+                        "Blood counts show mild macrocytosis with increased folate demands.",
+                        "Metabolic panels confirm isolated deficiency in circulating folate stores while B12 remains completely normal.",
+                        "Methylmalonic acid assays return entirely normal values.",
+                        "Prescription prenatal supplementation normalizes erythrocyte morphology and prevents neural tube defects."
                     ]
                 ],
                 summary: "Megaloblastic macrocytic anemia caused by inadequate folate intake, characterized by elevated homocysteine but NORMAL methylmalonic acid.",
@@ -829,6 +892,13 @@
                         "Microscopic examination shows red blood cells modified by splenic macrophage phagocytosis.",
                         "Coated erythrocytes are prematurely sequestered in the reticuloendothelial system.",
                         "Direct Coombs test confirms antibody binding at 37°C."
+                    ],
+                    [
+                        "A patient presenting with a new flare of systemic lupus erythematosus develops accelerated anemia and dark urine.",
+                        "Haptoglobin is depleted and indirect bilirubin is markedly elevated.",
+                        "Spherocytes are noted on the peripheral blood film without evidence of microangiopathic fragmentation.",
+                        "Immune-mediated mechanisms destroy erythrocytes via extravascular splenic clearance.",
+                        "Direct Antiglobulin Test is positive for warm-reacting IgG antibodies."
                     ]
                 ],
                 summary: "Acquired hemolytic anemia mediated by IgG autoantibodies reacting at warm temperatures (37°C) causing splenic extravascular hemolysis.",
@@ -853,35 +923,18 @@
                         "Clonal B-cell activity produces cold agglutinins.",
                         "In vitro testing demonstrates spontaneous red cell agglutination upon cooling.",
                         "Coombs testing demonstrates positivity exclusively for complement proteins."
+                    ],
+                    [
+                        "A patient recovering from Mycoplasma pneumoniae infection develops acute acrocyanosis and mild hemolytic anemia.",
+                        "Laboratory tests display elevated reticulocytes and high cold agglutinin titers.",
+                        "In vitro blood samples agglutinate when placed in ice water and redisperse upon warming.",
+                        "Complement fixation leads to erythrocyte destruction.",
+                        "Direct antiglobulin testing confirms C3 positivity with negative IgG."
                     ]
                 ],
                 summary: "Immune hemolytic anemia caused by cold-reacting IgM autoantibodies causing RBC agglutination, acrocyanosis, and complement activation.",
                 keyLabs: "+ Direct Coombs (C3d only), In vitro RBC agglutination, ↑ LDH, ↓ Haptoglobin",
                 pearl: "Corticosteroids are generally ineffective; primary management centers on cold temperature avoidance."
-            },
-            {
-                name: "Hereditary Spherocytosis",
-                module: "Hematology",
-                category: "Hemolytic Anemias & Structural Defects",
-                cases: [
-                    [
-                        "A young adult presents with mild jaundice, scleral icterus, and a family history of early gallbladder removal.",
-                        "Physical examination reveals palpable splenomegaly.",
-                        "CBC shows normocytic anemia with an elevated mean corpuscular hemoglobin concentration (MCHC >36 g/dL).",
-                        "Peripheral blood smear displays numerous dense, round spherocytes lacking central pallor.",
-                        "Diagnosis is confirmed by an abnormal eosin-5-maleimide (EMA) binding flow cytometry test."
-                    ],
-                    [
-                        "An adolescent is evaluated for fatigue and recurrent pigment gallstones.",
-                        "Red blood cell indices show high MCHC with normal or low MCV.",
-                        "Inherited cytoskeletal protein defects (ankyrin or spectrin) reduce red cell membrane surface area.",
-                        "Deformed cells are prematurely trapped and destroyed in the splenic cords.",
-                        "EMA binding flow cytometry verifies the structural membrane defect."
-                    ]
-                ],
-                summary: "Inherited RBC membrane defect resulting in spherical red blood cells that are prematurely destroyed in the spleen.",
-                keyLabs: "↑ MCHC (>36 g/dL), Spherocytes on smear, + EMA binding test",
-                pearl: "Bilirubin pigment gallstones frequently form early in life due to continuous chronic hemolysis."
             },
             {
                 name: "G6PD Deficiency",
@@ -901,6 +954,13 @@
                         "Supravital staining reveals denatured hemoglobin precipitates inside red blood cells.",
                         "Glutathione recycling fails during oxidative challenges, causing acute cellular lysis.",
                         "Enzymatic assays verify deficient hexose monophosphate shunt function."
+                    ],
+                    [
+                        "A male military recruit develops acute hemolytic jaundice after being prescribed primaquine for malaria prophylaxis.",
+                        "Laboratory evaluation shows sudden drop in hemoglobin accompanied by elevated LDH.",
+                        "Peripheral smear demonstrates red cells with membrane bites removed by splenic macrophages.",
+                        "Enzymatic hexose monophosphate shunt failure prevents neutralization of oxidant stress.",
+                        "Repeat quantitative testing weeks later confirms deficient enzyme phenotype."
                     ]
                 ],
                 summary: "X-linked enzymatic defect leading to episodic oxidative hemolytic anemia triggered by infections, fava beans, or oxidant drugs.",
@@ -925,6 +985,13 @@
                         "Extreme renal medullary hypertonicity provokes localized micro-infarctions.",
                         "Presence of one normal and one abnormal beta-globin gene characterizes the carrier state.",
                         "Electrophoresis confirms the carrier ratio of adult hemoglobin to sickle hemoglobin."
+                    ],
+                    [
+                        "Routine pre-employment screening identifies an asymptomatic individual with normal CBC indices.",
+                        "Family history is notable for relatives with mild renal concentrating defects.",
+                        "Hemoglobin solubility screening is positive.",
+                        "Confirmatory chromatographic testing verifies the heterozygous carrier state.",
+                        "Patient is reassured regarding normal life expectancy and benign carrier status."
                     ]
                 ],
                 summary: "Heterozygous carrier state for HbS (AS), usually asymptomatic except for potential urinary concentrating defects under extreme hypoxia.",
@@ -949,6 +1016,13 @@
                         "Smear analysis reveals Howell-Jolly bodies reflecting autosplenectomy alongside sickled erythrocytes.",
                         "A point mutation substituting valine for glutamic acid causes hemoglobin polymerization under hypoxia.",
                         "Electrophoretic testing verifies homozygous HbS disease."
+                    ],
+                    [
+                        "An adolescent with known hemoglobinopathy presents with sudden painful priapism and severe fatigue.",
+                        "Pathophysiology involves polymerization of deoxygenated mutant hemoglobin causing microvascular occlusion.",
+                        "Peripheral blood review demonstrates irreversible sickled erythrocytes and target cells.",
+                        "Splenic function is entirely absent due to recurrent early infarction.",
+                        "Electrophoresis shows absent HbA with major HbS peaks."
                     ]
                 ],
                 summary: "Autosomal recessive hemoglobinopathy causing chronic hemolytic anemia, painful vaso-occlusive crises, and functional asplenia.",
@@ -973,6 +1047,13 @@
                         "Reticulocyte production index is exceptionally low.",
                         "Peripheral blood smear confirms pancytopenia without abnormal blast cells.",
                         "Trephine core biopsy demonstrates an empty, fatty marrow space."
+                    ],
+                    [
+                        "An individual with a history of recent viral hepatitis presents with severe lethargy and spontaneous gum bleeding.",
+                        "Laboratory evaluations demonstrate profound leukopenia, thrombocytopenia, and normocytic anemia.",
+                        "Bone marrow examination confirms an aplastic marrow space composed predominantly of adipose tissue.",
+                        "Cytogenetic and flow cytometric testing rule out acute leukemia or myelodysplasia.",
+                        "Immunosuppressive therapy or bone marrow transplantation is evaluated."
                     ]
                 ],
                 summary: "Pancytopenia with a hypoplastic/fatty bone marrow resulting from immune-mediated stem cell destruction.",
@@ -997,6 +1078,13 @@
                         "Laboratory screening demonstrates high plasma D-Dimer levels.",
                         "Virchow triad components of venous stasis initiate intraluminal clotting.",
                         "Compression ultrasound imaging visualizes a fixed thrombus within the femoral vein."
+                    ],
+                    [
+                        "A pregnant patient presents with left thigh pain, pitting edema, and marked tenderness along the femoral canal.",
+                        "Plasma D-Dimer is elevated, though pregnancy itself can alter baseline levels.",
+                        "Doppler duplex ultrasonography reveals an occlusive thrombus within the deep venous system.",
+                        "Hypercoagulable physiology of gestation contributes to clot propagation.",
+                        "Anticoagulation therapy with low molecular weight heparin is immediately initiated."
                     ]
                 ],
                 summary: "Blood clot formation in deep veins, presenting with unilateral extremity swelling and confirmed by venous ultrasound.",
@@ -1021,6 +1109,13 @@
                         "Venous thromboemboli dislodge and travel into the pulmonary arterial tree.",
                         "ECG exhibits right axis deviation and T-wave inversions in anterior leads.",
                         "Angiographic imaging confirms intraluminal obstruction within the main pulmonary arteries."
+                    ],
+                    [
+                        "An oncology patient develops sudden hemodynamic instability, tachypnea, and pleuritic chest pain.",
+                        "Bedside echocardiogram demonstrates acute right ventricular strain and McConnell sign.",
+                        "Arterial blood gas confirms profound hypoxemia.",
+                        "Emergency contrast-enhanced computed tomography confirms a large saddle pulmonary embolus.",
+                        "Thrombolytic therapy is evaluated to relieve right heart obstruction."
                     ]
                 ],
                 summary: "Obstruction of pulmonary arterial bed by thrombi dislodged from deep veins, presenting with dyspnea, chest pain, and hypoxemia.",
@@ -1045,6 +1140,13 @@
                         "Acquired autoantibodies directed against cell membrane proteins provoke widespread clotting.",
                         "Laboratory panels confirm elevated titers of anti-beta-2-glycoprotein I antibodies.",
                         "Clinical and serologic criteria establish the autoimmune thrombophilia."
+                    ],
+                    [
+                        "An individual with livedo reticularis on the skin develops simultaneous upper extremity arterial and venous clots.",
+                        "In vitro coagulation testing demonstrates lupus anticoagulant interference.",
+                        "Immunoassay confirms high circulating titers of anticardiolipin antibodies.",
+                        "Systemic autoimmune thrombophilia is diagnosed.",
+                        "Lifelong anticoagulation with vitamin K antagonists is initiated."
                     ]
                 ],
                 summary: "Systemic autoimmune thrombophilia characterized by recurrent arterial/venous thrombosis and pregnancy loss with antiphospholipid antibodies.",
@@ -1069,6 +1171,13 @@
                         "A missense mutation replaces arginine with glutamine at position 506.",
                         "Unchecked prothrombinase activity promotes hypercoagulable thrombosis.",
                         "DNA sequence analysis verifies the inherited genetic defect."
+                    ],
+                    [
+                        "A young woman taking oral contraceptive pills develops an unexpected cerebral venous sinus thrombosis.",
+                        "Workup for inherited thrombophilias is initiated due to unprovoked thrombosis on estrogen.",
+                        "Activated protein C resistance assay is abnormal.",
+                        "Genetic testing reveals a single nucleotide polymorphism in the F5 gene.",
+                        "Diagnosis confirms heterozygous Factor V Leiden mutation."
                     ]
                 ],
                 summary: "Most common inherited thrombophilia caused by a point mutation in the Factor V gene rendering it resistant to activated protein C.",
@@ -1093,6 +1202,13 @@
                         "Endogenous anticoagulant reserve is depleted due to an inherited defect.",
                         "Failure of heparin cofactor function abolishes the expected aPTT response.",
                         "Functional activity assays establish antithrombin depletion."
+                    ],
+                    [
+                        "A patient with a family history of fatal pulmonary embolism develops unprovoked bilateral lower extremity clots.",
+                        "Laboratory screening demonstrates diminished neutralization capacity against thrombin.",
+                        "Serine protease inhibitor deficiency is confirmed.",
+                        "Functional assays show antithrombin activity levels below 60% of normal baseline.",
+                        "Long-term non-heparin anticoagulation is implemented."
                     ]
                 ],
                 summary: "Deficiency of antithrombin leading to hypercoagulability and clinical resistance to standard heparin therapy.",
@@ -1117,6 +1233,13 @@
                         "Depletion of fat-soluble cofactors impairs hepatic synthesis of clotting zymogens.",
                         "Gamma-glutamyl carboxylation reactions stall without adequate cofactor availability.",
                         "Administration of phytomenadione rapidly restores normal coagulation parameters."
+                    ],
+                    [
+                        "An exclusively breastfed newborn presents with intracranial hemorrhage and umbilical stump oozing.",
+                        "Coagulation studies demonstrate profoundly elevated PT/INR and aPTT.",
+                        "Maternal prenatal vitamin history was absent.",
+                        "Fat-soluble cofactor deficiency impairs neonatal hemostatic factor synthesis.",
+                        "Intravenous vitamin K administration halts bleeding and normalizes coagulation profiles."
                     ]
                 ],
                 summary: "Acquired coagulopathy due to fat-soluble vitamin malabsorption or antibiotic gut sterilization, resulting in elevated PT/INR.",
@@ -1141,6 +1264,13 @@
                         "X-linked recessive inheritance impairs the essential cofactor required for Factor X activation.",
                         "Factor assays demonstrate profound depression of Factor VIII levels.",
                         "Replacement therapy with recombinant factor successfully halts bleeding."
+                    ],
+                    [
+                        "An infant male develops excessive bleeding following circumcision.",
+                        "Laboratory testing demonstrates normal PT, normal bleeding time, but prolonged aPTT.",
+                        "Mixing studies correct the prolonged clotting time.",
+                        "Assays confirm deficient Factor VIII activity.",
+                        "X-linked recessive pedigree analysis confirms Hemophilia A."
                     ]
                 ],
                 summary: "X-linked recessive bleeding disorder caused by Factor VIII deficiency presenting with joint hemarthroses and isolated prolonged PTT.",
@@ -1165,6 +1295,13 @@
                         "Deficiency impairs the intrinsic tenase complex formation.",
                         "Christmas factor deficiency is suspected based on clinical phenotype.",
                         "Specific factor testing confirms deficient Factor IX activity."
+                    ],
+                    [
+                        "A young male presenting with hemarthrosis and muscle hematoma has an isolated abnormal aPTT.",
+                        "Factor VIII assays return completely normal results.",
+                        "Further testing targeted at intrinsic pathway zymogens identifies deficiency.",
+                        "Factor IX activity is measured at 2% of normal.",
+                        "Diagnosis confirms Hemophilia B."
                     ]
                 ],
                 summary: "X-linked recessive bleeding disorder caused by Factor IX deficiency ('Christmas disease'), clinically identical to Hemophilia A.",
@@ -1189,6 +1326,13 @@
                         "Plasma assays indicate reduced carrier protein levels supporting Factor VIII survival.",
                         "Defective adhesive protein anomalies impair platelet subendothelium binding.",
                         "Reduced ristocetin cofactor activity confirms von Willebrand disease."
+                    ],
+                    [
+                        "During routine surgical evaluation, a patient reports a lifelong history of easy bruising and mucosal oozing.",
+                        "Coagulation tests show normal platelet count, normal PT, but mildly prolonged aPTT due to low Factor VIII.",
+                        "Platelet function analyzer is abnormal.",
+                        "Multimeric analysis demonstrates quantitative deficiency of von Willebrand factor.",
+                        "Desmopressin trial successfully elevates endogenous vWF levels."
                     ]
                 ],
                 summary: "Most common inherited bleeding disorder caused by vWF deficiency, presenting with mucosal bleeding and abnormal platelet adhesion.",
@@ -1213,6 +1357,13 @@
                         "Autoimmune mechanisms coat circulating platelets with antibodies leading to reticuloendothelial destruction.",
                         "Absence of splenomegaly and normal peripheral smear morphology support primary immune destruction.",
                         "Responsive treatment to corticosteroids or IVIG confirms the etiology."
+                    ],
+                    [
+                        "A pregnant woman is incidentally found to have a platelet count of 35,000/uL without systemic symptoms.",
+                        "Coagulation times and peripheral blood smear are entirely normal except for large platelets.",
+                        "Exclusion of secondary causes of thrombocytopenia is completed.",
+                        "Autoimmune clearance of antibody-sensitized platelets is diagnosed.",
+                        "Corticosteroid therapy effectively raises platelet counts prior to delivery."
                     ]
                 ],
                 summary: "Acquired autoimmune destruction of platelets following viral infections, presenting with isolated severe thrombocytopenia.",
@@ -1237,6 +1388,13 @@
                         "Immune complexes form between pharmacological polysaccharides and released carrier proteins.",
                         "Activated platelets release prothrombotic microparticles driving hypercoagulability.",
                         "Anti-PF4 antibody enzyme immunoassay confirms the diagnosis."
+                    ],
+                    [
+                        "A patient treated with low-molecular-weight heparin for pulmonary embolism develops skin necrosis at injection sites and falling platelets.",
+                        "Coagulation profiles reveal severe consumptive thrombocytopenia paired with acute thrombus expansion.",
+                        "Immune-mediated platelet activation syndrome is suspected.",
+                        "Serotonin release assay confirms pathogenic antibodies.",
+                        "Immediate cessation of all heparin and transition to direct thrombin inhibitors is executed."
                     ]
                 ],
                 summary: "Immune-mediated adverse drug reaction to heparin characterized by severe thrombocytopenia and paradoxical thrombosis.",
@@ -1261,6 +1419,13 @@
                         "Proteolytic enzyme failure permits accumulation of hyper-adhesive von Willebrand multimers.",
                         "Microscopic blood review shows numerous erythrocyte schistocytes.",
                         "Assay confirmation shows absent or severely depressed ADAMTS13 activity."
+                    ],
+                    [
+                        "A young woman presents with acute renal dysfunction, severe anemia, and sudden neurological deficits.",
+                        "Coagulation studies (PT and PTT) are entirely normal, ruling out DIC.",
+                        "Smear confirms widespread schistocytes and elevated LDH.",
+                        "Autoantibody inhibition of von Willebrand cleaving protease is identified.",
+                        "Urgent therapeutic plasma exchange is initiated."
                     ]
                 ],
                 summary: "Microangiopathic hemolytic anemia and thrombocytopenia caused by ADAMTS13 deficiency with classic pentad of signs.",
@@ -1285,6 +1450,13 @@
                         "Endothelial cell damage is localized primarily to the renal microvasculature.",
                         "Bacterial enterotoxin absorption triggers the microangiopathic cascade.",
                         "Stool PCR identifies shiga-toxigenic bacterial pathogens."
+                    ],
+                    [
+                        "A child who recently consumed undercooked hamburger meat presents with severe bloody diarrhea followed by acute kidney injury.",
+                        "Laboratory results show Coombs-negative hemolytic anemia and severe thrombocytopenia.",
+                        "Clotting times are normal.",
+                        "Renal biopsy confirms glomerular microthrombi.",
+                        "Supportive care and dialysis management are undertaken while avoiding antibiotic administration."
                     ]
                 ],
                 summary: "Classic triad of microangiopathic hemolytic anemia, thrombocytopenia, and acute renal failure following Shiga toxin E. coli infection.",
@@ -1309,6 +1481,13 @@
                         "Parenteral vitamin K challenge produces no improvement in coagulation parameters.",
                         "Decreased hepatocellular protein synthesis reduces circulating coagulation factor levels.",
                         "Associated hypersplenism simultaneously sequesters platelets."
+                    ],
+                    [
+                        "A patient hospitalized for decompensated hepatitis C develops easy bruising and elevated INRs.",
+                        "Fibrinogen is borderline normal, but synthetic zymogens are broadly depressed.",
+                        "Trial of vitamin K yields no improvement in coagulation parameters.",
+                        "Hepatocyte synthetic capacity is severely compromised.",
+                        "Diagnosis confirms coagulopathy of chronic liver disease."
                     ]
                 ],
                 summary: "Multifactorial coagulopathy caused by hepatic synthetic failure, impaired clearance of activators, and hypersplenism.",
@@ -1333,6 +1512,13 @@
                         "D-Dimer levels are markedly elevated due to systemic secondary fibrinolysis.",
                         "Uncontrolled activation of the coagulation cascade consumes available platelets and clotting factors.",
                         "Blood smear reveals microangiopathic red cell fragmentation."
+                    ],
+                    [
+                        "A patient with severe acute pancreatitis develops sudden bleeding from venipuncture sites and purpura fulminans.",
+                        "Laboratory testing reveals falling platelet count, prolonged clotting times, and low fibrinogen.",
+                        "D-Dimer assays return extremely elevated positive values.",
+                        "Systemic consumptive coagulopathy is diagnosed.",
+                        "Management requires treating the underlying trigger alongside blood product replacement."
                     ]
                 ],
                 summary: "Acquired consumptive coagulopathy characterized by systemic microvascular thrombosis and simultaneous severe bleeding.",
@@ -1359,6 +1545,13 @@
                         "Histological review shows neoplastic B cells surrounded by an inflammatory background of lymphocytes and eosinophils.",
                         "Immunohistochemistry demonstrates positive staining for CD15 and CD30.",
                         "Epidemiological associations tie a subset of cases to past Epstein-Barr virus infection."
+                    ],
+                    [
+                        "A young patient presents with a firm, non-tender supraclavicular lymph node enlargement.",
+                        "Further questioning reveals pain in the lymph nodes specifically after drinking alcoholic beverages.",
+                        "Excisional biopsy demonstrates binucleated Reed-Sternberg cells expressing CD15 and CD30 markers.",
+                        "Staging scans show contiguous lymph node involvement above the diaphragm.",
+                        "Diagnosis confirms classic Hodgkin lymphoma."
                     ]
                 ],
                 summary: "Malignant lymphoma characterized by Reed-Sternberg cells, contiguous nodal spread, and constitutional 'B symptoms'.",
@@ -1383,13 +1576,19 @@
                         "Cytogenetic evaluation reveals characteristic c-myc oncogene translocation t(8;14).",
                         "Diagnosis points to Burkitt lymphoma, strongly linked to Epstein-Barr virus.",
                         "Tumor lysis syndrome must be aggressively monitored during initiation of intense chemotherapy."
+                    ],
+                    [
+                        "An individual presents with systemic B-symptoms and widespread, non-contiguous lymph node enlargement.",
+                        "Biopsy indicates clonal lymphoid proliferation lacking typical Reed-Sternberg architecture.",
+                        "Flow cytometry confirms mature B-cell malignancy.",
+                        "Staging evaluation reveals extensive extranodal involvement.",
+                        "Diagnosis confirms non-Hodgkin lymphoma."
                     ]
                 ],
                 summary: "Diverse group of B-cell and T-cell neoplasms characterized by non-contiguous dissemination and variable clinical aggressiveness.",
                 keyLabs: "Monoclonal lymphoproliferation on flow cytometry, Biopsy confirmation",
                 pearl: "Burkitt lymphoma features the classic 'starry sky' histology and t(8;14) c-myc translocation."
             },
-            // --- NEWLY ADDED NON-HODGKIN'S LYMPHOMA SUBTYPES ---
             {
                 name: "Diffuse Large B-Cell Lymphoma",
                 module: "Oncology",
@@ -1408,6 +1607,13 @@
                         "Microscopic inspection shows large, transformed B-cells disrupting normal architecture.",
                         "Genetic testing checks for BCL2 and BCL6 rearrangements.",
                         "Early diagnosis and aggressive combination therapy yield high cure rates."
+                    ],
+                    [
+                        "An individual presents with a rapidly enlarging testicular mass and constitutional B-symptoms.",
+                        "Surgical resection and histology confirm an aggressive mature B-cell neoplasm.",
+                        "Tumor cells stain strongly positive for CD20.",
+                        "Staging workup confirms extranodal diffuse large B-cell lymphoma.",
+                        "Rituximab-based combination chemotherapy is initiated."
                     ]
                 ],
                 summary: "Most common aggressive subtype of non-Hodgkin lymphoma, presenting with rapidly enlarging masses and B-symptoms.",
@@ -1432,6 +1638,13 @@
                         "Malignant cells form neoplastic follicles recapitulating normal germinal centers.",
                         "Treatment for early stages may involve observation or radiation, while advanced disease is managed with immunotherapy.",
                         "There is a known risk of transformation into aggressive diffuse large B-cell lymphoma."
+                    ],
+                    [
+                        "An asymptomatic patient is found to have widespread waxing and waning lymphadenopathy on CT imaging.",
+                        "Lymph node biopsy confirms follicular architecture with centrocytes and centroblasts.",
+                        "Genetic testing reveals BCL2 gene rearrangement.",
+                        "Indolent non-Hodgkin lymphoma is diagnosed.",
+                        "Watch-and-wait management is selected given the lack of aggressive symptoms."
                     ]
                 ],
                 summary: "Most common indolent non-Hodgkin lymphoma characterized by a follicular growth pattern and t(14;18) BCL2 translocation.",
@@ -1456,6 +1669,13 @@
                         "Rapid tumor doubling time necessitates immediate intensive short-course chemotherapy.",
                         "Prophylaxis against tumor lysis syndrome is critical during initial treatment.",
                         "Diagnosis confirms Burkitt lymphoma."
+                    ],
+                    [
+                        "An immunocompromised patient presents with rapidly progressive cervical and retroperitoneal adenopathy.",
+                        "Biopsy reveals uniform intermediate-sized lymphoid cells with numerous tingible-body macrophages.",
+                        "Pathology confirms starry sky pattern.",
+                        "Cytogenetics identify c-myc translocation.",
+                        "Intensive chemoimmunotherapy is immediately started."
                     ]
                 ],
                 summary: "Extremely fast-growing aggressive B-cell non-Hodgkin lymphoma characterized by t(8;14) c-myc translocation and 'starry sky' histology.",
@@ -1480,6 +1700,13 @@
                         "Bone marrow aspiration confirms greater than 10% clonal plasma cells.",
                         "Pathophysiology involves malignant plasma cell accumulation destroying bone and suppressing normal hematopoiesis.",
                         "Diagnosis fulfills criteria based on CRAB findings: Calcium elevation, Renal failure, Anemia, and Bone lesions."
+                    ],
+                    [
+                        "An elderly male presents with severe bone pain in his ribs and vertebrae following minor movement.",
+                        "Laboratory screening indicates elevated total protein with normal albumin, yielding a reversed globulin ratio.",
+                        "SPEP demonstrates an IgG monoclonal spike.",
+                        "Radiographs reveal multiple lytic bone lesions across the skull and pelvis.",
+                        "Bone marrow biopsy confirms abundant atypical plasma cells."
                     ]
                 ],
                 summary: "Malignant plasma cell neoplasm causing bone destruction, renal failure, anemia, and monoclonal protein overproduction.",
@@ -1504,6 +1731,13 @@
                         "Flow cytometry confirms malignant clonal proliferation of myeloid precursor cells.",
                         "Cytogenetic abnormalities guide prognosis and intensive induction chemotherapy regimens.",
                         "Pathology confirms acute myeloid leukemia."
+                    ],
+                    [
+                        "An older adult presents with severe fatigue, neutropenic fever, and cutaneous petechiae.",
+                        "Blood counts demonstrate pancytopenia with circulating blast cells.",
+                        "Bone marrow evaluation shows hypercellularity dominated by myeloid blasts exceeding the 20% threshold.",
+                        "Cytochemical staining confirms myeloperoxidase positivity.",
+                        "Diagnosis of acute myeloid leukemia is established."
                     ]
                 ],
                 summary: "Rapidly progressive clonal malignancy of myeloid precursors leading to marrow failure and elevated blasts (>20%).",
@@ -1528,6 +1762,13 @@
                         "Molecular testing identifies the PML-RARA fusion gene resulting from chromosome 15 and 17 translocation.",
                         "Targeted therapy successfully induces terminal differentiation of malignant promyelocytes.",
                         "Diagnosis confirms acute promyelocytic leukemia (AML subtype M3)."
+                    ],
+                    [
+                        "A patient with acute leukemia presents with life-threatening bleeding and laboratory evidence of disseminated intravascular coagulation.",
+                        "Bone marrow biopsy displays hypergranular promyelocytes packed with numerous Auer rods.",
+                        "Cytogenetic testing identifies the t(15;17) genetic translocation.",
+                        "Acute promyelocytic leukemia is diagnosed.",
+                        "Targeted differentiation therapy with ATRA is started emergently."
                     ]
                 ],
                 summary: "Distinct subtype of AML (M3) characterized by t(15;17) translocation, high risk of DIC, and responsiveness to ATRA.",
@@ -1552,6 +1793,13 @@
                         "Molecular assays confirm the presence of the BCR-ABL1 fusion oncogene.",
                         "Chronic myeloproliferative disorder driving uncontrolled myeloid proliferation.",
                         "Therapy with tyrosine kinase inhibitors induces complete cytogenetic remission."
+                    ],
+                    [
+                        "An individual presents with persistent night sweats, early satiety, and a palpable splenic tip reaching the umbilicus.",
+                        "CBC reveals marked neutrophilic leukocytosis with basophilia and myelocytes.",
+                        "Cytogenetic analysis confirms the Philadelphia chromosome.",
+                        "Chronic myeloid leukemia is diagnosed.",
+                        "Oral tyrosine kinase inhibitor therapy is initiated."
                     ]
                 ],
                 summary: "Myeloproliferative neoplasm driven by the BCR-ABL1 fusion gene (Philadelphia chromosome), characterized by granulocytosis and splenomegaly.",
@@ -1576,6 +1824,13 @@
                         "Marrow biopsy shows sheets of immature lymphoblasts testing positive for terminal deoxynucleotidyl transferase (TdT).",
                         "Acute leukemia of lymphoid lineage is established.",
                         "Prophylactic intrathecal chemotherapy is administered to prevent central nervous system relapse."
+                    ],
+                    [
+                        "A child presents with generalized bone pain, hepatosplenomegaly, and petechiae.",
+                        "CBC shows thrombocytopenia and leukocytosis with numerous circulating lymphoblasts.",
+                        "Bone marrow biopsy confirms diagnostic lymphoblast infiltration exceeding 20%.",
+                        "Immunophenotyping identifies TdT positivity.",
+                        "Induction multi-agent chemotherapy achieves complete remission."
                     ]
                 ],
                 summary: "Acute leukemia of immature lymphoid cells (lymphoblasts), most common in children, presenting with bone pain and cytopenias.",
@@ -1600,6 +1855,13 @@
                         "Smear review displays numerous broken nuclear remnants (smudge cells).",
                         "Immunophenotyping establishes a monoclonal B-cell population.",
                         "Diagnosis confirms chronic lymphocytic leukemia, the most common adult leukemia in Western countries."
+                    ],
+                    [
+                        "Routine blood tests in an 70-year-old patient show a white blood cell count of 30,000/uL with 90% mature lymphocytes.",
+                        "Smear analysis reveals numerous fragile lymphocytes damaged during preparation.",
+                        "Flow cytometry confirms co-expression of CD5 and CD20.",
+                        "Indolent chronic lymphocytic leukemia is established.",
+                        "Patient is placed on active surveillance without immediate treatment."
                     ]
                 ],
                 summary: "Clonal malignancy of mature B lymphocytes characterized by isolated absolute lymphocytosis, smudge cells, and older age of onset.",
@@ -1624,6 +1886,13 @@
                         "Autonomous bone marrow red cell production proceeds independently of renal hormone regulation.",
                         "Genetic testing confirms a somatic mutation in Janus kinase 2.",
                         "Primary management centers on therapeutic phlebotomy to maintain hematocrit below 45%."
+                    ],
+                    [
+                        "A patient presenting with portal vein thrombosis is found to have marked erythrocytosis and splenomegaly.",
+                        "Serum erythropoietin levels are profoundly suppressed.",
+                        "Molecular screening identifies the JAK2 V617F somatic mutation.",
+                        "Polycythemia vera is diagnosed.",
+                        "Therapeutic phlebotomy and low-dose aspirin are initiated to reduce thrombotic risk."
                     ]
                 ],
                 summary: "Myeloproliferative neoplasm characterized by autonomous overproduction of red blood cells, low EPO, and JAK2 mutation.",
@@ -1648,6 +1917,13 @@
                         "Clonal proliferation is restricted primarily to the megakaryocytic lineage.",
                         "Diagnosis confirms essential thrombocytosis.",
                         "Paradoxical bleeding can occasionally occur due to acquired von Willebrand factor deficiency from high platelet mass."
+                    ],
+                    [
+                        "Routine outpatient lab testing reveals a platelet count of 750,000/uL in an otherwise asymptomatic adult.",
+                        "Iron deficiency, infection, and malignancy workups are entirely negative.",
+                        "Bone marrow examination confirms proliferation of mature megakaryocytes.",
+                        "Molecular testing is positive for the CALR gene mutation.",
+                        "Diagnosis of essential thrombocytosis is confirmed."
                     ]
                 ],
                 summary: "Myeloproliferative neoplasm characterized by sustained megakaryocyte proliferation and marked thrombocytosis.",
@@ -1672,6 +1948,13 @@
                         "Trephine bone marrow biopsy confirms dense fibrotic replacement of marrow spaces.",
                         "Primary myelofibrosis diagnosis is established.",
                         "Progressive bone marrow failure leads to severe transfusion dependency over time."
+                    ],
+                    [
+                        "An elderly patient presents with cachexia, severe anemia, and massive abdominal distension from splenomegaly.",
+                        "Blood smear reveals teardrop cells and immature myeloid precursors.",
+                        "Bone marrow biopsy shows severe reticulin fibrosis yielding an aspirate dry tap.",
+                        "Primary myelofibrosis is diagnosed.",
+                        "JAK inhibitor therapy is evaluated to reduce spleen size and systemic symptoms."
                     ]
                 ],
                 summary: "Philadelphia-negative myeloproliferative neoplasm characterized by bone marrow fibrosis, extramedullary hematopoiesis, and teardrop cells.",
@@ -1696,11 +1979,18 @@
                         "Blast percentage remains below the 20% threshold required to diagnose acute leukemia.",
                         "Diagnosis confirms myelodysplastic syndrome.",
                         "Ineffective hematopoiesis results in peripheral cytopenias despite a cellular marrow space."
+                    ],
+                    [
+                        "A retired chemical worker presents with refractory anemia and neutropenia.",
+                        "Smear review demonstrates hypogranular neutrophils and abnormal nuclear shapes.",
+                        "Bone marrow biopsy shows dysplasia without excess blasts (<20%).",
+                        "Myelodysplastic syndrome is established.",
+                        "Prognostic scoring is performed to assess leukemic transformation risk."
                     ]
                 ],
                 summary: "Clonal hematopoietic stem cell disorder characterized by ineffective hematopoiesis, cytopenias, dysplasia, and risk of AML transformation.",
                 keyLabs: "Dysplastic blood cells, Pelger-Huët anomaly, <20% blasts in marrow, Macrocytic anemia",
-                pearl: "Distinguished from acute myeloid leukemia (AML) by having fewer than 20% blasts in the bone marrow."
+                pearl: "Distinguished from other causes of myelodysplastic syndrome vs acute leukemia by having fewer than 20% blasts in the bone marrow."
             }
         ];
 
@@ -1722,7 +2012,6 @@
                 openInfoModal: false,
                 openDirectoryModal: false,
                 
-                // Dropdown states for collapsible major folders
                 openDirectoryModules: { "Hematology": true, "Oncology": true },
                 openSetupModules: { "Hematology": true, "Oncology": true },
 
@@ -1740,6 +2029,11 @@
 
                 categoriesByModule(mod) {
                     return this.categories.filter(c => c.module === mod);
+                },
+
+                get currentCategoryName() {
+                    if (!this.targetCondition) return '';
+                    return this.targetCondition.category;
                 },
 
                 toggleModuleDirectory(mod) {
@@ -1765,32 +2059,6 @@
                     this.updateSelectAllState();
                 },
 
-                updateSelectAllState() {
-                    this.selectAllCategories = this.categories.every(c => this.selectedCategories.includes(c.name));
-                },
-
-                get topStrongestConditions() {
-                    const list = [];
-                    for (const [name, stat] of Object.entries(this.conditionStats)) {
-                        if (stat.total > 0) {
-                            const acc = Math.round((stat.wins / stat.total) * 100);
-                            list.push({ name, accuracy: acc, wins: stat.wins, total: stat.total });
-                        }
-                    }
-                    return list.sort((a, b) => b.accuracy - a.accuracy || b.total - a.total).slice(0, 3);
-                },
-
-                get topNeedsWorkConditions() {
-                    const list = [];
-                    for (const [name, stat] of Object.entries(this.conditionStats)) {
-                        if (stat.total > 0) {
-                            const acc = Math.round((stat.wins / stat.total) * 100);
-                            list.push({ name, accuracy: acc, wins: stat.wins, total: stat.total });
-                        }
-                    }
-                    return list.sort((a, b) => a.accuracy - b.accuracy || b.total - a.total).slice(0, 3);
-                },
-
                 toggleAllCategories() {
                     if (this.selectAllCategories) {
                         this.selectedCategories = this.categories.map(c => c.name);
@@ -1799,138 +2067,128 @@
                     }
                 },
 
+                updateSelectAllState() {
+                    this.selectAllCategories = this.selectedCategories.length === this.categories.length;
+                },
+
                 openPracticeSetup() {
                     this.gameState = 'setup';
                 },
 
+                startPracticeMode() {
+                    if (this.selectedCategories.length === 0) {
+                        alert('Please select at least one category.');
+                        return;
+                    }
+                    this.isDaily = false;
+                    this.sessionScore = 0;
+                    this.nextCase();
+                },
+
                 startDailyMode() {
                     this.isDaily = true;
-                    this.sessionScore = 0;
                     const todayStr = new Date().toISOString().slice(0, 10);
                     let hash = 0;
                     for (let i = 0; i < todayStr.length; i++) {
-                        hash = (hash << 5) - hash + todayStr.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + todayStr.charCodeAt(i);
                         hash |= 0;
                     }
                     const index = Math.abs(hash) % this.conditions.length;
                     this.targetCondition = this.conditions[index];
-                    
-                    const casesList = this.targetCondition.cases || [this.targetCondition.clues];
-                    const caseIndex = Math.abs(hash >> 3) % casesList.length;
-                    
-                    this.setupGameSession(casesList[caseIndex]);
+                    this.setupGame();
                 },
 
-                startPracticeMode() {
-                    this.isDaily = false;
-                    let pool = this.conditions.filter(c => this.selectedCategories.includes(c.category));
-                    if (pool.length === 0) pool = this.conditions;
-
-                    let available = pool.filter(c => !this.recentPracticePool.includes(c.name));
+                nextCase() {
+                    const available = this.conditions.filter(c => this.selectedCategories.includes(c.category));
                     if (available.length === 0) {
-                        this.recentPracticePool = [];
-                        available = pool;
+                        alert('No conditions available in selected categories.');
+                        this.gameState = 'menu';
+                        return;
                     }
-
-                    const randomIndex = Math.floor(Math.random() * available.length);
-                    this.targetCondition = available[randomIndex];
-
+                    let pool = available.filter(c => !this.recentPracticePool.includes(c.name));
+                    if (pool.length === 0) {
+                        pool = available;
+                        this.recentPracticePool = [];
+                    }
+                    const randomIndex = Math.floor(Math.random() * pool.length);
+                    this.targetCondition = pool[randomIndex];
+                    
                     this.recentPracticePool.push(this.targetCondition.name);
-                    if (this.recentPracticePool.length > Math.floor(this.conditions.length / 2)) {
+                    if (this.recentPracticePool.length > 20) {
                         this.recentPracticePool.shift();
                     }
                     localStorage.setItem('pardle_recent', JSON.stringify(this.recentPracticePool));
 
-                    const casesList = this.targetCondition.cases || [this.targetCondition.clues];
-                    const randomCaseIndex = Math.floor(Math.random() * casesList.length);
-
-                    this.setupGameSession(casesList[randomCaseIndex]);
+                    this.setupGame();
                 },
 
-                setupGameSession(selectedClues) {
+                setupGame() {
+                    const caseList = this.targetCondition.cases;
+                    const caseIndex = Math.floor(Math.random() * caseList.length);
+                    this.activeClues = caseList[caseIndex];
+                    
                     this.currentAttempt = 1;
-                    this.activeClues = selectedClues;
                     this.guessedDiseases = [];
                     this.gameState = 'playing';
                 },
 
-                get currentCategoryName() {
-                    return this.targetCondition ? this.targetCondition.category : '';
-                },
-
                 getClueTitle(index) {
                     const titles = [
-                        "Clue 1: Broad Presentation (Epidemiology / General Sign)",
-                        "Clue 2: Clinical Progression (Specific Symptom / CBC Trend)",
-                        "Clue 3: Diagnostic / Smear Evaluation",
-                        "Clue 4: Pathophysiology / Mechanism",
-                        "Clue 5: High-Yield Definitive Hallmark"
+                        "Clue 1: Broad Presentation & History",
+                        "Clue 2: Clinical Signs & Symptoms",
+                        "Clue 3: Diagnostic Findings & Labs",
+                        "Clue 4: Pathophysiology & Specific Markers",
+                        "Clue 5: Definitive Diagnostic Confirmation"
                     ];
                     return titles[index] || `Clue ${index + 1}`;
                 },
 
-                submitGuess(guessedName) {
-                    if (!guessedName) return;
+                submitCurrentGuess(guessName) {
+                    if (!guessName || guessName.trim() === '') return;
                     
-                    const normalize = str => str.trim().toLowerCase();
-                    const matchedCondition = this.conditions.find(c => normalize(c.name) === normalize(guessedName));
-                    const displayName = matchedCondition ? matchedCondition.name : guessedName.trim();
-                    const isCorrect = normalize(displayName) === normalize(this.targetCondition.name);
-
+                    const trimmed = guessName.trim();
+                    const isCorrect = trimmed.toLowerCase() === this.targetCondition.name.toLowerCase();
+                    
                     this.guessedDiseases.push({
-                        name: displayName,
+                        name: trimmed,
                         isCorrect: isCorrect
                     });
 
+                    this.recordConditionStat(this.targetCondition.name, isCorrect);
+
                     if (isCorrect) {
                         this.gameState = 'won';
-                        this.sessionScore++;
-                        this.recordConditionAttempt(true, this.currentAttempt);
-                        this.recordWin();
+                        this.stats.gamesPlayed++;
+                        this.stats.gamesWon++;
+                        this.stats.currentStreak++;
+                        if (this.stats.currentStreak > this.stats.maxStreak) {
+                            this.stats.maxStreak = this.stats.currentStreak;
+                        }
+                        this.saveStats();
+                        if (!this.isDaily) {
+                            this.sessionScore++;
+                        }
                     } else {
-                        if (this.currentAttempt < 5) {
-                            this.currentAttempt++;
-                        } else {
+                        if (this.currentAttempt >= 5) {
                             this.gameState = 'lost';
-                            this.recordConditionAttempt(false, 6);
-                            this.recordLoss();
+                            this.stats.gamesPlayed++;
+                            this.stats.currentStreak = 0;
+                            this.saveStats();
+                        } else {
+                            this.currentAttempt++;
                         }
                     }
                 },
 
-                recordConditionAttempt(won, attemptsUsed) {
-                    const condName = this.targetCondition.name;
+                recordConditionStat(condName, isWin) {
                     if (!this.conditionStats[condName]) {
-                        this.conditionStats[condName] = { total: 0, wins: 0, totalGuesses: 0 };
+                        this.conditionStats[condName] = { wins: 0, total: 0 };
                     }
-                    this.conditionStats[condName].total += 1;
-                    if (won) {
-                        this.conditionStats[condName].wins += 1;
-                        this.conditionStats[condName].totalGuesses += attemptsUsed;
-                    } else {
-                        this.conditionStats[condName].totalGuesses += 6;
+                    this.conditionStats[condName].total++;
+                    if (isWin) {
+                        this.conditionStats[condName].wins++;
                     }
                     localStorage.setItem('pardle_condition_stats', JSON.stringify(this.conditionStats));
-                },
-
-                recordWin() {
-                    this.stats.gamesPlayed++;
-                    this.stats.gamesWon++;
-                    this.stats.currentStreak++;
-                    if (this.stats.currentStreak > this.stats.maxStreak) {
-                        this.stats.maxStreak = this.stats.currentStreak;
-                    }
-                    this.saveStats();
-                },
-
-                recordLoss() {
-                    this.stats.gamesPlayed++;
-                    this.stats.currentStreak = 0;
-                    this.saveStats();
-                },
-
-                saveStats() {
-                    localStorage.setItem('pardle_stats', JSON.stringify(this.stats));
                 },
 
                 winPercentage() {
@@ -1938,28 +2196,59 @@
                     return Math.round((this.stats.gamesWon / this.stats.gamesPlayed) * 100);
                 },
 
-                resetStats() {
-                    this.stats = { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0 };
-                    this.conditionStats = {};
-                    localStorage.removeItem('pardle_condition_stats');
-                    this.saveStats();
-                },
-
                 resetGame() {
                     this.gameState = 'menu';
                 },
 
-                shareResult() {
-                    const resultText = `🩸 PArdle (${this.isDaily ? 'Daily' : 'Practice Streak: ' + this.sessionScore}) - ${this.gameState === 'won' ? `Won in ${this.currentAttempt}/5 attempts!` : 'Unsolved'}\nStudy clinical cases for PA school!`;
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(resultText).then(() => {
-                            alert('Result copied to clipboard!');
-                        });
-                    } else {
-                        document.execCommand('copy');
+                resetStats() {
+                    if (confirm('Are you sure you want to reset all statistics?')) {
+                        this.stats = { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0 };
+                        this.conditionStats = {};
+                        localStorage.removeItem('pardle_stats');
+                        localStorage.removeItem('pardle_condition_stats');
+                        this.openStatsModal = false;
                     }
+                },
+
+                saveStats() {
+                    localStorage.setItem('pardle_stats', JSON.stringify(this.stats));
+                },
+
+                shareResult() {
+                    const statusText = this.gameState === 'won' ? `Solved in ${this.currentAttempt}/5 clues!` : `Failed to solve.`;
+                    const text = `PArdle (${this.isDaily ? 'Daily' : 'Practice'}) - ${statusText} 🩺\nMaster PANCE clinical cases at PArdle!`;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text);
+                        alert('Results copied to clipboard!');
+                    } else {
+                        alert(text);
+                    }
+                },
+
+                get topStrongestConditions() {
+                    const list = [];
+                    for (const [name, data] of Object.entries(this.conditionStats)) {
+                        if (data.total > 0) {
+                            const acc = Math.round((data.wins / data.total) * 100);
+                            list.push({ name, accuracy: acc, wins: data.wins, total: data.total });
+                        }
+                    }
+                    list.sort((a, b) => b.accuracy - a.accuracy || b.total - a.total);
+                    return list.slice(0, 3);
+                },
+
+                get topNeedsWorkConditions() {
+                    const list = [];
+                    for (const [name, data] of Object.entries(this.conditionStats)) {
+                        if (data.total > 0) {
+                            const acc = Math.round((data.wins / data.total) * 100);
+                            list.push({ name, accuracy: acc, wins: data.wins, total: data.total });
+                        }
+                    }
+                    list.sort((a, b) => a.accuracy - b.accuracy || b.total - a.total);
+                    return list.slice(0, 3);
                 }
-            }
+            };
         }
 
         function autocomplete() {
@@ -1967,71 +2256,55 @@
                 query: '',
                 open: false,
                 highlightedIndex: 0,
-                
-                get filteredConditions() {
-                    const mainComponent = Alpine.$data(this.$root);
-                    const guessedNames = mainComponent.guessedDiseases.map(g => g.name.toLowerCase());
-                    
-                    if (!this.query) {
-                        return CONDITIONS_DATABASE.filter(c => !guessedNames.includes(c.name.toLowerCase())).slice(0, 8);
-                    }
-                    const q = this.query.toLowerCase();
-                    return CONDITIONS_DATABASE.filter(c => 
-                        c.name.toLowerCase().includes(q) && !guessedNames.includes(c.name.toLowerCase())
-                    ).slice(0, 8);
-                },
+                filteredConditions: [],
 
                 onInput() {
-                    this.open = true;
+                    if (this.query.trim().length === 0) {
+                        this.filteredConditions = [];
+                        this.open = false;
+                        return;
+                    }
+                    const q = this.query.toLowerCase();
+                    const app = Alpine.evaluate(this.$el, '$data');
+                    const availableCats = app.selectedCategories;
+                    
+                    this.filteredConditions = app.conditions.filter(c => 
+                        c.name.toLowerCase().includes(q) && (app.isDaily || availableCats.includes(c.category))
+                    ).slice(0, 10);
+                    
+                    this.open = this.filteredConditions.length > 0;
                     this.highlightedIndex = 0;
                 },
 
                 highlightNext() {
-                    if (!this.open) return;
-                    if (this.highlightedIndex < this.filteredConditions.length - 1) {
-                        this.highlightedIndex++;
-                    }
+                    if (!this.open || this.filteredConditions.length === 0) return;
+                    this.highlightedIndex = (this.highlightedIndex + 1) % this.filteredConditions.length;
                 },
 
                 highlightPrev() {
-                    if (!this.open) return;
-                    if (this.highlightedIndex > 0) {
-                        this.highlightedIndex--;
-                    }
+                    if (!this.open || this.filteredConditions.length === 0) return;
+                    this.highlightedIndex = (this.highlightedIndex - 1 + this.filteredConditions.length) % this.filteredConditions.length;
                 },
 
                 selectHighlighted() {
                     if (this.open && this.filteredConditions[this.highlightedIndex]) {
                         this.selectCondition(this.filteredConditions[this.highlightedIndex].name);
                     } else {
-                        const mainComponent = Alpine.$data(this.$root);
-                        if (mainComponent && mainComponent.submitGuess) {
-                            mainComponent.submitGuess(this.query);
-                        }
-                        this.open = false;
+                        const app = Alpine.evaluate(this.$el, '$data');
+                        app.submitCurrentGuess(this.query);
                         this.query = '';
+                        this.open = false;
                     }
                 },
 
                 selectCondition(name) {
                     this.query = name;
                     this.open = false;
-                    const mainComponent = Alpine.$data(this.$root);
-                    if (mainComponent && mainComponent.submitGuess) {
-                        mainComponent.submitGuess(name);
-                    }
-                    this.query = '';
-                },
-
-                submitCurrentGuess(q) {
-                    const mainComponent = Alpine.$data(this.$root);
-                    if (mainComponent && mainComponent.submitGuess) {
-                        mainComponent.submitGuess(q);
-                    }
-                    this.open = false;
+                    const app = Alpine.evaluate(this.$el, '$data');
+                    app.submitCurrentGuess(name);
                     this.query = '';
                 }
-            }
+            };
         }
     </script>
 </body>
